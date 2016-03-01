@@ -21,7 +21,7 @@ import achozen.rememberme.statistics.GameStatistics;
 /**
  * Created by Achozen on 2016-02-23.
  */
-public class GameActivity extends FragmentActivity implements GameProgressListener {
+public class GameActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,20 +55,6 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
         return new GameInitializationData(GameSize.SMALL, arrayList);
     }
 
-    @Override
-    public void onGameLost(GameStatistics statistics) {
-
-    }
-
-    @Override
-    public void onGameWin(GameStatistics statistics) {
-
-    }
-
-    @Override
-    public void onGameSaveInstanceState(GameStatistics statistics) {
-
-    }
 
     private void requestForAds() {
         AdView mAdView = (AdView) findViewById(R.id.adView);

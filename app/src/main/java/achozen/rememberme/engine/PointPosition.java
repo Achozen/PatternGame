@@ -6,5 +6,7 @@ package achozen.rememberme.engine;
 public interface PointPosition {
      int getX();
      int getY();
+
+
 }
 

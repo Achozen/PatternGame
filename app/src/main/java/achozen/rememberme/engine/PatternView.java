@@ -11,10 +11,18 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class PatternView extends View{
+import java.util.ArrayList;
+
+import achozen.rememberme.interfaces.GameProgressListener;
+import achozen.rememberme.statistics.GameStatistics;
+import achozen.rememberme.statistics.LevelStatistics;
+
+public class PatternView extends View implements GameProgressListener {
     private ShapeDrawable mDrawable = new ShapeDrawable(new OvalShape());
     Canvas canvas;
     private GameInitializationData gameInitializationData;
+    private ArrayList<Point> drawnPoints = new ArrayList<>();
+    private ArrayList<PointPosition> expectedPoints = new ArrayList<>();
     float xStart = 0;
     float yStart = 0;
     float xStop = 0;
@@ -97,11 +105,8 @@ public class PatternView extends View{
                 yStop = touchY;
                 break;
             case MotionEvent.ACTION_UP:
-              //  drawPath.lineTo(touchX, touchY);
-              //  drawCanvas.drawPath(drawPath, drawPaint);
-              //  drawPath.reset();
-/*                xStart = 0;
-                yStart = 0;*/
+
+                GameControler.compareDrawnPattern(drawnPoints, expectedPoints);
                 break ;
             default:
                 return false;
@@ -109,6 +114,47 @@ public class PatternView extends View{
         //redraw
         invalidate();
         return true;
+
+    }
+
+
+    private void drawGameTable(int width, int height, Canvas canvas){
+
+
+
+        for(int i = 0; i<width ; i++){
+            for(int j = 0; j<height ; j++){
+
+
+            }
+
+        }
+
+    }
+
+
+    @Override
+    public void onGameLost(GameStatistics statistics) {
+
+    }
+
+    @Override
+    public void onGameWin(GameStatistics statistics) {
+
+    }
+
+    @Override
+    public void onGameSaveInstanceState(GameStatistics statistics) {
+
+    }
+
+    @Override
+    public void onLevelContinue(LevelStatistics statistics) {
+
+    }
+
+    @Override
+    public void onLevelFinished(LevelStatistics statistics) {
 
     }
 }
