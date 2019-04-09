@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:ads="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:id="@+id/adLayout">
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            ads:adSize="LARGE_BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id">
+        </com.google.android.gms.ads.AdView>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="bottom"
+        android:layout_weight="2"
+        android:id="@+id/titleSettingsLayout">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/settingsTitle"
+            android:textColor="@color/green"
+            android:textSize="@dimen/text_big"
+            android:gravity="center"
+            android:text="@string/settings_title"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="bottom"
+        android:layout_weight="2"
+        android:id="@+id/titleSizeLayout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/sizeTitle"
+            android:textColor="@color/green"
+            android:gravity="bottom"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:textSize="@dimen/text_small"
+            android:text="@string/choose_game_size"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="2"
+        android:id="@+id/sizeLayout">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sizeSmallButton"
+            android:layout_weight="1"
+            android:src="@drawable/small_button"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sizeMediumButton"
+            android:layout_weight="1"
+            android:src="@drawable/medium_size_button"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sizeBigButton"
+            android:layout_weight="1"
+            android:src="@drawable/big_button"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="bottom"
+        android:layout_weight="2"
+        android:id="@+id/titleDifficultyLayout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/difficultyTitle"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:gravity="bottom"
+            android:textColor="@color/green"
+            android:textSize="@dimen/text_small"
+            android:text="@string/choose_game_difficulty"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="2"
+        android:id="@+id/difficultyLayout">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/difficultyEasyButton"
+            android:layout_weight="1"
+            android:src="@drawable/easy_button"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/difficultyMediumButton"
+            android:layout_weight="1"
+            android:src="@drawable/medium_button"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/difficultyHardButton"
+            android:layout_weight="1"
+            android:src="@drawable/hard_button"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="2"
+        android:layout_marginTop="10dp"
+        android:id="@+id/saveLayout">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/saveButton"
+            android:src="@drawable/save_button"/>
+    </LinearLayout>
+
+</LinearLayout>

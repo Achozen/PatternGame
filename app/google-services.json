@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "1038128085369",
+    "firebase_url": "https://patterngame-84431.firebaseio.com",
+    "project_id": "patterngame-84431",
+    "storage_bucket": "patterngame-84431.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1038128085369:android:d5d8eb2cb551ddad",
+        "android_client_info": {
+          "package_name": "achozen.rememberme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1038128085369-1btebh6aptteopu3c23qkhchpgg3j858.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "achozen.rememberme",
+            "certificate_hash": "ae3d1babb137371930cf6ec0ffb2ab8ae7da20c8"
+          }
+        },
+        {
+          "client_id": "1038128085369-ec8s2j3ia2eobhnsn4npmvm9di92ce9d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "achozen.rememberme",
+            "certificate_hash": "14958b470dd23dfdf3b7d5ca86ec34f0cd438b5a"
+          }
+        },
+        {
+          "client_id": "1038128085369-mrbea78pg76stsmcn5emglued6dkjrem.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvne-GYBzSweND4J9GvmDSWHaH20uVSTg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1038128085369-mrbea78pg76stsmcn5emglued6dkjrem.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

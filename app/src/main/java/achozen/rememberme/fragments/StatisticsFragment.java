@@ -1,8 +1,13 @@
 package achozen.rememberme.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import achozen.rememberme.R;
 import achozen.rememberme.statistics.GameStatistics;
 
 /**
@@ -15,6 +20,23 @@ public class StatisticsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if(gameStatistics != null){
 
+
+        }
+    }
+
+    public void setStatistics(GameStatistics gameStatistics) {
+        this.gameStatistics = gameStatistics;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
+            savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_statistics,
+                container, false);
+
+        return view;
     }
 }

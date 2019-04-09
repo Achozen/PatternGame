@@ -1,5 +1,7 @@
 package achozen.rememberme.engine;
 
+import achozen.rememberme.interfaces.PointPosition;
+
 /**
  * Created by Achozen on 2016-02-27.
  */
@@ -30,7 +32,7 @@ public class PointConnections {
     }
     private boolean isNotTheSame(){
 
-        return!(firstPointPosition.getX() == secondPointPosition.getX() && firstPointPosition.getY() == secondPointPosition.getY());
+        return!(firstPointPosition.getColumn() == secondPointPosition.getColumn() && firstPointPosition.getRow() == secondPointPosition.getRow());
     }
 
     private boolean isInRange(){
@@ -39,8 +41,8 @@ public class PointConnections {
     }
 
     private boolean isHorizontallyCorrect() {
-        if(firstPointPosition.getY() == secondPointPosition.getY()){
-            if(Math.abs(firstPointPosition.getX() - secondPointPosition.getX()) == 1)
+        if(firstPointPosition.getRow() == secondPointPosition.getRow()){
+            if(Math.abs(firstPointPosition.getColumn() - secondPointPosition.getColumn()) == 1)
                 return true;
         }
         return false;
@@ -48,8 +50,8 @@ public class PointConnections {
 
 
     private boolean isVereticallyCorrect() {
-        if(firstPointPosition.getX() == secondPointPosition.getX()){
-            if(Math.abs(firstPointPosition.getY() - secondPointPosition.getY()) == 1)
+        if(firstPointPosition.getColumn() == secondPointPosition.getColumn()){
+            if(Math.abs(firstPointPosition.getRow() - secondPointPosition.getRow()) == 1)
                 return true;
         }
         return false;

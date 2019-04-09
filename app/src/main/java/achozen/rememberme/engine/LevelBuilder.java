@@ -3,15 +3,36 @@ package achozen.rememberme.engine;
 import java.util.ArrayList;
 import java.util.Random;
 
+import achozen.rememberme.enums.GameSize;
+import achozen.rememberme.interfaces.PointPosition;
+
 /**
- * Created by Achozen on 2016-02-28.
+ * Remember that level builder is able to generate non-symetric levels like 4x6
  */
 public class LevelBuilder {
     private static ArrayList<PointPosition> result = new ArrayList<>();
 
 
-    public static ArrayList<PointPosition> forceGenerateLevel(int width, int height, int
+    public static ArrayList<PointPosition> forceGenerateLevel(GameSize gameSize, int
             numberOfLinks) {
+        int width = 0;
+        int height = 0;
+
+        switch(gameSize){
+            case SMALL:
+                width = 3;
+                height = 3;
+            break;
+            case MEDIUM:
+                width = 4;
+                height = 4;
+                break;
+            case BIG:
+                width = 5;
+                height = 5;
+                break;
+
+        }
 
         ArrayList<PointPosition> generatedLevel = generateLevel(width, height, numberOfLinks);
         while (generatedLevel.size() < numberOfLinks) {
@@ -20,6 +41,7 @@ public class LevelBuilder {
         }
         return generatedLevel;
     }
+
 
     public static ArrayList<PointPosition> generateLevel(int width, int height, int numberOfLinks) {
         result = new ArrayList<>();
@@ -30,7 +52,7 @@ public class LevelBuilder {
         for (int i = 0; i < numberOfLinks; i++) {
             result.add(nextPoint);
             nextPoint = generateNextPoint(width, height, nextPoint);
-            if(nextPoint == null){
+            if (nextPoint == null) {
                 return result;
             }
         }
@@ -40,14 +62,17 @@ public class LevelBuilder {
     public static PointPosition generateFirstPoint(int width, int height) {
         Random randomGenerator = new Random();
         Point point = null;
+        int id = 0;
         for (int idx = 1; idx <= 10; ++idx) {
-            point = new Point(showRandomInteger(0, width - 1, randomGenerator), showRandomInteger
+            point = new Point(id++, showRandomInteger(0, width - 1, randomGenerator),
+                    showRandomInteger
                     (0, height - 1, randomGenerator));
         }
 
         return point;
     }
-//tested
+
+    //tested
     public static PointPosition generateNextPoint(int width, int height, PointPosition
             previousPointPosition) {
 
@@ -55,7 +80,7 @@ public class LevelBuilder {
                 previousPointPosition);
 
         Random randomGenerator = new Random();
-        if( possibleMoves.size() < 1){
+        if (possibleMoves.size() < 1) {
             return null;
         }
         int generatedIndex = showRandomInteger(0, possibleMoves.size() - 1, randomGenerator);
@@ -63,11 +88,13 @@ public class LevelBuilder {
         return possibleMoves.get(generatedIndex);
     }
 
-    private static ArrayList<PointPosition> calculatePossibleMoves(int width, int height, PointPosition previousPointPosition) {
+    private static ArrayList<PointPosition> calculatePossibleMoves(int width, int height,
+                                                                   PointPosition
+                                                                           previousPointPosition) {
 
         ArrayList<PointPosition> possibleMoves;
         possibleMoves = obtainPointsAroundPoint(width, height, previousPointPosition);
-        return excludePreviouslyGeneratedPoints(possibleMoves,result);
+        return excludePreviouslyGeneratedPoints(possibleMoves, result);
     }
 
     private static ArrayList<PointPosition> obtainPointsAroundPoint(int width, int height,
@@ -96,8 +123,9 @@ public class LevelBuilder {
 
             for (PointPosition realPoint : realPoints) {
 
-                if (virtualPoint.getX() == realPoint.getX() && virtualPoint.getY() == realPoint
-                        .getY()) {
+                if (virtualPoint.getColumn() == realPoint.getColumn() && virtualPoint.getRow() ==
+                        realPoint
+                        .getRow()) {
                     theSamePoints.add(virtualPoint);
                 }
             }
@@ -109,45 +137,51 @@ public class LevelBuilder {
 
     // tested - working
     public static ArrayList<PointPosition> createVirtualPointArrayAroundThePoint(PointPosition
-                                                                                          previousPointPosition) {
+                                                                                         previousPointPosition) {
 
         ArrayList<PointPosition> pointsAround = new ArrayList<>();
-        int midX = previousPointPosition.getX();
-        int midY = previousPointPosition.getX();
+        int midX = previousPointPosition.getColumn();
+        int midY = previousPointPosition.getRow();
+
+        int id = 0;
 
         for (int i = midX - 1; i <= midX + 1; i++) {
             for (int j = midY - 1; j <= midY + 1; j++) {
                 if (!(i == midX && j == midY))
-                    pointsAround.add(new Point(i, j));
+                    pointsAround.add(new Point(id++, i, j));
             }
         }
 
         return pointsAround;
     }
- //tested
+
+    //tested
     public static ArrayList<PointPosition> createRealPoints(int width, int height) {
 
         ArrayList<PointPosition> realPoints = new ArrayList<>();
 
+        int id = 0;
         for (int i = 0; i <= width - 1; i++) {
             for (int j = 0; j <= height - 1; j++) {
-                realPoints.add(new Point(i, j));
+                realPoints.add(new Point(id++, i, j));
             }
         }
         return realPoints;
     }
 
 
-    // method takes all possible moves via parameter and excludes moves to points that was used before
-    private static ArrayList<PointPosition> excludePreviouslyGeneratedPoints(ArrayList<PointPosition> possibleMoves, ArrayList<PointPosition> listToExclude) {
+    // method takes all possible moves via parameter and excludes moves to points that was used
+    // before
+    private static ArrayList<PointPosition> excludePreviouslyGeneratedPoints
+    (ArrayList<PointPosition> possibleMoves, ArrayList<PointPosition> listToExclude) {
 
         ArrayList<PointPosition> possibleMovesResult = new ArrayList<>();
         possibleMovesResult.addAll(possibleMoves);
         for (PointPosition previouslyGenerated : listToExclude) {
 
             for (int i = 0; i < possibleMovesResult.size(); i++) {
-                if (possibleMovesResult.get(i).getX() == previouslyGenerated.getX() &&
-                        possibleMovesResult.get(i).getY() == previouslyGenerated.getY()) {
+                if (possibleMovesResult.get(i).getColumn() == previouslyGenerated.getColumn() &&
+                        possibleMovesResult.get(i).getRow() == previouslyGenerated.getRow()) {
                     possibleMovesResult.remove(possibleMovesResult.get(i));
                 }
             }

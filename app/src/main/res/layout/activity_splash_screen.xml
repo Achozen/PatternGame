@@ -12,6 +12,41 @@
         android:id="@+id/headerImage"
         android:layout_gravity="center" />
 
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="@dimen/logging_layout_height"
+                  android:orientation="vertical"
+                  android:background="@color/colorPrimaryDark"
+        android:id="@+id/loggingLayout">
+
+    <EditText android:layout_height="wrap_content"
+              android:layout_width="match_parent"
+              android:inputType="textEmailAddress"
+              android:text="@string/email"
+              android:layout_weight="1"
+              android:id="@+id/email"/>
+
+    <EditText android:layout_height="wrap_content"
+              android:layout_width="match_parent"
+              android:inputType="textPassword"
+              android:layout_weight="1"
+              android:text="@string/password"
+              android:id="@+id/password"/>
+
+    <Button android:layout_height="wrap_content"
+              android:layout_width="match_parent"
+              android:layout_weight="1"
+            android:text="@string/login"
+              android:id="@+id/login"/>
+
+    <Button android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="@string/login_gmail"
+                android:id="@+id/gmail_login"/>
+    </LinearLayout>
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

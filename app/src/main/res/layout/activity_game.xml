@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/black">
 
-
-    <FrameLayout
-        android:id="@+id/game_fragment_place_holder"
-        android:layout_margin="20dp"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/green"/>
-
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="wrap_content"
@@ -25,5 +15,48 @@
         ads:adSize="BANNER"
         ads:adUnitId="@string/banner_ad_unit_id">
     </com.google.android.gms.ads.AdView>
+
+    <FrameLayout
+        android:id="@+id/game_fragment_place_holder"
+        android:layout_margin="20dp"
+        android:layout_gravity="center"
+        android:layout_weight="5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" >
+
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal|bottom">
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/restart_label"
+            android:layout_margin="5dp"
+            android:maxLines="1"
+            android:id="@+id/restartButton"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/back_to_menu_label"
+            android:layout_margin="5dp"
+            android:maxLines="1"
+            android:id="@+id/backButton"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/in_game_settings_label"
+            android:maxLines="1"
+            android:layout_margin="5dp"
+            android:id="@+id/settingsButton"/>
+    </LinearLayout>
 
 </LinearLayout>

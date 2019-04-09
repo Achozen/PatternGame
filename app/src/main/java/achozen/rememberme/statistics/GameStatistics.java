@@ -5,11 +5,11 @@ package achozen.rememberme.statistics;
  */
 public class GameStatistics {
 
-    private String gameState;
-    private String gameTime;
+    private GameState gameState;
+    private int gameTime;
     private int scoredPoints;
 
-    public GameStatistics(String gameState, String gameTime, int scoredPoints) {
+    public GameStatistics(GameState gameState, int gameTime, int scoredPoints) {
         this.gameState = gameState;
         this.gameTime = gameTime;
         this.scoredPoints = scoredPoints;
@@ -20,12 +20,12 @@ public class GameStatistics {
         return scoredPoints;
     }
 
-    public String getGamTime() {
+    public int getGameTime() {
 
         return gameTime;
     }
 
-    public String getGameState() {
+    public GameState getGameState() {
 
         return gameState;
     }

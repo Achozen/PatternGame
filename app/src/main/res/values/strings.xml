@@ -1,11 +1,47 @@
 <resources>
     <string name="app_name">Remember Me</string>
     <string name="action_settings">Settings</string>
+    <string name="settings_label">Settings</string>
     <string name="start_label">Start</string>
+    <string name="training_label">Training</string>
     <string name="exit_label">Exit</string>
     <string name="high_scores_label">High scores</string>
     <string name="about_label">About</string>
 
+
+    <!--Logging Buttons-->
+    <string name="login_gmail">Login with Gmail</string>
+    <string name="login">Login</string>
+    <string name="password">password</string>
+    <string name="email">email</string>
+
+    <!--In Game Buttons-->
+    <string name="restart_label">Restart</string>
+    <string name="back_to_menu_label">Back to menu</string>
+    <string name="in_game_settings_label">Settings</string>
+
+    <!--Settings titles ID-->
+    <string name="settings_title">Settings</string>
+    <string name="choose_game_size">Choose game size:</string>
+    <string name="choose_game_difficulty">Choose game difficulty:</string>
+
+    <!--Statisctic fragment-->
+    <string name="game_score_label">Game Score</string>
+    <string name="scored_points_label">Scored points</string>
+    <string name="time_spent_label">Time spent</string>
+    <string name="game_state_win">WIN</string>
+    <string name="game_state_lose">LOSE</string>
+    <string name="game_default_score">0</string>
+
+    <!--Hgh scores-->
+    <string name="high_scores">HIGH SCORES</string>
+    <string name="top_100_tab_title">TOP 100</string>
+    <string name="my_scores_tab_title">MY SCORES</string>
+    <string name="my_ranking_tab_title">MY RANKING</string>
+
     <!--test add unit ID-->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="client_id">1038128085369-mrbea78pg76stsmcn5emglued6dkjrem.apps.googleusercontent.com</string>
+    <string name="logged_as">"Logged as: "</string>
+
 </resources>
