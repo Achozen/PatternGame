@@ -1,7 +1,7 @@
 package achozen.rememberme.navigation;
 
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import achozen.rememberme.R;
 import achozen.rememberme.fragments.PatternGameFragment;
