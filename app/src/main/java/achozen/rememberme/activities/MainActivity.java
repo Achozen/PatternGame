@@ -1,7 +1,9 @@
-package achozen.rememberme;
+package achozen.rememberme.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import achozen.rememberme.R;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 

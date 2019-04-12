@@ -1,5 +1,6 @@
 package achozen.rememberme.utils;
 
+import android.graphics.Color;
 import android.graphics.Paint;
 
 /**
@@ -7,9 +8,9 @@ import android.graphics.Paint;
  */
 public class DrawingUtil {
 
-    public static Paint getPaintForPath(){
+    public static Paint getPaintForPath() {
         Paint drawPaint = new Paint();
-        drawPaint.setColor(0xFF000000);
+        drawPaint.setColor(Color.GREEN);
         drawPaint.setAntiAlias(true);
         drawPaint.setStrokeWidth(20);
         drawPaint.setStyle(Paint.Style.STROKE);

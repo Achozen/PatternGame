@@ -18,7 +18,7 @@ import achozen.rememberme.utils.DrawingUtil;
 /**
  * Created by Achozen on 2016-05-31.
  */
-public class PatternAnimator implements ValueAnimator.AnimatorUpdateListener ,Animator.AnimatorListener {
+public class PatternAnimator implements ValueAnimator.AnimatorUpdateListener, Animator.AnimatorListener {
 
     private final PatternView patternView;
     private final Canvas canvas;
@@ -42,7 +42,7 @@ public class PatternAnimator implements ValueAnimator.AnimatorUpdateListener ,An
 
     public void animatePath(ArrayList<PointPosition> pointPositions) {
         this.pointPositions = pointPositions;
-        maxLinksToDraw = pointPositions.size()-1;
+        maxLinksToDraw = pointPositions.size() - 1;
         pathToDraw = new Path();
 
         drawPaint = DrawingUtil.getPaintForPath();
@@ -85,14 +85,15 @@ public class PatternAnimator implements ValueAnimator.AnimatorUpdateListener ,An
         pathToDraw.moveTo(startX, startY);
         pathToDraw.lineTo(xAnim, yAnim);
 
-        canvas.drawPath(pathToDraw,drawPaint);
+
+        canvas.drawPath(pathToDraw, drawPaint);
         patternView.invalidate();
 
     }
 
     @Override
     public void onAnimationStart(Animator animation) {
-
+        patternView.disableDrawingMode();
     }
 
     @Override

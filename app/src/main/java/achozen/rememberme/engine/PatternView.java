@@ -4,11 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
-import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -27,8 +27,9 @@ import achozen.rememberme.statistics.GameStatistics;
 import achozen.rememberme.utils.DrawingUtil;
 import achozen.rememberme.utils.OnPreDrawingListener;
 import achozen.rememberme.utils.TimerUtils;
+import androidx.core.content.ContextCompat;
 
-public class PatternView extends View implements AnimationProgressListener,OnPreDrawingListener,OnPathDrawingListener {
+public class PatternView extends View implements AnimationProgressListener, OnPreDrawingListener, OnPathDrawingListener {
     private ShapeDrawable mDrawable = new ShapeDrawable(new OvalShape());
     private GameInitializationData gameInitializationData;
     float xStart = 0;
@@ -40,14 +41,14 @@ public class PatternView extends View implements AnimationProgressListener,OnPre
     int motionXMultiplyer;
     int motionYMultiplyer;
     private Path drawPath;
-    private int paintColor = 0xFF000000;
+    private int paintColor = 0x00FF00;
     private Paint drawPaint, canvasPaint;
     private Bitmap canvasBitmap;
     private Canvas drawCanvas;
     private Context context;
     private PatternAnimator patternAnimator;
     private PathDrawable pathDrawable;
-    private int w,h =0;
+    private int w, h = 0;
     private TextView notificationTextView;
     private boolean drawingModeEnabled;
     private HoverPointChecker hoverPointChecker;
@@ -65,11 +66,11 @@ public class PatternView extends View implements AnimationProgressListener,OnPre
     }
 
     private void setupDrawing() {
-        float[] dashes = { 0.0f, Float.MAX_VALUE };
+        float[] dashes = {0.0f, Float.MAX_VALUE};
         //prepare for drawing and setup paint stroke properties
         drawPath = new Path();
         drawPaint = new Paint();
-        drawPaint.setColor(paintColor);
+        drawPaint.setColor(Color.GREEN);
         drawPaint.setAntiAlias(true);
         drawPaint.setStrokeWidth(20);
         drawPaint.setStyle(Paint.Style.STROKE);
@@ -85,7 +86,6 @@ public class PatternView extends View implements AnimationProgressListener,OnPre
     }
 
 
-
     //size assigned to view
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -95,55 +95,71 @@ public class PatternView extends View implements AnimationProgressListener,OnPre
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
         clearGameView();
-        patternAnimator = new PatternAnimator(this,drawCanvas,this);
+        patternAnimator = new PatternAnimator(this, drawCanvas, this);
         TimerUtils.beforeAnimationCount(notificationTextView, this);
         disableDrawingMode();
-        hoverPointChecker = new HoverPointChecker(allPoints,this);
-    //    pathDrawable = new Pa.thDrawable();
-    //    this.setBackground(pathDrawable);
+        hoverPointChecker = new HoverPointChecker(allPoints, this);
+        //    pathDrawable = new Pa.thDrawable();
+        //    this.setBackground(pathDrawable);
 
     }
 
-    private void drawPointsOnCanvas(Canvas canvas, int w, int h) {
-        Bitmap icon = BitmapFactory.decodeResource(this.getResources(), R.drawable.lock_piont);
+    public void drawPointsOnCanvas(Canvas canvas, boolean demo) {
+        Bitmap icon;
+        Bitmap iconChecked;
+        iconChecked = BitmapFactory.decodeResource(this.getResources(), R.drawable.point_drawable_checked);
+        icon = BitmapFactory.decodeResource(this.getResources(), R.drawable.point_drawable);
 
-        icon = Bitmap.createScaledBitmap(icon, 120, 120, false);
-         allPoints = LockPointsPositioner.obtainPointCoordinatesForCanvas(w, h,
-                 gameInitializationData.getPointPositions(), gameInitializationData.getGameSize());
+
+        icon = Bitmap.createScaledBitmap(icon, 50, 50, false);
+        allPoints = LockPointsPositioner.obtainPointCoordinatesForCanvas(w, h,
+                gameInitializationData.getPointPositions(), gameInitializationData.getGameSize());
+
+        iconChecked = Bitmap.createScaledBitmap(iconChecked, 60, 60, false);
+        allPoints = LockPointsPositioner.obtainPointCoordinatesForCanvas(w, h,
+                gameInitializationData.getPointPositions(), gameInitializationData.getGameSize());
 
         for (PointPosition point : allPoints) {
-            canvas.drawBitmap(icon, point.getXCanvas()- (icon.getWidth()/2), point.getYCanvas()-(icon.getHeight()/2), null);
+            canvas.drawBitmap(icon, point.getXCanvas() - (icon.getWidth() / 2), point.getYCanvas() - (icon.getHeight() / 2), null);
         }
+        if (demo) {
+            for (PointPosition point : randomlyGeneratedPoints) {
+                canvas.drawBitmap(iconChecked, point.getXCanvas() - (iconChecked.getWidth() / 2), point.getYCanvas() - (iconChecked.getHeight() / 2), null);
+            }
+        } else {
+            for (PointPosition point : alreadyLinkedPoints) {
+                canvas.drawBitmap(iconChecked, point.getXCanvas() - (iconChecked.getWidth() / 2), point.getYCanvas() - (iconChecked.getHeight() / 2), null);
+            }
+        }
+
+
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         Log.d("TAGTAG", "onDraw");
-        //  canvas.drawLine();
         canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
-        //       canvas.drawPath(drawPath, drawPaint);
-        if(drawingModeEnabled){
+        if (drawingModeEnabled) {
+            drawPointsOnCanvas(drawCanvas, false);
             drawAlreadyLinkedPoints(canvas);
             canvas.drawLine(xStart, yStart, xStop, yStop, drawPaint);
         }
-
-        //   aniatePatternToRedraw(canvas);
     }
 
     private void drawAlreadyLinkedPoints(Canvas canvas) {
-        if(alreadyLinkedPoints.size() < 2){
+        if (alreadyLinkedPoints.size() < 2) {
             return;
         }
-       for(int i=0; i<alreadyLinkedPoints.size()-1;i++){
-           Path pathToDraw = new Path();
-           Paint drawPaint = DrawingUtil.getPaintForPath();
+        for (int i = 0; i < alreadyLinkedPoints.size() - 1; i++) {
+            Path pathToDraw = new Path();
+            Paint drawPaint = DrawingUtil.getPaintForPath();
 
-           pathToDraw.moveTo(alreadyLinkedPoints.get(i).getXCanvas(), alreadyLinkedPoints.get(i).getYCanvas());
-           pathToDraw.lineTo(alreadyLinkedPoints.get(i+1).getXCanvas(), alreadyLinkedPoints.get(i+1).getYCanvas());
+            pathToDraw.moveTo(alreadyLinkedPoints.get(i).getXCanvas(), alreadyLinkedPoints.get(i).getYCanvas());
+            pathToDraw.lineTo(alreadyLinkedPoints.get(i + 1).getXCanvas(), alreadyLinkedPoints.get(i + 1).getYCanvas());
 
-           canvas.drawPath(pathToDraw,drawPaint);
-       }
+            canvas.drawPath(pathToDraw, drawPaint);
+        }
     }
 
     //register user touches as drawing action
@@ -152,6 +168,9 @@ public class PatternView extends View implements AnimationProgressListener,OnPre
         float touchX = event.getX();
         float touchY = event.getY();
         //respond to down, move and up events
+        if (!drawingModeEnabled) {
+            return true;
+        }
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 xStart = touchX;
@@ -160,13 +179,17 @@ public class PatternView extends View implements AnimationProgressListener,OnPre
             case MotionEvent.ACTION_MOVE:
                 xStop = touchX;
                 yStop = touchY;
-                hoverPointChecker.checkIfCurrentPositionOverlapsPoint(xStop,yStop);
+                hoverPointChecker.checkIfCurrentPositionOverlapsPoint(xStop, yStop);
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
-                clearGameView();
+                xStart = 0;
+                yStart = 0;
+                xStop = 0;
+                yStop = 0;
                 alreadyLinkedPoints = new ArrayList<>();
-                hoverPointChecker = new HoverPointChecker(allPoints,this);
+                hoverPointChecker = new HoverPointChecker(allPoints, this);
+                clearGameView();
                 invalidate();
                 break;
             default:
@@ -175,24 +198,28 @@ public class PatternView extends View implements AnimationProgressListener,OnPre
         return true;
 
     }
-    private void enableDrawingMode(){
+
+    public void enableDrawingMode() {
         drawingModeEnabled = true;
     }
-    private void disableDrawingMode(){
+
+    public void disableDrawingMode() {
         drawingModeEnabled = false;
     }
 
-    private void clearGameView(){
-        drawCanvas.drawColor(ContextCompat.getColor(context, R.color.light_green));
-        drawPointsOnCanvas(drawCanvas, w, h);
+    private void clearGameView() {
+        drawCanvas.drawColor(ContextCompat.getColor(context, R.color.black));
+        drawPointsOnCanvas(drawCanvas, false);
     }
-   private void startLevelAnimation(){
-       randomlyGeneratedPoints = LockPointsPositioner.calculateCoordinatesForGeneratedPointsByGameSize(gameInitializationData
-                       .getPatternPointPositions(), w, h,
-               gameInitializationData.getGameSize());
 
-       patternAnimator.animatePath(randomlyGeneratedPoints);
-   }
+    private void startLevelAnimation() {
+        randomlyGeneratedPoints = LockPointsPositioner.calculateCoordinatesForGeneratedPointsByGameSize(gameInitializationData
+                        .getPatternPointPositions(), w, h,
+                gameInitializationData.getGameSize());
+        drawPointsOnCanvas(drawCanvas, true);
+
+        patternAnimator.animatePath(randomlyGeneratedPoints);
+    }
 
     @Override
     public void onAnimationFinish() {
@@ -207,7 +234,7 @@ public class PatternView extends View implements AnimationProgressListener,OnPre
 
     @Override
     public void onDrawingTimeOver() {
-        onLevelFinishListener.onLevelFinished(createStatisticsForCurrentLevel(GameState.FAILED,0));
+        onLevelFinishListener.onLevelFinished(createStatisticsForCurrentLevel(GameState.FAILED, 0));
     }
 
     @Override
@@ -218,7 +245,6 @@ public class PatternView extends View implements AnimationProgressListener,OnPre
 
     @Override
     public void onPointMeet(PointPosition point) {
-
         xStart = point.getXCanvas();
         yStart = point.getYCanvas();
         addPointToLinked(point);
@@ -227,31 +253,31 @@ public class PatternView extends View implements AnimationProgressListener,OnPre
 
     private void checkIfGameDone() {
         int correctPoints = 0;
-        if(alreadyLinkedPoints == null || randomlyGeneratedPoints == null ){
+        if (alreadyLinkedPoints == null || randomlyGeneratedPoints == null) {
             return;
         }
-        if(alreadyLinkedPoints.size() != randomlyGeneratedPoints.size()){
+        if (alreadyLinkedPoints.size() != randomlyGeneratedPoints.size()) {
             return;
         }
-        for (int i= 0; i<alreadyLinkedPoints.size();i++) {
-                if(alreadyLinkedPoints.get(i).getColumn() == randomlyGeneratedPoints.get(i).getColumn() &&
-                        alreadyLinkedPoints.get(i).getRow() == randomlyGeneratedPoints.get(i).getRow()){
-                    correctPoints++;
-                }
+        for (int i = 0; i < alreadyLinkedPoints.size(); i++) {
+            if (alreadyLinkedPoints.get(i).getColumn() == randomlyGeneratedPoints.get(i).getColumn() &&
+                    alreadyLinkedPoints.get(i).getRow() == randomlyGeneratedPoints.get(i).getRow()) {
+                correctPoints++;
+            }
         }
 
-        if(correctPoints == randomlyGeneratedPoints.size()){
-            Toast.makeText(context,"CONGRATULATIONS",Toast.LENGTH_SHORT).show();
-            onLevelFinishListener.onLevelFinished(createStatisticsForCurrentLevel(GameState.SUCCESS,TimerUtils.stopTimeLeftCounter()));
+        if (correctPoints == randomlyGeneratedPoints.size()) {
+            Toast.makeText(context, "CONGRATULATIONS", Toast.LENGTH_SHORT).show();
+            onLevelFinishListener.onLevelFinished(createStatisticsForCurrentLevel(GameState.SUCCESS, TimerUtils.stopTimeLeftCounter()));
         }
 
     }
 
-    private GameStatistics createStatisticsForCurrentLevel(GameState gameState,int timeLeft){
-        return new GameStatistics(gameState,timeLeft,30);
+    private GameStatistics createStatisticsForCurrentLevel(GameState gameState, int timeLeft) {
+        return new GameStatistics(gameState, timeLeft, 30);
     }
 
-    private void addPointToLinked(PointPosition point){
+    private void addPointToLinked(PointPosition point) {
         alreadyLinkedPoints.add(point);
     }
 }

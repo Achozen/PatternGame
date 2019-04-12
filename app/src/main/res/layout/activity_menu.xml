@@ -1,73 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
 
     android:layout_height="match_parent"
-    android:background="@color/black">
+    android:background="@color/black"
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/buttonStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/start_label"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/green"
+        android:layout_marginTop="180dp"
         android:background="@color/black"
+        android:text="@string/start_label"
+        android:textColor="@color/green"
         android:textSize="@dimen/text_bigger"
-        android:layout_above="@+id/buttonTraining"
-        android:layout_alignLeft="@+id/buttonAbout"
-        android:layout_alignStart="@+id/buttonAbout"/>
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/loggedAsTextView" />
 
     <Button
         android:id="@+id/buttonHighScores"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/high_scores_label"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/green"
+        android:layout_marginTop="8dp"
         android:background="@color/black"
+        android:text="@string/high_scores_label"
+        android:textColor="@color/green"
         android:textSize="@dimen/text_bigger"
-        android:layout_above="@+id/buttonAbout"
-        android:layout_centerHorizontal="true"/>
+        ads:layout_constraintLeft_toLeftOf="parent"
+        ads:layout_constraintRight_toRightOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/buttonTraining" />
 
     <Button
         android:id="@+id/buttonAbout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/about_label"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/green"
+        android:layout_marginTop="8dp"
         android:background="@color/black"
+        android:text="@string/about_label"
+        android:textColor="@color/green"
         android:textSize="@dimen/text_bigger"
-        android:layout_above="@+id/buttonExit"
-        android:layout_centerHorizontal="true"/>
+        ads:layout_constraintLeft_toLeftOf="parent"
+        ads:layout_constraintRight_toRightOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/buttonHighScores" />
 
     <Button
         android:id="@+id/buttonExit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/exit_label"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/green"
+        android:layout_marginTop="8dp"
         android:background="@color/black"
+        android:text="@string/exit_label"
+        android:textColor="@color/green"
         android:textSize="@dimen/text_bigger"
-        android:layout_marginBottom="74dp"
-        android:layout_above="@+id/adView"
-        android:layout_centerHorizontal="true"/>
+        ads:layout_constraintLeft_toLeftOf="parent"
+        ads:layout_constraintRight_toRightOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/buttonAbout" />
 
     <Button
         android:id="@+id/buttonTraining"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/training_label"
         android:layout_gravity="center_horizontal"
-        android:textColor="@color/green"
+        android:layout_marginTop="8dp"
         android:background="@color/black"
+        android:text="@string/training_label"
+        android:textColor="@color/green"
         android:textSize="@dimen/text_bigger"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/buttonHighScores"/>
+        ads:layout_constraintLeft_toLeftOf="parent"
+        ads:layout_constraintRight_toRightOf="parent"
+        ads:layout_constraintTop_toBottomOf="@+id/buttonStart" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
@@ -76,18 +85,19 @@
         android:layout_gravity="center"
         ads:adSize="LARGE_BANNER"
         ads:adUnitId="@string/banner_ad_unit_id"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
-    </com.google.android.gms.ads.AdView>
+        ads:layout_constraintBottom_toBottomOf="parent"
+        ads:layout_constraintLeft_toLeftOf="parent"
+        ads:layout_constraintRight_toRightOf="parent" />
 
     <TextView
+        android:id="@+id/loggedAsTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:textColor="@color/green"
-        android:id="@+id/loggedAsTextView"/>
+        ads:layout_constraintLeft_toLeftOf="parent"
+        ads:layout_constraintRight_toRightOf="parent"
+        ads:layout_constraintTop_toTopOf="parent" />
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
