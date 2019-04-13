@@ -5,26 +5,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import achozen.rememberme.R;
+import achozen.rememberme.engine.PeferencesUtil;
 import achozen.rememberme.enums.Difficulty;
 import achozen.rememberme.enums.GameMode;
 import achozen.rememberme.enums.GameSize;
-import achozen.rememberme.engine.PeferencesUtil;
+import androidx.core.content.ContextCompat;
 
-import static achozen.rememberme.activities.TrainingActivity.GAME_MODE;
+import static achozen.rememberme.activities.GameActivity.GAME_MODE;
+import static achozen.rememberme.engine.PeferencesUtil.Preferences.DIFFICULTY;
+import static achozen.rememberme.engine.PeferencesUtil.Preferences.SIZE;
 import static achozen.rememberme.enums.Difficulty.EASY;
 import static achozen.rememberme.enums.Difficulty.HARD;
 import static achozen.rememberme.enums.GameSize.BIG;
 import static achozen.rememberme.enums.GameSize.SMALL;
-import static achozen.rememberme.engine.PeferencesUtil.Preferences.DIFFICULTY;
-import static achozen.rememberme.engine.PeferencesUtil.Preferences.SIZE;
 
 
 /**
@@ -43,6 +44,7 @@ public class SettingsActivity extends Activity {
     private ImageView bigSizeButton;
 
     private ImageView saveButton;
+    private GameMode gameMode;
 
     GameSize pickedSize;
     Difficulty pickedDifficulty;
@@ -51,6 +53,7 @@ public class SettingsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        gameMode = (GameMode) getIntent().getExtras().get(GAME_MODE);
         context = this;
         prepareListeners();
         markButtonForCurrentSizeSettings();
@@ -100,26 +103,20 @@ public class SettingsActivity extends Activity {
                         PeferencesUtil.storeInPrefs(context, DIFFICULTY, pickedDifficulty);
                     }
                     finish();
-                    GameMode gameMode = (GameMode) getIntent().getExtras().get(GAME_MODE);
-                    Intent intent;
-                    if(gameMode == GameMode.TRAINING){
-                        intent = new Intent(this, TrainingActivity.class);
-                    }else{
-                        intent = new Intent(this, GameActivity.class);
-                    }
+                    Intent intent = new Intent(this, GameActivity.class);
                     intent.putExtra(GAME_MODE, gameMode);
                     startActivity(intent);
                     break;
             }
         };
 
-        easyButton = (ImageView) findViewById(R.id.difficultyEasyButton);
-        mediumButton = (ImageView) findViewById(R.id.difficultyMediumButton);
-        hardButton = (ImageView) findViewById(R.id.difficultyHardButton);
-        smallSizeButton = (ImageView) findViewById(R.id.sizeSmallButton);
-        mediumSizeButton = (ImageView) findViewById(R.id.sizeMediumButton);
-        bigSizeButton = (ImageView) findViewById(R.id.sizeBigButton);
-        saveButton = (ImageView) findViewById(R.id.saveButton);
+        easyButton = findViewById(R.id.difficultyEasyButton);
+        mediumButton = findViewById(R.id.difficultyMediumButton);
+        hardButton = findViewById(R.id.difficultyHardButton);
+        smallSizeButton = findViewById(R.id.sizeSmallButton);
+        mediumSizeButton = findViewById(R.id.sizeMediumButton);
+        bigSizeButton = findViewById(R.id.sizeBigButton);
+        saveButton = findViewById(R.id.saveButton);
 
 
         easyButton.setOnClickListener(onClickListener);

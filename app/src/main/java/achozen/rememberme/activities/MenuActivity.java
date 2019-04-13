@@ -17,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static achozen.rememberme.activities.TrainingActivity.GAME_MODE;
+import static achozen.rememberme.activities.GameActivity.GAME_MODE;
 
 /**
  * Created by Achozen on 2016-02-23.
