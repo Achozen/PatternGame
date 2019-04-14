@@ -20,55 +20,53 @@ public class GameProgressCoordinator {
     private static LevelDifficultyManager levelDifficultyManager;
     private static Context context;
     private static GameSize currentGameSize;
-    private static Difficulty currentDifficulty;
-    private static GameMode currentGameMode;
 
-    public  GameProgressCoordinator(Context con, GameProgressListener progressListener) {
+    public GameProgressCoordinator(Context context, GameProgressListener progressListener) {
         gameProgressListener = progressListener;
-        context = con;
+        GameProgressCoordinator.context = context;
     }
 
     public void startGame(GameMode gameMode) {
         initiateEnvironmentalVariables(gameMode);
         startNextLevel();
-
     }
 
-    public void startNextLevel(){
-        switch (currentGameMode) {
-            case TRAINING:
-                GameInitializationData initData = prepareNextLevel();
-                if(initData == null){
-                    gameProgressListener.onTrainingFinished();
-                }else{
-                    gameProgressListener.startNewLevel(initData);
-                }
-
-                break;
-            case RANKING:
-
-                break;
+    public void startNextLevel() {
+        GameInitializationData initData = prepareNextLevel();
+        if (initData == null) {
+            gameProgressListener.onTrainingFinished();
+        } else {
+            gameProgressListener.startNewLevel(initData);
         }
     }
 
-    private void  initiateEnvironmentalVariables(GameMode gameMode){
-        currentGameMode = gameMode;
-        String difficulty = PeferencesUtil.readFromPrefs(context, PeferencesUtil
-                .Preferences.DIFFICULTY);
-        String gameSize = PeferencesUtil.readFromPrefs(context, PeferencesUtil
-                .Preferences.SIZE);
+    private void initiateEnvironmentalVariables(GameMode gameMode) {
+        String difficulty;
+        String gameSize;
+        Difficulty currentDifficulty;
+        if (gameMode == GameMode.RANKING) {
+            currentGameSize = GameSize.SMALL;
+            currentDifficulty = Difficulty.RANKING;
+        } else {
+            difficulty = PeferencesUtil.readFromPrefs(context, PeferencesUtil
+                    .Preferences.DIFFICULTY);
+            gameSize = PeferencesUtil.readFromPrefs(context, PeferencesUtil
+                    .Preferences.SIZE);
+            currentGameSize = GameSize.valueOf(gameSize);
+            currentDifficulty = Difficulty.valueOf(difficulty);
+        }
 
-        currentGameSize = GameSize.valueOf(gameSize);
-        currentDifficulty = Difficulty.valueOf(difficulty);
-        levelDifficultyManager = new LevelDifficultyManager(currentDifficulty,currentGameSize);
+
+        levelDifficultyManager = new LevelDifficultyManager(currentDifficulty, currentGameSize);
     }
 
-    private GameInitializationData prepareNextLevel(){
+    private GameInitializationData prepareNextLevel() {
         ArrayList<PointPosition> pattern = levelDifficultyManager.createPatternForNextLevel();
-        if(pattern == null){
+        currentGameSize = levelDifficultyManager.getCurrentGameSize();
+        if (pattern == null) {
             return null;
         }
         return new GameInitializationData(currentGameSize,
-                        PointsInitializer.generateLockPoints(currentGameSize), pattern);
+                PointsInitializer.generateLockPoints(currentGameSize), pattern);
     }
 }

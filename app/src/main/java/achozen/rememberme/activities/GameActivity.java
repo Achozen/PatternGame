@@ -3,7 +3,6 @@ package achozen.rememberme.activities;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import androidx.fragment.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 
@@ -20,6 +19,7 @@ import achozen.rememberme.interfaces.GameProgressListener;
 import achozen.rememberme.navigation.FragmentNavigator;
 import achozen.rememberme.statistics.GameState;
 import achozen.rememberme.statistics.GameStatistics;
+import androidx.fragment.app.FragmentActivity;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -58,12 +58,6 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
     void backClickListener(View v) {
         Intent intent = new Intent(GameActivity.this, MenuActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-    }
-
-    @OnClick(R.id.settingsButton)
-    void settingsClickListener(View v) {
-        Intent intent = new Intent(GameActivity.this, SettingsActivity.class);
         startActivity(intent);
     }
 

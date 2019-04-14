@@ -11,16 +11,13 @@ import android.widget.TextView;
  */
 public class TimerUtils {
     static ValueAnimator timeLeftAnimator = new ValueAnimator();
-    public static void beforeAnimationCount(final TextView textView, final OnPreDrawingListener listener){
+
+    public static void beforeAnimationCount(final TextView textView, final OnPreDrawingListener listener) {
 
         ValueAnimator animator = new ValueAnimator();
-        animator.setObjectValues(3, 0);
+        animator.setObjectValues(1, 0);
         animator.setInterpolator(new LinearInterpolator());
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            public void onAnimationUpdate(ValueAnimator animation) {
-                textView.setText("GET READY\n"+String.valueOf(animation.getAnimatedValue()));
-            }
-        });
+        animator.addUpdateListener(animation -> textView.setText("GET READY\n" + String.valueOf(animation.getAnimatedValue())));
         animator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -48,21 +45,17 @@ public class TimerUtils {
                 return Math.round(startValue + (endValue - startValue) * fraction);
             }
         });
-        animator.setDuration(4000);
+        animator.setDuration(1000);
         animator.start();
 
     }
 
-    public static void beforeDrawCount(final TextView textView, final OnPreDrawingListener listener){
+    public static void beforeDrawCount(final TextView textView, final OnPreDrawingListener listener) {
 
-        ValueAnimator animator = new ValueAnimator();
-        animator.setObjectValues(5, 0);
+        final ValueAnimator animator = new ValueAnimator();
+        animator.setObjectValues(3, 0);
         animator.setInterpolator(new LinearInterpolator());
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            public void onAnimationUpdate(ValueAnimator animation) {
-                textView.setText("REPEAT PATTERN\n"+String.valueOf(animation.getAnimatedValue()));
-            }
-        });
+        animator.addUpdateListener(animation -> textView.setText("REPEAT PATTERN\n" + String.valueOf(animation.getAnimatedValue())));
         animator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -91,13 +84,13 @@ public class TimerUtils {
                 return Math.round(startValue + (endValue - startValue) * fraction);
             }
         });
-        animator.setDuration(6000);
+        animator.setDuration(3000);
         animator.start();
 
     }
 
     public static void startTimeLeftCounter(final TextView textView, final OnPreDrawingListener
-            listener){
+            listener) {
 
         timeLeftAnimator.setObjectValues(30, 0);
         timeLeftAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -136,8 +129,8 @@ public class TimerUtils {
         timeLeftAnimator.start();
     }
 
-    public static int stopTimeLeftCounter(){
-        int timeLeft = (int )timeLeftAnimator.getAnimatedValue();
+    public static int stopTimeLeftCounter() {
+        int timeLeft = (int) timeLeftAnimator.getAnimatedValue();
         return timeLeft;
     }
 }

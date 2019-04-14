@@ -35,14 +35,14 @@ public class MenuActivity extends Activity {
         setupLoggedAsTextView();
     }
 
-    private void setupLoggedAsTextView(){
+    private void setupLoggedAsTextView() {
         String userEmail;
         String loggedAsFullText;
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if(currentUser != null){
+        if (currentUser != null) {
             userEmail = currentUser.getEmail();
-            loggedAsFullText= getString(R.string.logged_as) + userEmail;
-        }else{
+            loggedAsFullText = getString(R.string.logged_as) + userEmail;
+        } else {
             loggedAsFullText = "OFFLINE";
         }
 
@@ -51,32 +51,32 @@ public class MenuActivity extends Activity {
     }
 
     @OnClick(R.id.buttonStart)
-    void startClickListener(View v){
-        Intent intent = new Intent(MenuActivity.this, SettingsActivity.class);
+    void startClickListener(View v) {
+        Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra(GAME_MODE, GameMode.RANKING);
         startActivity(intent);
     }
 
     @OnClick(R.id.buttonTraining)
-    void trainingClickListener(View v){
+    void trainingClickListener(View v) {
         Intent intent = new Intent(MenuActivity.this, SettingsActivity.class);
         intent.putExtra(GAME_MODE, GameMode.TRAINING);
         startActivity(intent);
     }
 
     @OnClick(R.id.buttonExit)
-    void exitClickListener(View v){
+    void exitClickListener(View v) {
         finish();
     }
 
     @OnClick(R.id.buttonAbout)
-    void aboutClickListener(View v){
+    void aboutClickListener(View v) {
         Intent intent = new Intent(MenuActivity.this, AboutActivity.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.buttonHighScores)
-    void highScoresClickListener(View v){
+    void highScoresClickListener(View v) {
         Intent intent = new Intent(MenuActivity.this, HighScoresActivity.class);
         startActivity(intent);
     }
