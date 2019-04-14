@@ -14,8 +14,8 @@ public class PointConnectionTest {
     @Test
     public void shouldNotValidateSamePoints() {
 
-        Point point1 = new Point(3, 2);
-        Point point2 = new Point(3, 2);
+        Point point1 = new Point(1,3, 2);
+        Point point2 = new Point(2,3, 2);
         PointConnections pointConnection = new PointConnections(point1, point2);
         assertFalse(pointConnection.validate());
 
@@ -24,8 +24,8 @@ public class PointConnectionTest {
     @Test
     public void shouldValidateNearPoints() {
 
-        Point point1 = new Point(3, 2);
-        Point point2 = new Point(3, 3);
+        Point point1 = new Point(1,3, 2);
+        Point point2 = new Point(2,3, 3);
 
         PointConnections pointConnection = new PointConnections(point1, point2);
         assertTrue(pointConnection.validate());
@@ -35,8 +35,8 @@ public class PointConnectionTest {
     @Test
     public void shouldNotValidateFarVerticalPoints() {
 
-        Point point1 = new Point(3, 0);
-        Point point2 = new Point(3, 2);
+        Point point1 = new Point(1, 3, 0);
+        Point point2 = new Point(2, 3, 2);
 
         PointConnections pointConnection = new PointConnections(point1, point2);
         assertFalse(pointConnection.validate());
@@ -46,8 +46,8 @@ public class PointConnectionTest {
     @Test
     public void shouldNotValidateFarHorizontalPoints() {
 
-        Point point1 = new Point(0, 0);
-        Point point2 = new Point(0, 2);
+        Point point1 = new Point(1, 0, 0);
+        Point point2 = new Point(2, 0, 2);
 
         PointConnections pointConnection = new PointConnections(point1, point2);
         assertFalse(pointConnection.validate());
@@ -57,8 +57,8 @@ public class PointConnectionTest {
     @Test
     public void shouldValidateNearHorizontalPoints() {
 
-        Point point1 = new Point(0, 2);
-        Point point2 = new Point(1, 2);
+        Point point1 = new Point(1, 0, 2);
+        Point point2 = new Point(2, 1, 2);
 
         PointConnections pointConnection = new PointConnections(point1, point2);
         assertTrue(pointConnection.validate());

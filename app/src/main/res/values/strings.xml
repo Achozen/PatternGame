@@ -21,7 +21,7 @@
     <string name="in_game_settings_label">Settings</string>
 
     <!--Settings titles ID-->
-    <string name="settings_title">Settings</string>
+    <string name="settings_title">Training settings</string>
     <string name="choose_game_size">Choose game size:</string>
     <string name="choose_game_difficulty">Choose game difficulty:</string>
 

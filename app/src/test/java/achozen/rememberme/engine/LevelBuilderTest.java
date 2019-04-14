@@ -4,6 +4,9 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import achozen.rememberme.enums.GameSize;
+import achozen.rememberme.interfaces.PointPosition;
+
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -16,10 +19,10 @@ public class LevelBuilderTest {
         for (int i = 0; i < 50; i++) {
             PointPosition pointPosition = LevelBuilder.generateFirstPoint(3, 3);
             System.out.println("generateFirstPointShouldCreateCorrectPoint Point number " + i + "" +
-                    " X : " + pointPosition.getX() + " Y " +
-                    ": " + pointPosition.getY());
-            boolean correctHorizontally = pointPosition.getX() <= 2;
-            boolean correctVertically = pointPosition.getY() <= 2;
+                    " X : " + pointPosition.getColumn() + " Y " +
+                    ": " + pointPosition.getRow());
+            boolean correctHorizontally = pointPosition.getColumn() <= 2;
+            boolean correctVertically = pointPosition.getRow() <= 2;
             assertTrue(correctHorizontally && correctVertically);
         }
 
@@ -28,11 +31,10 @@ public class LevelBuilderTest {
 
     @Test
     public void forceGenerateLevelSholdGenerateLevel() {
-        ArrayList<PointPosition> forceGene = LevelBuilder.forceGenerateLevel(5, 5, 15);
+        ArrayList<achozen.rememberme.interfaces.PointPosition> forceGene = LevelBuilder.forceGenerateLevel(GameSize.BIG, 5);
 
         for (PointPosition position : forceGene) {
-            System.out.println("TAGTAG Generated point [" + position.getX() + "," + position.getY
-                    () + "]");
+            System.out.println("TAGTAG Generated point [" + position.getColumn() + "," + position.getRow() + "]");
         }
         assertTrue(true);
 
@@ -46,8 +48,8 @@ public class LevelBuilderTest {
             ArrayList<PointPosition> generated = LevelBuilder.generateLevel(3, 3, 5);
 
             for (PointPosition position : generated) {
-                System.out.println("TAGTAG Generated point [" + position.getX() + "," + position
-                        .getY() + "]");
+                System.out.println("TAGTAG Generated point [" + position.getColumn() + "," + position
+                        .getRow()+ "]");
 
             }
             System.out.println("---------");
@@ -61,10 +63,10 @@ public class LevelBuilderTest {
     @Test
     public void generateNextPointShouldGenerateValidNextPoint() {
         for (int i = 0; i < 50; i++) {
-            PointPosition pointPosition = LevelBuilder.generateNextPoint(3, 3, new Point(1, 1));
+            PointPosition pointPosition = LevelBuilder.generateNextPoint(3, 3, new Point(1,1, 1));
 
-            System.out.println("TAGTAG Generated next point [" + pointPosition.getX() + "," +
-                    pointPosition.getY() + "]");
+            System.out.println("TAGTAG Generated next point [" + pointPosition.getColumn() + "," +
+                    pointPosition.getRow() + "]");
         }
 
     }
@@ -73,12 +75,12 @@ public class LevelBuilderTest {
     public void createVirtualPointArrayAroundThePointTest() {
         for (int i = 0; i < 10; i++) {
             ArrayList<PointPosition> virtualArray = LevelBuilder
-                    .createVirtualPointArrayAroundThePoint(new Point(1, 2));
+                    .createVirtualPointArrayAroundThePoint(new Point(1,1, 2));
 
             for (int j = 0; j < virtualArray.size(); j++) {
 
-                System.out.println("TAGTAG Generated array [" + virtualArray.get(j).getX() + ","
-                        + virtualArray.get(j).getY() + "]");
+                System.out.println("TAGTAG Generated array [" + virtualArray.get(j).getColumn() + ","
+                        + virtualArray.get(j).getRow()+ "]");
             }
             System.out.println("--------------");
         }
@@ -91,8 +93,8 @@ public class LevelBuilderTest {
 
             for (int j = 0; j < virtualArray.size(); j++) {
 
-                System.out.println("TAGTAG Generated array [" + virtualArray.get(j).getX() + ","
-                        + virtualArray.get(j).getY() + "]");
+                System.out.println("TAGTAG Generated array [" + virtualArray.get(j).getColumn() + ","
+                        + virtualArray.get(j).getRow() + "]");
             }
             System.out.println("--------------");
         }
