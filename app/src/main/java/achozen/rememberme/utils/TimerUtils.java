@@ -11,14 +11,16 @@ import android.widget.TextView;
  */
 public class TimerUtils {
     static ValueAnimator timeLeftAnimator = new ValueAnimator();
+    static ValueAnimator timeBeforeAnimationAnimator = new ValueAnimator();
+    static ValueAnimator timeBeforeDrawAnimator = new ValueAnimator();
 
     public static void beforeAnimationCount(final TextView textView, final OnPreDrawingListener listener) {
 
-        ValueAnimator animator = new ValueAnimator();
-        animator.setObjectValues(1, 0);
-        animator.setInterpolator(new LinearInterpolator());
-        animator.addUpdateListener(animation -> textView.setText("GET READY\n" + String.valueOf(animation.getAnimatedValue())));
-        animator.addListener(new Animator.AnimatorListener() {
+        timeBeforeAnimationAnimator = new ValueAnimator();
+        timeBeforeAnimationAnimator.setObjectValues(3, 0);
+        timeBeforeAnimationAnimator.setInterpolator(new LinearInterpolator());
+        timeBeforeAnimationAnimator.addUpdateListener(animation -> textView.setText("GET READY\n" + String.valueOf(animation.getAnimatedValue())));
+        timeBeforeAnimationAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
 
@@ -40,23 +42,23 @@ public class TimerUtils {
 
             }
         });
-        animator.setEvaluator(new TypeEvaluator<Integer>() {
+        timeBeforeAnimationAnimator.setEvaluator(new TypeEvaluator<Integer>() {
             public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
                 return Math.round(startValue + (endValue - startValue) * fraction);
             }
         });
-        animator.setDuration(1000);
-        animator.start();
+        timeBeforeAnimationAnimator.setDuration(3000);
+        timeBeforeAnimationAnimator.start();
 
     }
 
     public static void beforeDrawCount(final TextView textView, final OnPreDrawingListener listener) {
 
-        final ValueAnimator animator = new ValueAnimator();
-        animator.setObjectValues(3, 0);
-        animator.setInterpolator(new LinearInterpolator());
-        animator.addUpdateListener(animation -> textView.setText("REPEAT PATTERN\n" + String.valueOf(animation.getAnimatedValue())));
-        animator.addListener(new Animator.AnimatorListener() {
+        timeBeforeDrawAnimator = new ValueAnimator();
+        timeBeforeDrawAnimator.setObjectValues(3, 0);
+        timeBeforeDrawAnimator.setInterpolator(new LinearInterpolator());
+        timeBeforeDrawAnimator.addUpdateListener(animation -> textView.setText("REPEAT PATTERN\n" + String.valueOf(animation.getAnimatedValue())));
+        timeBeforeDrawAnimator.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
 
@@ -79,13 +81,13 @@ public class TimerUtils {
 
             }
         });
-        animator.setEvaluator(new TypeEvaluator<Integer>() {
+        timeBeforeDrawAnimator.setEvaluator(new TypeEvaluator<Integer>() {
             public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
                 return Math.round(startValue + (endValue - startValue) * fraction);
             }
         });
-        animator.setDuration(3000);
-        animator.start();
+        timeBeforeDrawAnimator.setDuration(3000);
+        timeBeforeDrawAnimator.start();
 
     }
 
@@ -129,7 +131,19 @@ public class TimerUtils {
         timeLeftAnimator.start();
     }
 
-    public static int stopTimeLeftCounter() {
+    public static void pauseTimeLeftCounter() {
+        timeLeftAnimator.pause();
+        timeBeforeDrawAnimator.pause();
+        timeBeforeAnimationAnimator.pause();
+    }
+
+    public static void resumeTimeLeftCounter() {
+        timeLeftAnimator.resume();
+        timeBeforeDrawAnimator.resume();
+        timeBeforeAnimationAnimator.resume();
+    }
+
+    public static int finishCountingAndGetLeftValue() {
         int timeLeft = (int) timeLeftAnimator.getAnimatedValue();
         return timeLeft;
     }

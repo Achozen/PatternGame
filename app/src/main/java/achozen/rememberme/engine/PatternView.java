@@ -56,6 +56,7 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
     private ArrayList<PointPosition> alreadyLinkedPoints = new ArrayList<>();
     private ArrayList<PointPosition> randomlyGeneratedPoints;
     private OnLevelFinishListener onLevelFinishListener;
+    private boolean isGamePaused;
 
 
     public PatternView(Context context, AttributeSet attrs) {
@@ -165,6 +166,10 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
     //register user touches as drawing action
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+        if (isGamePaused) {
+            return true;
+        }
         float touchX = event.getX();
         float touchY = event.getY();
         //respond to down, move and up events
@@ -268,7 +273,7 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
 
         if (correctPoints == randomlyGeneratedPoints.size()) {
             Toast.makeText(context, "CONGRATULATIONS", Toast.LENGTH_SHORT).show();
-            onLevelFinishListener.onLevelFinished(createStatisticsForCurrentLevel(GameState.SUCCESS, TimerUtils.stopTimeLeftCounter()));
+            onLevelFinishListener.onLevelFinished(createStatisticsForCurrentLevel(GameState.SUCCESS, TimerUtils.finishCountingAndGetLeftValue()));
         }
 
     }
@@ -279,5 +284,15 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
 
     private void addPointToLinked(PointPosition point) {
         alreadyLinkedPoints.add(point);
+    }
+
+    public void pauseGame() {
+        TimerUtils.pauseTimeLeftCounter();
+        isGamePaused = true;
+    }
+
+    public void resumeGame() {
+        TimerUtils.resumeTimeLeftCounter();
+        isGamePaused = false;
     }
 }

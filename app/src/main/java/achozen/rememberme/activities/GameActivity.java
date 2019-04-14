@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -20,6 +21,7 @@ import achozen.rememberme.navigation.FragmentNavigator;
 import achozen.rememberme.statistics.GameState;
 import achozen.rememberme.statistics.GameStatistics;
 import androidx.fragment.app.FragmentActivity;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -33,6 +35,18 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
     GameProgressCoordinator gameProgressCoordinator;
 
     GameMode gamemode;
+    private boolean isPaused;
+
+    @BindView(R.id.gamePausePopup)
+    View pausedActivityView;
+
+    @BindView(R.id.restartButton)
+    Button restartButton;
+
+    @BindView(R.id.backButton)
+    Button backButton;
+
+    private PatternGameFragment currentGameFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +75,23 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
         startActivity(intent);
     }
 
+    @OnClick(R.id.resumeButton)
+    void resumeClickListener(View v) {
+        isPaused = false;
+        currentGameFragment.onGameResumed();
+        restartButton.setClickable(true);
+        backButton.setClickable(true);
+        restartButton.setEnabled(true);
+        backButton.setEnabled(true);
+        pausedActivityView.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.exitButton)
+    void exitClickListener(View v) {
+        pausedActivityView.setVisibility(View.GONE);
+        finish();
+    }
+
     @Override
     public void onRankedFinished(GameStatistics statistics) {
         // show statistics screen
@@ -68,10 +99,10 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
 
     @Override
     public void startNewLevel(GameInitializationData gameInitializationData) {
-        PatternGameFragment gameFragment = new PatternGameFragment();
-        gameFragment.setGameInitializationData(gameInitializationData);
-        gameFragment.setOnLevelFinishListener(this);
-        FragmentNavigator.navigateToNextFragment(GameActivity.this, gameFragment);
+        currentGameFragment = new PatternGameFragment();
+        currentGameFragment.setGameInitializationData(gameInitializationData);
+        currentGameFragment.setOnLevelFinishListener(this);
+        FragmentNavigator.navigateToNextFragment(GameActivity.this, currentGameFragment);
     }
 
     @Override
@@ -98,6 +129,24 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
         } else {
             gameProgressCoordinator.startNextLevel();
         }
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isPaused = true;
+        currentGameFragment.onGamePaused();
+        restartButton.setClickable(false);
+        backButton.setClickable(false);
+        restartButton.setEnabled(false);
+        backButton.setEnabled(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isPaused) {
+            pausedActivityView.setVisibility(View.VISIBLE);
+        }
     }
 }

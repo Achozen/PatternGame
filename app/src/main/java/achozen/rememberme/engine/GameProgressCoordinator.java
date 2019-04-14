@@ -34,6 +34,7 @@ public class GameProgressCoordinator {
     public void startNextLevel() {
         GameInitializationData initData = prepareNextLevel();
         if (initData == null) {
+            //TODO handle here a ranking mode(e.g. display fragment with statistics)
             gameProgressListener.onTrainingFinished();
         } else {
             gameProgressListener.startNewLevel(initData);
