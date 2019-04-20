@@ -33,12 +33,17 @@ public class PeferencesUtil {
             defaultValue = Difficulty.EASY.name();
         }
 
+        if (type == Preferences.USERNAME) {
+            defaultValue = "UNKNOWN";
+        }
+
         return sharedPref.getString(type.name(), defaultValue);
     }
 
 
     public enum Preferences {
         SIZE,
-        DIFFICULTY
+        DIFFICULTY,
+        USERNAME
     }
 }

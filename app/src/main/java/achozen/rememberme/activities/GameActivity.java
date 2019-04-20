@@ -1,25 +1,25 @@
 package achozen.rememberme.activities;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import achozen.rememberme.R;
-import achozen.rememberme.engine.GameInitializationData;
 import achozen.rememberme.engine.GameProgressCoordinator;
+import achozen.rememberme.engine.LevelInitializationData;
 import achozen.rememberme.engine.OnLevelFinishListener;
 import achozen.rememberme.enums.GameMode;
 import achozen.rememberme.fragments.PatternGameFragment;
+import achozen.rememberme.fragments.StatisticsFragment;
 import achozen.rememberme.interfaces.GameProgressListener;
 import achozen.rememberme.navigation.FragmentNavigator;
-import achozen.rememberme.statistics.GameState;
 import achozen.rememberme.statistics.GameStatistics;
+import achozen.rememberme.statistics.LevelState;
 import androidx.fragment.app.FragmentActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,11 +40,10 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
     @BindView(R.id.gamePausePopup)
     View pausedActivityView;
 
-    @BindView(R.id.restartButton)
-    Button restartButton;
 
-    @BindView(R.id.backButton)
-    Button backButton;
+    @BindView(R.id.currentPointsValue)
+    TextView currentPointsValue;
+
 
     private PatternGameFragment currentGameFragment;
 
@@ -56,33 +55,15 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
         requestForAds();
         gamemode = (GameMode) getIntent().getSerializableExtra(GAME_MODE);
 
-        gameProgressCoordinator = new GameProgressCoordinator(this, this);
-        gameProgressCoordinator.startGame(gamemode);
+        gameProgressCoordinator = new GameProgressCoordinator(this, gamemode, this);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-    }
-
-    @OnClick(R.id.restartButton)
-    void restartClickListener(View v) {
-        gameProgressCoordinator.startNextLevel();
-    }
-
-    @OnClick(R.id.backButton)
-    void backClickListener(View v) {
-        Intent intent = new Intent(GameActivity.this, MenuActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
     }
 
     @OnClick(R.id.resumeButton)
     void resumeClickListener(View v) {
         isPaused = false;
         currentGameFragment.onGameResumed();
-        restartButton.setClickable(true);
-        backButton.setClickable(true);
-        restartButton.setEnabled(true);
-        backButton.setEnabled(true);
         pausedActivityView.setVisibility(View.GONE);
     }
 
@@ -94,26 +75,22 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
 
     @Override
     public void onRankedFinished(GameStatistics statistics) {
-        // show statistics screen
+        FragmentNavigator.navigateToNextFragment(GameActivity.this, StatisticsFragment.getInstance(statistics));
     }
 
     @Override
-    public void startNewLevel(GameInitializationData gameInitializationData) {
+    public void startNewLevel(LevelInitializationData levelInitializationData) {
         currentGameFragment = new PatternGameFragment();
-        currentGameFragment.setGameInitializationData(gameInitializationData);
+        currentGameFragment.setLevelInitializationData(levelInitializationData);
         currentGameFragment.setOnLevelFinishListener(this);
         FragmentNavigator.navigateToNextFragment(GameActivity.this, currentGameFragment);
+        currentPointsValue.setText("" + levelInitializationData.getGameStatistics().getScoredPoints());
     }
 
     @Override
     public void onTrainingFinished() {
         Log.d("TAGTAG", "onTrainingFinished finishing activity");
         finish();
-    }
-
-    @Override
-    public void onGameSaveInstanceState(GameStatistics statistics) {
-
     }
 
     private void requestForAds() {
@@ -124,11 +101,14 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
 
     @Override
     public void onLevelFinished(GameStatistics gameStatistics) {
-        if (GameState.FAILED.equals(gameStatistics.getGameState())) {
-            finish();
+        if (gameStatistics.getLevelState() == LevelState.SUCCESS) {
+            gameProgressCoordinator.startNextLevel(gameStatistics);
+        } else if (gamemode == GameMode.RANKING) {
+            onRankedFinished(gameStatistics);
         } else {
-            gameProgressCoordinator.startNextLevel();
+            onTrainingFinished();
         }
+
     }
 
     @Override
@@ -136,10 +116,6 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
         super.onPause();
         isPaused = true;
         currentGameFragment.onGamePaused();
-        restartButton.setClickable(false);
-        backButton.setClickable(false);
-        restartButton.setEnabled(false);
-        backButton.setEnabled(false);
     }
 
     @Override

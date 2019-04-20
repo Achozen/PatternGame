@@ -43,5 +43,6 @@
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="client_id">1038128085369-mrbea78pg76stsmcn5emglued6dkjrem.apps.googleusercontent.com</string>
     <string name="logged_as">"Logged as: "</string>
+    <string name="button_confirmation_text">OK</string>
 
 </resources>

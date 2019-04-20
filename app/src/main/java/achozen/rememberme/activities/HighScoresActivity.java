@@ -2,20 +2,13 @@ package achozen.rememberme.activities;
 
 import android.content.Context;
 import android.os.Bundle;
-import com.google.android.material.tabs.TabLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +25,13 @@ import java.util.List;
 import achozen.rememberme.R;
 import achozen.rememberme.adapter.HighScoreAdapter;
 import achozen.rememberme.firebase.statistics.model.Score;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * Created by Achozen on 2016-02-27.
@@ -129,7 +129,7 @@ public class HighScoresActivity extends FragmentActivity {
             return rootView;
         }
 
-        private void setupRecyclerView(){
+        private void setupRecyclerView() {
             mRecyclerView.setHasFixedSize(true);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
             mAdapter = new HighScoreAdapter(new ArrayList<>());
@@ -152,26 +152,32 @@ public class HighScoresActivity extends FragmentActivity {
 
             FirebaseAuth auth = FirebaseAuth.getInstance();
             FirebaseUser user = auth.getCurrentUser();
-            String email ="";
-            if(user !=null){
+            String email = "";
+            if (user != null) {
                 email = user.getEmail();
             }
-            Log.d("TAGTAG", "email "+email);
+            Log.d("TAGTAG", "email " + email);
             Query myTopPostsQuery = databaseReference.orderByChild("email").equalTo(email);
             myTopPostsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    Score myScore=  dataSnapshot.getValue(Score.class);
-                    Log.d("TAGTAG", " prepareMyRankingFragment onDataChange1: " + dataSnapshot.getValue().toString());
-                    Log.d("TAGTAG", "onDataChange :score "+myScore);
-                    if(myScore == null){
+                    if (dataSnapshot == null) {
+                        return;
+                    }
+                    Score myScore = null;
+                    for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                        myScore = messageSnapshot.getValue(Score.class);
+                    }
+                    if (myScore == null) {
                         return;
                     }
                     Query myTopPostsQuery = databaseReference.orderByChild("score").startAt(myScore.score).limitToLast(5);
                     myTopPostsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            Log.d("TAGTAG", " prepareMyRankingFragment onDataChange2 " + dataSnapshot.getValue().toString());
+                            if (dataSnapshot == null) {
+                                return;
+                            }
                             highScores.clear();
                             for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                                 Score score = messageSnapshot.getValue(Score.class);
@@ -196,10 +202,11 @@ public class HighScoresActivity extends FragmentActivity {
             });
         }
 
-        private void createDBConnection(){
+        private void createDBConnection() {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             databaseReference = database.getReference(HIGH_SCORES_DATABASE);
         }
+
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             Log.d("TAGTAG", " onDataChange: " + dataSnapshot.getValue().toString());

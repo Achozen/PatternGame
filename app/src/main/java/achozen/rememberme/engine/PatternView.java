@@ -22,8 +22,8 @@ import achozen.rememberme.LockPointsPositioner;
 import achozen.rememberme.R;
 import achozen.rememberme.interfaces.AnimationProgressListener;
 import achozen.rememberme.interfaces.PointPosition;
-import achozen.rememberme.statistics.GameState;
 import achozen.rememberme.statistics.GameStatistics;
+import achozen.rememberme.statistics.LevelState;
 import achozen.rememberme.utils.DrawingUtil;
 import achozen.rememberme.utils.OnPreDrawingListener;
 import achozen.rememberme.utils.TimerUtils;
@@ -31,7 +31,7 @@ import androidx.core.content.ContextCompat;
 
 public class PatternView extends View implements AnimationProgressListener, OnPreDrawingListener, OnPathDrawingListener {
     private ShapeDrawable mDrawable = new ShapeDrawable(new OvalShape());
-    private GameInitializationData gameInitializationData;
+    private LevelInitializationData levelInitializationData;
     float xStart = 0;
     float yStart = 0;
     float xStop = 0;
@@ -80,9 +80,9 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
         canvasPaint = new Paint(Paint.DITHER_FLAG);
     }
 
-    public void setupView(GameInitializationData gameInitializationData, TextView notifyingTextView, OnLevelFinishListener onLevelFinishListener) {
+    public void setupView(LevelInitializationData levelInitializationData, TextView notifyingTextView, OnLevelFinishListener onLevelFinishListener) {
         this.notificationTextView = notifyingTextView;
-        this.gameInitializationData = gameInitializationData;
+        this.levelInitializationData = levelInitializationData;
         this.onLevelFinishListener = onLevelFinishListener;
     }
 
@@ -114,11 +114,11 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
 
         icon = Bitmap.createScaledBitmap(icon, 50, 50, false);
         allPoints = LockPointsPositioner.obtainPointCoordinatesForCanvas(w, h,
-                gameInitializationData.getPointPositions(), gameInitializationData.getGameSize());
+                levelInitializationData.getPointPositions(), levelInitializationData.getGameSize());
 
         iconChecked = Bitmap.createScaledBitmap(iconChecked, 60, 60, false);
         allPoints = LockPointsPositioner.obtainPointCoordinatesForCanvas(w, h,
-                gameInitializationData.getPointPositions(), gameInitializationData.getGameSize());
+                levelInitializationData.getPointPositions(), levelInitializationData.getGameSize());
 
         for (PointPosition point : allPoints) {
             canvas.drawBitmap(icon, point.getXCanvas() - (icon.getWidth() / 2), point.getYCanvas() - (icon.getHeight() / 2), null);
@@ -218,9 +218,9 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
     }
 
     private void startLevelAnimation() {
-        randomlyGeneratedPoints = LockPointsPositioner.calculateCoordinatesForGeneratedPointsByGameSize(gameInitializationData
+        randomlyGeneratedPoints = LockPointsPositioner.calculateCoordinatesForGeneratedPointsByGameSize(levelInitializationData
                         .getPatternPointPositions(), w, h,
-                gameInitializationData.getGameSize());
+                levelInitializationData.getGameSize());
         drawPointsOnCanvas(drawCanvas, true);
 
         patternAnimator.animatePath(randomlyGeneratedPoints);
@@ -239,7 +239,7 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
 
     @Override
     public void onDrawingTimeOver() {
-        onLevelFinishListener.onLevelFinished(createStatisticsForCurrentLevel(GameState.FAILED, 0));
+        onLevelFinishListener.onLevelFinished(createStatisticsForCurrentLevel(LevelState.FAILED, 0));
     }
 
     @Override
@@ -273,13 +273,16 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
 
         if (correctPoints == randomlyGeneratedPoints.size()) {
             Toast.makeText(context, "CONGRATULATIONS", Toast.LENGTH_SHORT).show();
-            onLevelFinishListener.onLevelFinished(createStatisticsForCurrentLevel(GameState.SUCCESS, TimerUtils.finishCountingAndGetLeftValue()));
+            TimerUtils.clearTimers();
+            onLevelFinishListener.onLevelFinished(createStatisticsForCurrentLevel(LevelState.SUCCESS, TimerUtils.finishCountingAndGetLeftValue()));
         }
 
     }
 
-    private GameStatistics createStatisticsForCurrentLevel(GameState gameState, int timeLeft) {
-        return new GameStatistics(gameState, timeLeft, 30);
+    private GameStatistics createStatisticsForCurrentLevel(LevelState state, int timeLeft) {
+        int pointsCalculated = levelInitializationData.getGameStatistics().getScoredPoints() + ((randomlyGeneratedPoints.size() - 1) * 10) + timeLeft;
+        int currentLevel = levelInitializationData.getGameStatistics().getLevelFinishedCounter();
+        return new GameStatistics(state, timeLeft, pointsCalculated, state == LevelState.SUCCESS ? currentLevel + 1 : currentLevel);
     }
 
     private void addPointToLinked(PointPosition point) {

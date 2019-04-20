@@ -98,6 +98,10 @@ public class TimerUtils {
         timeLeftAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator animation) {
                 textView.setText(String.valueOf(animation.getAnimatedValue()));
+                if (Integer.valueOf(String.valueOf(animation.getAnimatedValue())) == 0) {
+                    textView.setText("Game Over");
+                    listener.onDrawingTimeOver();
+                }
             }
         });
         timeLeftAnimator.setInterpolator(new LinearInterpolator());
@@ -109,8 +113,7 @@ public class TimerUtils {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                textView.setText("Game Over");
-                listener.onDrawingTimeOver();
+
             }
 
             @Override
@@ -141,6 +144,12 @@ public class TimerUtils {
         timeLeftAnimator.resume();
         timeBeforeDrawAnimator.resume();
         timeBeforeAnimationAnimator.resume();
+    }
+
+    public static void clearTimers() {
+        timeLeftAnimator.cancel();
+        timeBeforeDrawAnimator.cancel();
+        timeBeforeAnimationAnimator.cancel();
     }
 
     public static int finishCountingAndGetLeftValue() {

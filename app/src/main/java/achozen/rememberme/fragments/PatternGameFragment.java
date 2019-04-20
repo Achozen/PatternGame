@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import achozen.rememberme.R;
-import achozen.rememberme.engine.GameInitializationData;
+import achozen.rememberme.engine.LevelInitializationData;
 import achozen.rememberme.engine.OnLevelFinishListener;
 import achozen.rememberme.engine.PatternView;
 import androidx.fragment.app.Fragment;
@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
  */
 public class PatternGameFragment extends Fragment {
 
-    private GameInitializationData gameInitializationData;
+    private LevelInitializationData levelInitializationData;
     private OnLevelFinishListener onLevelFinishListener;
     private PatternView patternView;
 
@@ -24,7 +24,7 @@ public class PatternGameFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (null == gameInitializationData || onLevelFinishListener == null) {
+        if (null == levelInitializationData || onLevelFinishListener == null) {
             return;
         }
     }
@@ -38,14 +38,14 @@ public class PatternGameFragment extends Fragment {
                 container, false);
         //lets keep a reference of DrawView
         patternView = view.findViewById(R.id.patternView);
-        patternView.setupView(gameInitializationData, view.findViewById(R.id
+        patternView.setupView(levelInitializationData, view.findViewById(R.id
                 .notification_text_view), onLevelFinishListener);
         return view;
     }
 
-    public void setGameInitializationData(GameInitializationData gameInitializationData) {
+    public void setLevelInitializationData(LevelInitializationData levelInitializationData) {
 
-        this.gameInitializationData = gameInitializationData;
+        this.levelInitializationData = levelInitializationData;
     }
 
     public void setOnLevelFinishListener(OnLevelFinishListener onLevelFinishListener) {

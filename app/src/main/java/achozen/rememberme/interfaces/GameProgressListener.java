@@ -1,6 +1,6 @@
 package achozen.rememberme.interfaces;
 
-import achozen.rememberme.engine.GameInitializationData;
+import achozen.rememberme.engine.LevelInitializationData;
 import achozen.rememberme.statistics.GameStatistics;
 
 /**
@@ -9,9 +9,7 @@ import achozen.rememberme.statistics.GameStatistics;
 public interface GameProgressListener {
     void onRankedFinished(GameStatistics statistics);
 
-    void startNewLevel(GameInitializationData gameInitializationData);
+    void startNewLevel(LevelInitializationData levelInitializationData);
 
     void onTrainingFinished();
-
-    void onGameSaveInstanceState(GameStatistics statistics);
 }

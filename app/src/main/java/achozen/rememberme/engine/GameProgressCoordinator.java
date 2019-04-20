@@ -10,6 +10,8 @@ import achozen.rememberme.enums.GameMode;
 import achozen.rememberme.enums.GameSize;
 import achozen.rememberme.interfaces.GameProgressListener;
 import achozen.rememberme.interfaces.PointPosition;
+import achozen.rememberme.statistics.GameStatistics;
+import achozen.rememberme.statistics.LevelState;
 
 /**
  * Created by Achozen on 2016-05-28.
@@ -20,21 +22,24 @@ public class GameProgressCoordinator {
     private static LevelDifficultyManager levelDifficultyManager;
     private static Context context;
     private static GameSize currentGameSize;
+    private final GameMode gameMode;
 
-    public GameProgressCoordinator(Context context, GameProgressListener progressListener) {
+    public GameProgressCoordinator(Context context, GameMode gameMode, GameProgressListener progressListener) {
+        this.gameMode = gameMode;
         gameProgressListener = progressListener;
         GameProgressCoordinator.context = context;
-    }
-
-    public void startGame(GameMode gameMode) {
         initiateEnvironmentalVariables(gameMode);
-        startNextLevel();
+        startNextLevel(new GameStatistics(LevelState.SUCCESS, 0, 0, 0));
     }
 
-    public void startNextLevel() {
-        GameInitializationData initData = prepareNextLevel();
+
+    public void startNextLevel(final GameStatistics gameStatistics) {
+        LevelInitializationData initData = prepareNextLevel(gameStatistics);
         if (initData == null) {
-            //TODO handle here a ranking mode(e.g. display fragment with statistics)
+            if (gameMode == GameMode.RANKING) {
+                gameProgressListener.onRankedFinished(gameStatistics);
+                return;
+            }
             gameProgressListener.onTrainingFinished();
         } else {
             gameProgressListener.startNewLevel(initData);
@@ -61,13 +66,13 @@ public class GameProgressCoordinator {
         levelDifficultyManager = new LevelDifficultyManager(currentDifficulty, currentGameSize);
     }
 
-    private GameInitializationData prepareNextLevel() {
+    private LevelInitializationData prepareNextLevel(GameStatistics gameStatistics) {
         ArrayList<PointPosition> pattern = levelDifficultyManager.createPatternForNextLevel();
         currentGameSize = levelDifficultyManager.getCurrentGameSize();
         if (pattern == null) {
             return null;
         }
-        return new GameInitializationData(currentGameSize,
-                PointsInitializer.generateLockPoints(currentGameSize), pattern);
+        return new LevelInitializationData(currentGameSize,
+                PointsInitializer.generateLockPoints(currentGameSize), pattern, gameStatistics);
     }
 }
