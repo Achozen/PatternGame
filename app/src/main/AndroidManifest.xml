@@ -30,7 +30,10 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:name=".activities.MenuActivity">
-
+        </activity>
+        <activity
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:name=".activities.SettingsActivity">
         </activity>
         <activity
 
@@ -47,7 +50,7 @@
         </activity>
         <activity
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
-            android:name=".activities.SettingsActivity"
+            android:name=".activities.TrainingSettingsActivity"
             android:noHistory="true">
         </activity>
 

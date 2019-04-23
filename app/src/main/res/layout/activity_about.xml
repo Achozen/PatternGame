@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="This application is being developed by\n Piotr Andrychiewicz"
+        android:text="This application is being developed by\n Piotr Andrychiewicz \n \n Points are being calculated based on number of links on pariculare level and time left to draw"
         android:textAlignment="center"
         android:textColor="@color/green"
         app:layout_constraintBottom_toBottomOf="parent"

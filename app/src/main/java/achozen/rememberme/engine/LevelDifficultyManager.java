@@ -49,12 +49,12 @@ public class LevelDifficultyManager {
     private ArrayList<Integer> hardBig = new ArrayList<>(Arrays.asList(14, 15, 16, 17, 18));
 
     //Number of links in RANKING MODE
-    //private ArrayList<Integer> rankingMedium = new ArrayList<>(Arrays.asList(5, 6, 6, 7, 7));
-    //private ArrayList<Integer> rankingBig = new ArrayList<>(Arrays.asList(7, 8, 8, 8, 9, 10, 11, 12, 13, 14, 14, 15, 16, 17, 18));
-    //private ArrayList<Integer> rankingSmall = new ArrayList<>(Arrays.asList(3, 4, 4, 5, 5));
-    private ArrayList<Integer> rankingSmall = new ArrayList<>(Arrays.asList(3));
+    private ArrayList<Integer> rankingMedium = new ArrayList<>(Arrays.asList(5, 6, 6, 7, 7));
+    private ArrayList<Integer> rankingBig = new ArrayList<>(Arrays.asList(7, 8, 8, 8, 9, 10, 11, 12, 13, 14, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25));
+    private ArrayList<Integer> rankingSmall = new ArrayList<>(Arrays.asList(3, 4, 4, 5, 5));
+/*    private ArrayList<Integer> rankingSmall = new ArrayList<>(Arrays.asList(3));
     private ArrayList<Integer> rankingMedium = new ArrayList<>(Arrays.asList(3));
-    private ArrayList<Integer> rankingBig = new ArrayList<>(Arrays.asList(4));
+    private ArrayList<Integer> rankingBig = new ArrayList<>(Arrays.asList(4));*/
 
     private ArrayList<Integer> rankingAll = new ArrayList<>();
 

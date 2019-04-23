@@ -59,8 +59,14 @@ public class MenuActivity extends Activity {
 
     @OnClick(R.id.buttonTraining)
     void trainingClickListener(View v) {
-        Intent intent = new Intent(MenuActivity.this, SettingsActivity.class);
+        Intent intent = new Intent(MenuActivity.this, TrainingSettingsActivity.class);
         intent.putExtra(GAME_MODE, GameMode.TRAINING);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.buttonSettings)
+    void startSettingsListener(View v) {
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 

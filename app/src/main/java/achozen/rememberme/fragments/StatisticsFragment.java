@@ -1,6 +1,7 @@
 package achozen.rememberme.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,12 +84,14 @@ public class StatisticsFragment extends Fragment {
     }
 
     private void checkScoreWithRanking() {
+        Log.d("TAGTAGS", "checkScoreWithRanking");
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = database.getReference(HIGH_SCORES_DATABASE);
-        Query queryRef = databaseReference.orderByChild("score");
+        final Query queryRef = databaseReference.orderByChild("score");
         queryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("TAGTAGS", "onDataChange");
                 final ArrayList<Score> allScores = new ArrayList<>();
                 final long itemsCount = dataSnapshot.getChildrenCount();
 
@@ -96,10 +99,11 @@ public class StatisticsFragment extends Fragment {
                     Score serverScore = messageSnapshot.getValue(Score.class);
                     allScores.add(serverScore);
                     if (serverScore != null && serverScore.email.equalsIgnoreCase(user.getEmail())) {
+                        Log.d("TAGTAGS", "Removing event listener");
+                        queryRef.removeEventListener(this);
                         long currentPosition = 0;
-                        if (currentScore.score == serverScore.score) {
-                            queryRef.removeEventListener(this);
-                        } else if (currentScore.score > serverScore.score) {
+                        if (currentScore.score > serverScore.score) {
+                            Log.d("TAGTAGS", "Setting value for better score");
                             messageSnapshot.getRef().setValue(currentScore);
                             rankingPositionLabel.setText("Congratulations - new record:");
                         }
@@ -108,6 +112,7 @@ public class StatisticsFragment extends Fragment {
                         return;
                     }
                 }
+                Log.d("TAGTAGS", "Pushing new score");
                 dataSnapshot.getRef().push().setValue(currentScore);
             }
 

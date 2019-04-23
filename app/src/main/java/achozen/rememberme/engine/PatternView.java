@@ -247,7 +247,6 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
         startLevelAnimation();
     }
 
-
     @Override
     public void onPointMeet(PointPosition point) {
         xStart = point.getXCanvas();
@@ -280,7 +279,10 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
     }
 
     private GameStatistics createStatisticsForCurrentLevel(LevelState state, int timeLeft) {
-        int pointsCalculated = levelInitializationData.getGameStatistics().getScoredPoints() + ((randomlyGeneratedPoints.size() - 1) * 10) + timeLeft;
+        int pointsCalculated = levelInitializationData.getGameStatistics().getScoredPoints();
+        if (state == LevelState.SUCCESS) {
+            pointsCalculated += ((randomlyGeneratedPoints.size() - 1) * 10) + timeLeft;
+        }
         int currentLevel = levelInitializationData.getGameStatistics().getLevelFinishedCounter();
         return new GameStatistics(state, timeLeft, pointsCalculated, state == LevelState.SUCCESS ? currentLevel + 1 : currentLevel);
     }

@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 
 import achozen.rememberme.enums.Difficulty;
 import achozen.rememberme.enums.GameSize;
-import achozen.rememberme.interfaces.Settings;
 
 /**
  * Created by Achozen on 2016-05-27.
@@ -13,11 +12,11 @@ import achozen.rememberme.interfaces.Settings;
 public class PeferencesUtil {
     private static final String prefType = "settings";
 
-    public static void storeInPrefs(Context context, Preferences type, Settings value) {
+    public static void storeInPrefs(Context context, Preferences type, String value) {
 
         SharedPreferences sharedPref = context.getSharedPreferences(prefType, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(type.name(), value.toString());
+        editor.putString(type.name(), value);
         editor.apply();
     }
 
@@ -39,7 +38,6 @@ public class PeferencesUtil {
 
         return sharedPref.getString(type.name(), defaultValue);
     }
-
 
     public enum Preferences {
         SIZE,
