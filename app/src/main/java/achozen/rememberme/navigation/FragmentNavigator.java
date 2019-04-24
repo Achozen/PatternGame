@@ -14,6 +14,7 @@ public class FragmentNavigator {
             nextFragment) {
 
         FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         transaction.replace(R.id.game_fragment_place_holder, nextFragment);
         transaction.commit();
     }

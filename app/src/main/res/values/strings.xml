@@ -9,11 +9,18 @@
     <string name="about_label">About</string>
 
 
-    <!--Logging Buttons-->
+    <!--Logging Fragment Buttons-->
     <string name="login_gmail">Login with Gmail</string>
-    <string name="login">Login</string>
-    <string name="password">password</string>
-    <string name="email">email</string>
+    <string name="login_hint">Login</string>
+    <string name="password_hint">password</string>
+    <string name="email_hint">email</string>
+
+    <!--Choose Nick Fragment Buttons-->
+    <string name="username_splash_title">Choose you username</string>
+    <string name="username_splash_hint">USERNAME</string>
+    <string name="confirm_splash">CONFIRM</string>
+    <string name="additional_info_splash">You will be able to change your nickname in settings whenever you like</string>
+
 
     <!--In Game Buttons-->
     <string name="restart_label">Restart</string>

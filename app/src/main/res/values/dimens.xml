@@ -5,7 +5,7 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- Logging layout. -->
-    <dimen name="logging_layout_height">200dp</dimen>
+    <dimen name="logging_layout_height">350dp</dimen>
 
     <!-- Text sizes -->
     <dimen name="text_smaller">16sp</dimen>

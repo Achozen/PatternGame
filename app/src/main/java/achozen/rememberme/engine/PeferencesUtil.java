@@ -11,6 +11,7 @@ import achozen.rememberme.enums.GameSize;
  */
 public class PeferencesUtil {
     private static final String prefType = "settings";
+    public static final String UNKNOWN_USERNAME = "UNKNOWN";
 
     public static void storeInPrefs(Context context, Preferences type, String value) {
 
@@ -33,7 +34,7 @@ public class PeferencesUtil {
         }
 
         if (type == Preferences.USERNAME) {
-            defaultValue = "UNKNOWN";
+            defaultValue = UNKNOWN_USERNAME;
         }
 
         return sharedPref.getString(type.name(), defaultValue);
