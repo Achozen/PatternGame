@@ -5,22 +5,27 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.google.gson.Gson;
+
+import achozen.rememberme.BuildConfig;
+import achozen.rememberme.R;
+import achozen.rememberme.config.AppConfig;
 import achozen.rememberme.engine.PeferencesUtil;
 import achozen.rememberme.firebase.AuthFinishListener;
 import achozen.rememberme.fragments.startup.ChooseNickFragment;
 import achozen.rememberme.fragments.startup.LoginFragment;
 import achozen.rememberme.navigation.FragmentNavigator;
-import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-
-import com.google.firebase.FirebaseApp;
-
-import achozen.rememberme.R;
+import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -48,20 +53,17 @@ public class SplashScreenActivity extends AppCompatActivity implements AuthFinis
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_splash_screen);
         ButterKnife.bind(this);
+        initializeConfig();
         handler = new Handler();
         mLongAnimationDuration = getResources().getInteger(
                 android.R.integer.config_longAnimTime);
 
         FragmentNavigator.navigateToNextFragment(this, LoginFragment.getInstance(this));
         setupViews();
-      }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
-    private void setupViewsInAnimation(){
+
+    private void setupViewsInAnimation() {
         handler.postDelayed(() -> {
             headerImage.animate()
                     .alpha(1f)
@@ -75,8 +77,9 @@ public class SplashScreenActivity extends AppCompatActivity implements AuthFinis
 
         }, VIEWS_FADE_IN_DELAY);
 
-        }
-    private void setupViewsOutAnimation(){
+    }
+
+    private void setupViewsOutAnimation() {
         handler.postDelayed(() -> {
             headerImage.animate().alpha(0f)
                     .setDuration(mLongAnimationDuration)
@@ -99,14 +102,16 @@ public class SplashScreenActivity extends AppCompatActivity implements AuthFinis
                     .alpha(1f)
                     .setDuration(mLongAnimationDuration)
                     .setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    contentLayout.setVisibility(View.VISIBLE);
-                }
-            });;
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            contentLayout.setVisibility(View.VISIBLE);
+                        }
+                    });
+            ;
         }, VIEWS_FADE_OUT_DELAY);
     }
-    public void setupViews(){
+
+    public void setupViews() {
         headerImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.header));
         belowHeaderImage.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.below_header));
 
@@ -123,13 +128,44 @@ public class SplashScreenActivity extends AppCompatActivity implements AuthFinis
 
     @Override
     public void onAuthFinished() {
-        if(UNKNOWN_USERNAME.equalsIgnoreCase(PeferencesUtil.readFromPrefs(this, PeferencesUtil.Preferences.USERNAME))){
+
+
+        if (UNKNOWN_USERNAME.equalsIgnoreCase(PeferencesUtil.readFromPrefs(this, PeferencesUtil.Preferences.USERNAME))) {
             FragmentNavigator.navigateToNextFragment(this, new ChooseNickFragment());
-        }else{
+        } else {
             Intent intent = new Intent(this, MenuActivity.class);
             startActivity(intent);
             finish();
         }
+    }
+
+    private void initializeConfig() {
+        if (AppConfig.getInstance() != null) {
+            return;
+        }
+        FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .setMinimumFetchIntervalInSeconds(3600)
+                .build();
+        firebaseRemoteConfig.setConfigSettings(configSettings);
+        firebaseRemoteConfig.setDefaults(R.xml.default_config);
+        firebaseRemoteConfig.fetchAndActivate()
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        boolean updated = task.getResult();
+                        Log.d("TAGTAG", "Config params updated: " + updated);
+                        Toast.makeText(SplashScreenActivity.this, "Fetch and activate succeeded",
+                                Toast.LENGTH_SHORT).show();
+                        String configJson = firebaseRemoteConfig.getString("app_config");
+                        AppConfig targetObject = new Gson().fromJson(configJson, AppConfig.class);
+                        AppConfig.init(targetObject);
+
+                    } else {
+                        Toast.makeText(SplashScreenActivity.this, "Fetch config failed",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 }

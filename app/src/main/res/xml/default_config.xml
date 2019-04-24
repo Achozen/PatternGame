@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>app_config</key>
+        <value>
+            {"training_easy":{"small":[3,3,4,5,5],"medium":[5,6,6,7,7],"big":[7,8,8,8,9]},"training_medium":{"small":[4,4,5,5,6],"medium":[6,7,7,8,8],"big":[8,9,9,10,10]},"training_hard":{"small":[7,7,8,8,9],"medium":[10,11,12,13,14],"big":[14,15,16,17,18]},"ranking":{"small":[3,4,4,5,5],"medium":[5,6,6,7,7],"big":[7,8,8,8,9,10,11,12,13,14,14,15,16,17,18,19,20,21,22,23,24,25]}}
+        </value>
+    </entry>
+</defaultsMap>

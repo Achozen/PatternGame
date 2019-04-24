@@ -1,8 +1,9 @@
 package achozen.rememberme.engine;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
+import achozen.rememberme.config.AppConfig;
 import achozen.rememberme.enums.Difficulty;
 import achozen.rememberme.enums.GameMode;
 import achozen.rememberme.enums.GameSize;
@@ -33,49 +34,32 @@ public class LevelDifficultyManager {
     //
     //
 
-    //Numbers of links for EASY mode
-    private ArrayList<Integer> easySmall = new ArrayList<>(Arrays.asList(3, 4, 4, 5, 5));
-    private ArrayList<Integer> easyMedium = new ArrayList<>(Arrays.asList(5, 6, 6, 7, 7));
-    private ArrayList<Integer> easyBig = new ArrayList<>(Arrays.asList(7, 8, 8, 8, 9));
-
-    //Numbers of links for MEDIUM mode
-    private ArrayList<Integer> mediumSmall = new ArrayList<>(Arrays.asList(4, 4, 5, 5, 6));
-    private ArrayList<Integer> mediumMedium = new ArrayList<>(Arrays.asList(6, 7, 7, 8, 8));
-    private ArrayList<Integer> mediumBig = new ArrayList<>(Arrays.asList(8, 9, 9, 10, 10));
-
-    //Numbers of links for HARD mode
-    private ArrayList<Integer> hardSmall = new ArrayList<>(Arrays.asList(7, 7, 8, 8, 9));
-    private ArrayList<Integer> hardMedium = new ArrayList<>(Arrays.asList(10, 11, 12, 13, 14));
-    private ArrayList<Integer> hardBig = new ArrayList<>(Arrays.asList(14, 15, 16, 17, 18));
-
-    //Number of links in RANKING MODE
-    private ArrayList<Integer> rankingMedium = new ArrayList<>(Arrays.asList(5, 6, 6, 7, 7));
-    private ArrayList<Integer> rankingBig = new ArrayList<>(Arrays.asList(7, 8, 8, 8, 9, 10, 11, 12, 13, 14, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25));
-    private ArrayList<Integer> rankingSmall = new ArrayList<>(Arrays.asList(3, 4, 4, 5, 5));
-/*    private ArrayList<Integer> rankingSmall = new ArrayList<>(Arrays.asList(3));
-    private ArrayList<Integer> rankingMedium = new ArrayList<>(Arrays.asList(3));
-    private ArrayList<Integer> rankingBig = new ArrayList<>(Arrays.asList(4));*/
-
-    private ArrayList<Integer> rankingAll = new ArrayList<>();
-
-
     private static final int MAX_LEVEL_FOR_TRAINING = 5;
+    private final List<Integer> rankingAll = new ArrayList<>();
     private GameMode gameMode;
     private int currentLevel;
 
     private Difficulty difficulty;
     private GameSize gameSize;
+    private final AppConfig.GameConf rankedConf;
+    private final AppConfig.GameConf easyTrainingConf;
+    private final AppConfig.GameConf mediumTrainingConf;
+    private final AppConfig.GameConf hardTrainingConf;
 
 
     /**
      * Use this constructor for creating training games. For RANKED difficulty gameSize will be small by efault
      */
     public LevelDifficultyManager(Difficulty difficulty, GameSize gameSize) {
+        rankedConf = AppConfig.getInstance().ranking;
+        easyTrainingConf = AppConfig.getInstance().training_easy;
+        mediumTrainingConf = AppConfig.getInstance().training_medium;
+        hardTrainingConf = AppConfig.getInstance().training_hard;
         if (difficulty == Difficulty.RANKING) {
             gameMode = RANKING;
-            rankingAll.addAll(rankingSmall);
-            rankingAll.addAll(rankingMedium);
-            rankingAll.addAll(rankingBig);
+            rankingAll.addAll(rankedConf.small);
+            rankingAll.addAll(rankedConf.medium);
+            rankingAll.addAll(rankedConf.big);
         } else {
             gameMode = TRAINING;
         }
@@ -96,14 +80,14 @@ public class LevelDifficultyManager {
     }
 
     private ArrayList<PointPosition> createNextRankingLevel() {
-        if (currentLevel > rankingMedium.size() + rankingSmall.size() + rankingBig.size()) {
+        if (currentLevel > rankedConf.medium.size() + rankedConf.small.size() + rankedConf.big.size()) {
             return null;
         }
-        if (currentLevel <= rankingSmall.size()) {
+        if (currentLevel <= rankedConf.small.size()) {
             gameSize = SMALL;
-        } else if (currentLevel <= rankingMedium.size() + rankingSmall.size()) {
+        } else if (currentLevel <= rankedConf.medium.size() + rankedConf.small.size()) {
             gameSize = MEDIUM;
-        } else if (currentLevel <= rankingMedium.size() + rankingSmall.size() + rankingBig.size()) {
+        } else if (currentLevel <= rankedConf.medium.size() + rankedConf.small.size() + rankedConf.big.size()) {
             gameSize = BIG;
         }
 
@@ -124,33 +108,33 @@ public class LevelDifficultyManager {
 
             case EASY:
                 if (gameSize == SMALL) {
-                    return easySmall.get(currentLevel - 1);
+                    return easyTrainingConf.small.get(currentLevel - 1);
                 }
                 if (gameSize == MEDIUM) {
-                    return easyMedium.get(currentLevel - 1);
+                    return easyTrainingConf.medium.get(currentLevel - 1);
                 }
                 if (gameSize == BIG) {
-                    return easyBig.get(currentLevel - 1);
+                    return easyTrainingConf.big.get(currentLevel - 1);
                 }
             case MEDIUM:
                 if (gameSize == SMALL) {
-                    return mediumSmall.get(currentLevel - 1);
+                    return mediumTrainingConf.small.get(currentLevel - 1);
                 }
                 if (gameSize == MEDIUM) {
-                    return mediumMedium.get(currentLevel - 1);
+                    return mediumTrainingConf.medium.get(currentLevel - 1);
                 }
                 if (gameSize == BIG) {
-                    return mediumBig.get(currentLevel - 1);
+                    return mediumTrainingConf.big.get(currentLevel - 1);
                 }
             case HARD:
                 if (gameSize == SMALL) {
-                    return hardSmall.get(currentLevel - 1);
+                    return hardTrainingConf.small.get(currentLevel - 1);
                 }
                 if (gameSize == MEDIUM) {
-                    return hardMedium.get(currentLevel - 1);
+                    return hardTrainingConf.medium.get(currentLevel - 1);
                 }
                 if (gameSize == BIG) {
-                    return hardBig.get(currentLevel - 1);
+                    return hardTrainingConf.big.get(currentLevel - 1);
                 }
             case RANKING:
                 return rankingAll.get(currentLevel - 1);
