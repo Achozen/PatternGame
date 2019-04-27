@@ -15,6 +15,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,9 +37,9 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
     private static final int RC_SIGN_IN = 9001;
 
     @BindView(R.id.password)
-    EditText passwordEditText;
+    TextInputEditText passwordEditText;
     @BindView(R.id.email)
-    EditText emailEditText;
+    TextInputEditText emailEditText;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleApiClient mGoogleApiClient;

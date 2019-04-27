@@ -2,24 +2,50 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:id="@+id/loggingLayout">
 
-    <EditText android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:background="@color/black"
         android:inputType="textEmailAddress"
         android:hint="@string/email_hint"
-        android:layout_weight="1"
-        android:id="@+id/email"/>
-
-    <EditText android:layout_height="wrap_content"
+        android:id="@+id/textInputLayoutHolder"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:inputType="textPassword"
-        android:layout_weight="1"
+        android:layout_weight="1">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/green"
+            android:gravity="center"
+            android:hint="@string/email_hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:background="@color/black"
+        android:inputType="textEmailAddress"
         android:hint="@string/password_hint"
-        android:id="@+id/password"/>
+        android:id="@+id/textInputLayoutHolderPassword"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_weight="1">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:textColor="@color/green"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="@string/password_hint" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button android:layout_height="wrap_content"
+        android:background="@drawable/round_shape"
+        android:textColor="@color/green"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:text="@string/login_hint"
@@ -28,6 +54,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+android:textColor="@color/green"
         android:layout_weight="1"
         android:layout_gravity="center"
         android:gravity="center"
@@ -37,6 +64,8 @@
     <Button android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_weight="1"
+        android:background="@drawable/round_shape"
+        android:textColor="@color/green"
         android:text="@string/login_gmail"
         android:id="@+id/gmail_login"/>
 </LinearLayout>

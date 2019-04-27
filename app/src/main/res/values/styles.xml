@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">#2196F3</item>
+        <item name="colorControlActivated">#009688</item>
     </style>
 
     <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
@@ -14,6 +16,10 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowDisablePreview">true</item>
+        <item name="colorControlNormal">#2196F3</item>
+        <item name="colorControlActivated">#009688</item>
+        <item name="colorAccent">#009688</item>
+        <item name="android:textColorHint">#2196F3</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
