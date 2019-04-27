@@ -35,6 +35,12 @@ import static achozen.rememberme.activities.HighScoresActivity.ScoreFragment.HIG
  */
 public class StatisticsFragment extends Fragment {
 
+    @BindView(R.id.progressLayout)
+    View progressLayout;
+
+    @BindView(R.id.confirmationButton)
+    View confirmationButton;
+
     @BindView(R.id.gameScoreTextView)
     TextView gameScoreTextView;
 
@@ -109,6 +115,8 @@ public class StatisticsFragment extends Fragment {
                         }
                         currentPosition = itemsCount - (allScores.size() - 1);
                         rankingPosition.setText("" + currentPosition);
+                        progressLayout.setVisibility(View.GONE);
+                        confirmationButton.setVisibility(View.VISIBLE);
                         return;
                     }
                 }

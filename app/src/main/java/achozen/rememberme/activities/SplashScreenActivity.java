@@ -5,22 +5,16 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-import com.google.gson.Gson;
 
-import achozen.rememberme.BuildConfig;
 import achozen.rememberme.R;
-import achozen.rememberme.config.AppConfig;
-import achozen.rememberme.engine.PeferencesUtil;
-import achozen.rememberme.firebase.AuthFinishListener;
+import achozen.rememberme.StartupPresenter;
+import achozen.rememberme.fragments.PhaseFinishedListener;
+import achozen.rememberme.fragments.ProgressWaitingFragment;
 import achozen.rememberme.fragments.startup.ChooseNickFragment;
 import achozen.rememberme.fragments.startup.LoginFragment;
 import achozen.rememberme.navigation.FragmentNavigator;
@@ -29,9 +23,7 @@ import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static achozen.rememberme.engine.PeferencesUtil.UNKNOWN_USERNAME;
-
-public class SplashScreenActivity extends AppCompatActivity implements AuthFinishListener {
+public class SplashScreenActivity extends AppCompatActivity implements StartupPresenter.ViewInterface {
 
     private static final int VIEWS_FADE_IN_DELAY = 1000;
     private static final int VIEWS_FADE_OUT_DELAY = 3000;
@@ -43,6 +35,8 @@ public class SplashScreenActivity extends AppCompatActivity implements AuthFinis
     @BindView(R.id.belowHeaderImage)
     ImageView belowHeaderImage;
 
+    StartupPresenter presenter;
+
 
     private Handler handler;
     private int mLongAnimationDuration;
@@ -52,13 +46,12 @@ public class SplashScreenActivity extends AppCompatActivity implements AuthFinis
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_splash_screen);
+        presenter = new StartupPresenter(getApplicationContext(), this);
         ButterKnife.bind(this);
-        initializeConfig();
         handler = new Handler();
         mLongAnimationDuration = getResources().getInteger(
                 android.R.integer.config_longAnimTime);
 
-        FragmentNavigator.navigateToNextFragment(this, LoginFragment.getInstance(this));
         setupViews();
     }
 
@@ -127,45 +120,26 @@ public class SplashScreenActivity extends AppCompatActivity implements AuthFinis
     }
 
     @Override
-    public void onAuthFinished() {
-
-
-        if (UNKNOWN_USERNAME.equalsIgnoreCase(PeferencesUtil.readFromPrefs(this, PeferencesUtil.Preferences.USERNAME))) {
-            FragmentNavigator.navigateToNextFragment(this, new ChooseNickFragment());
-        } else {
-            Intent intent = new Intent(this, MenuActivity.class);
-            startActivity(intent);
-            finish();
-        }
+    public void displayLoginScreen(PhaseFinishedListener listener) {
+        FragmentNavigator.navigateToNextFragment(this, LoginFragment.getInstance(listener));
     }
 
-    private void initializeConfig() {
-        if (AppConfig.getInstance() != null) {
-            return;
-        }
-        FirebaseRemoteConfig firebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                .setMinimumFetchIntervalInSeconds(3600)
-                .build();
-        firebaseRemoteConfig.setConfigSettings(configSettings);
-        firebaseRemoteConfig.setDefaults(R.xml.default_config);
-        firebaseRemoteConfig.fetchAndActivate()
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        boolean updated = task.getResult();
-                        Log.d("TAGTAG", "Config params updated: " + updated);
-                        Toast.makeText(SplashScreenActivity.this, "Fetch and activate succeeded",
-                                Toast.LENGTH_SHORT).show();
-                        String configJson = firebaseRemoteConfig.getString("app_config");
-                        AppConfig targetObject = new Gson().fromJson(configJson, AppConfig.class);
-                        AppConfig.init(targetObject);
+    @Override
+    public void displayLoadingScreen() {
+        FragmentNavigator.navigateToNextFragment(this, new ProgressWaitingFragment());
+    }
 
-                    } else {
-                        Toast.makeText(SplashScreenActivity.this, "Fetch config failed",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+    @Override
+    public void displayNicknameScreen(PhaseFinishedListener phaseFinishedListener) {
+        FragmentNavigator.navigateToNextFragment(this, ChooseNickFragment.getInstance(phaseFinishedListener));
+    }
 
+
+    @Override
+    public void goToMainScreen() {
+        Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
+

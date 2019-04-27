@@ -21,7 +21,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import achozen.rememberme.R;
+import achozen.rememberme.StartupPresenter;
 import achozen.rememberme.firebase.AuthFinishListener;
+import achozen.rememberme.fragments.PhaseFinishedListener;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -29,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
+public class LoginFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener, AuthFinishListener {
 
     private static final int RC_SIGN_IN = 9001;
 
@@ -40,9 +42,9 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleApiClient mGoogleApiClient;
-    private AuthFinishListener authFinishListener;
+    private PhaseFinishedListener authFinishListener;
 
-    public static LoginFragment getInstance(AuthFinishListener authFinishListener) {
+    public static LoginFragment getInstance(PhaseFinishedListener authFinishListener) {
         final LoginFragment fragment = new LoginFragment();
         fragment.authFinishListener = authFinishListener;
         return fragment;
@@ -76,7 +78,6 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
                 container, false);
         ButterKnife.bind(this, view);
 
-
         return view;
     }
 
@@ -96,19 +97,22 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
     }
 
     @OnClick(R.id.login)
-    public void onLogingClicked(){
+    public void onLogingClicked() {
         login(emailEditText.getText().toString(), passwordEditText.getText().toString());
     }
+
     @OnClick(R.id.gmail_login)
-    public void onGmailLogingClicked(){
+    public void onGmailLogingClicked() {
         signIn();
     }
+
     @OnClick(R.id.email)
-    public void onEmailClicked(){
+    public void onEmailClicked() {
         emailEditText.setText("");
     }
+
     @OnClick(R.id.password)
-    public void onPasswordClicked(){
+    public void onPasswordClicked() {
         passwordEditText.setText("");
     }
 
@@ -118,20 +122,20 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
         Toast.makeText(this.getContext(), "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
 
-    private void onAuthListenerSetup(){
+    private void onAuthListenerSetup() {
         mAuthListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
                 Log.d("TAGTAG", "onAuthStateChanged:signed_in:" + user.getUid());
-                Toast.makeText(this.getContext(),"Authenticated",Toast.LENGTH_SHORT).show();
-                authFinishListener.onAuthFinished();
+                Toast.makeText(this.getContext(), "Authenticated", Toast.LENGTH_SHORT).show();
+                authFinishListener.onPhaseFinished(StartupPresenter.StartupPhase.AUTHENTICATION);
             } else {
                 Log.d("TAGTAG", "onAuthStateChanged:signed_out");
             }
         };
     }
 
-    private void login(String email, String password){
+    private void login(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this.getActivity(), task -> {
                     Log.d("TAGTAG", "signInWithEmail:onComplete:" + task.isSuccessful());
@@ -140,12 +144,12 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
                         Toast.makeText(this.getContext(), "Authentication failed.",
                                 Toast.LENGTH_SHORT).show();
 
-                        createNewUser(email,password);
+                        createNewUser(email, password);
                     }
                 });
     }
 
-    private void createNewUser(String email, String password){
+    private void createNewUser(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this.getActivity(), task -> {
                     Log.d("TAGTAG", "createUserWithEmail:onComplete:" + task.isSuccessful());
@@ -197,4 +201,8 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
     }
 
 
+    @Override
+    public void onAuthFinished() {
+
+    }
 }

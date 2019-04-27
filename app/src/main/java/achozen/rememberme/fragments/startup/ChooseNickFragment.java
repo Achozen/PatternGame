@@ -1,6 +1,5 @@
 package achozen.rememberme.fragments.startup;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +7,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import achozen.rememberme.R;
-import achozen.rememberme.activities.MenuActivity;
+import achozen.rememberme.StartupPresenter;
 import achozen.rememberme.engine.PeferencesUtil;
+import achozen.rememberme.fragments.PhaseFinishedListener;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
@@ -18,8 +18,15 @@ import butterknife.OnClick;
 
 public class ChooseNickFragment extends Fragment {
 
+    private PhaseFinishedListener phaseFinishedListener;
     @BindView(R.id.textInputEditText)
     EditText textInputEditText;
+
+    public static ChooseNickFragment getInstance(PhaseFinishedListener phaseFinishedListener) {
+        final ChooseNickFragment fragment = new ChooseNickFragment();
+        fragment.phaseFinishedListener = phaseFinishedListener;
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -29,16 +36,13 @@ public class ChooseNickFragment extends Fragment {
                 container, false);
         ButterKnife.bind(this, view);
 
-
         return view;
     }
 
     @OnClick(R.id.confirmButton)
     public void onConfirmClicked() {
         PeferencesUtil.storeInPrefs(getContext(), PeferencesUtil.Preferences.USERNAME, textInputEditText.getText().toString());
-        Intent intent = new Intent(getContext(), MenuActivity.class);
-        startActivity(intent);
-        getActivity().finish();
+        phaseFinishedListener.onPhaseFinished(StartupPresenter.StartupPhase.NICKNAME_CHOOSE);
     }
 
 }
