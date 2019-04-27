@@ -235,6 +235,7 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
     public void onPreDrawingStart() {
         clearGameView();
         enableDrawingMode();
+
     }
 
     @Override

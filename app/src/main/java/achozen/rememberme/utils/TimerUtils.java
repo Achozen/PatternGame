@@ -15,7 +15,6 @@ public class TimerUtils {
     static ValueAnimator timeBeforeDrawAnimator = new ValueAnimator();
 
     public static void beforeAnimationCount(final TextView textView, final OnPreDrawingListener listener) {
-
         timeBeforeAnimationAnimator = new ValueAnimator();
         timeBeforeAnimationAnimator.setObjectValues(3, 0);
         timeBeforeAnimationAnimator.setInterpolator(new LinearInterpolator());
@@ -137,6 +136,18 @@ public class TimerUtils {
         timeLeftAnimator.pause();
         timeBeforeDrawAnimator.pause();
         timeBeforeAnimationAnimator.pause();
+    }
+
+    public static void forceEndTimeLeftCounter() {
+        if (timeBeforeDrawAnimator.isRunning()) {
+            timeBeforeDrawAnimator.end();
+        }
+        if (timeBeforeAnimationAnimator.isRunning()) {
+            timeBeforeAnimationAnimator.end();
+        }
+        if (timeLeftAnimator.isRunning()) {
+            timeLeftAnimator.end();
+        }
     }
 
     public static void resumeTimeLeftCounter() {

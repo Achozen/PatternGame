@@ -20,6 +20,7 @@ import achozen.rememberme.interfaces.GameProgressListener;
 import achozen.rememberme.navigation.FragmentNavigator;
 import achozen.rememberme.statistics.GameStatistics;
 import achozen.rememberme.statistics.LevelState;
+import achozen.rememberme.utils.TimerUtils;
 import androidx.fragment.app.FragmentActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,9 +41,14 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
     @BindView(R.id.gamePausePopup)
     View pausedActivityView;
 
+    @BindView(R.id.giveUpButton)
+    View giveUpButton;
 
     @BindView(R.id.currentPointsValue)
     TextView currentPointsValue;
+
+    @BindView(R.id.currentPointsLabel)
+    TextView currentPointsLabel;
 
 
     private PatternGameFragment currentGameFragment;
@@ -54,6 +60,9 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
         ButterKnife.bind(this);
         requestForAds();
         gamemode = (GameMode) getIntent().getSerializableExtra(GAME_MODE);
+        if (gamemode == GameMode.RANKING) {
+            giveUpButton.setVisibility(View.VISIBLE);
+        }
 
         gameProgressCoordinator = new GameProgressCoordinator(this, gamemode, this);
 
@@ -73,13 +82,20 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
         finish();
     }
 
+    @OnClick(R.id.giveUpButton)
+    void giveUpClickListener(View v) {
+        TimerUtils.forceEndTimeLeftCounter();
+    }
+
     @Override
     public void onRankedFinished(GameStatistics statistics) {
+        hideMainPoints();
         FragmentNavigator.navigateToNextFragment(GameActivity.this, StatisticsFragment.getInstance(statistics));
     }
 
     @Override
     public void startNewLevel(LevelInitializationData levelInitializationData) {
+        showMainPoints();
         currentGameFragment = new PatternGameFragment();
         currentGameFragment.setLevelInitializationData(levelInitializationData);
         currentGameFragment.setOnLevelFinishListener(this);
@@ -104,11 +120,32 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
         if (gameStatistics.getLevelState() == LevelState.SUCCESS) {
             gameProgressCoordinator.startNextLevel(gameStatistics);
         } else if (gamemode == GameMode.RANKING) {
+
             onRankedFinished(gameStatistics);
         } else {
             onTrainingFinished();
         }
 
+    }
+
+    private void showMainPoints() {
+        currentPointsLabel.setVisibility(View.VISIBLE);
+        currentPointsValue.setVisibility(View.VISIBLE);
+    }
+
+    private void hideMainPoints() {
+        currentPointsLabel.setVisibility(View.INVISIBLE);
+        currentPointsValue.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isPaused) {
+            return;
+        }
+        currentGameFragment.onGamePaused();
+        isPaused = true;
+        pausedActivityView.setVisibility(View.VISIBLE);
     }
 
     @Override
