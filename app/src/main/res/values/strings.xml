@@ -51,5 +51,10 @@
     <string name="client_id">1038128085369-mrbea78pg76stsmcn5emglued6dkjrem.apps.googleusercontent.com</string>
     <string name="logged_as">"Logged as: "</string>
     <string name="button_confirmation_text">OK</string>
-
+    <string name="about_desc">Points are being calculated based on number of links on particular level and time left to draw which means the faster you draw the more points you will score. If you cannot remember the pattern you can always click \'GIVE UP\' button which will finish game on current level(without points for current level)</string>
+    <string name="about_header">REMEMBER ME</string>
+    <string name="about_developed_by">This application is developed by \n Piotr Andrychiewicz</string>
+    <string name="about_app_version">App version:</string>
+    <string name="logged_in_as">Logged in as:</string>
+    <string name="logout">LOGOUT</string>
 </resources>
