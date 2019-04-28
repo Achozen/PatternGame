@@ -1,6 +1,7 @@
 package achozen.rememberme.fragments.startup;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +42,13 @@ public class ChooseNickFragment extends Fragment {
 
     @OnClick(R.id.confirmButton)
     public void onConfirmClicked() {
-        PeferencesUtil.storeInPrefs(getContext(), PeferencesUtil.Preferences.USERNAME, textInputEditText.getText().toString());
-        phaseFinishedListener.onPhaseFinished(StartupPresenter.StartupPhase.NICKNAME_CHOOSE);
+        if (textInputEditText.getText() != null && TextUtils.isEmpty(textInputEditText.getText().toString().trim())) {
+            textInputEditText.setError("Username cannot be empty !");
+        } else {
+            PeferencesUtil.storeInPrefs(getContext(), PeferencesUtil.Preferences.USERNAME, textInputEditText.getText().toString());
+            phaseFinishedListener.onPhaseFinished(StartupPresenter.StartupPhase.NICKNAME_CHOOSE);
+        }
+
     }
 
 }

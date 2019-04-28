@@ -9,10 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -25,10 +21,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import achozen.rememberme.R;
 import achozen.rememberme.StartupPresenter;
 import achozen.rememberme.firebase.AuthFinishListener;
 import achozen.rememberme.fragments.PhaseFinishedListener;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -100,9 +102,31 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
 
     @OnClick(R.id.login)
     public void onLogingClicked() {
-        if(!TextUtils.isEmpty(emailEditText.getText().toString()) && !TextUtils.isEmpty(passwordEditText.getText().toString())){
+        if (emailEditText.getText() != null && TextUtils.isEmpty(emailEditText.getText().toString().trim())) {
+            emailEditText.setError("Email cannot be empty !");
+        } else if (emailEditText.getText() != null && !isEmailValid(emailEditText.getText().toString())) {
+            emailEditText.setError("Invalid email !");
+        }
+
+        if (passwordEditText.getText() != null && TextUtils.isEmpty(passwordEditText.getText().toString().trim())) {
+            passwordEditText.setError("Password cannot be empty !");
+        } else if (passwordEditText.getText() != null && passwordEditText.getText().length() < 6) {
+            passwordEditText.setError("Password must have at least 6 characters");
+        }
+
+        if (!TextUtils.isEmpty(emailEditText.getText().toString()) &&
+                !TextUtils.isEmpty(passwordEditText.getText().toString()) &&
+                isEmailValid(emailEditText.getText().toString()) &&
+                passwordEditText.getText().length() >= 6) {
             login(emailEditText.getText().toString(), passwordEditText.getText().toString());
         }
+    }
+
+    public static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
     @OnClick(R.id.gmail_login)

@@ -3,6 +3,7 @@ package achozen.rememberme.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -43,14 +44,18 @@ public class SettingsActivity extends Activity {
             loggedInVaue.setText(currentUser.getEmail());
         }
 
-        appVersion.setText("Version: "+ BuildConfig.VERSION_NAME);
+        appVersion.setText("Version: " + BuildConfig.VERSION_NAME);
     }
 
 
     @OnClick(R.id.saveButton)
     void saveButtonClicked(View v) {
-        PeferencesUtil.storeInPrefs(this, PeferencesUtil.Preferences.USERNAME, editText.getText().toString());
-        finish();
+        if (editText.getText() != null && TextUtils.isEmpty(editText.getText().toString().trim())) {
+            editText.setError("Username cannot be empty !");
+        } else {
+            PeferencesUtil.storeInPrefs(this, PeferencesUtil.Preferences.USERNAME, editText.getText().toString());
+            finish();
+        }
     }
 
     @OnClick(R.id.logoutButton)
