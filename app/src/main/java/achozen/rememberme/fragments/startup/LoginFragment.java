@@ -2,12 +2,16 @@ package achozen.rememberme.fragments.startup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -25,9 +29,6 @@ import achozen.rememberme.R;
 import achozen.rememberme.StartupPresenter;
 import achozen.rememberme.firebase.AuthFinishListener;
 import achozen.rememberme.fragments.PhaseFinishedListener;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -99,7 +100,9 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
 
     @OnClick(R.id.login)
     public void onLogingClicked() {
-        login(emailEditText.getText().toString(), passwordEditText.getText().toString());
+        if(!TextUtils.isEmpty(emailEditText.getText().toString()) && !TextUtils.isEmpty(passwordEditText.getText().toString())){
+            login(emailEditText.getText().toString(), passwordEditText.getText().toString());
+        }
     }
 
     @OnClick(R.id.gmail_login)
@@ -131,6 +134,7 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
                 Toast.makeText(this.getContext(), "Authenticated", Toast.LENGTH_SHORT).show();
                 authFinishListener.onPhaseFinished(StartupPresenter.StartupPhase.AUTHENTICATION);
             } else {
+
                 Log.d("TAGTAG", "onAuthStateChanged:signed_out");
             }
         };
