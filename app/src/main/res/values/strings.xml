@@ -57,4 +57,5 @@
     <string name="about_app_version">App version:</string>
     <string name="logged_in_as">Logged in as:</string>
     <string name="logout">LOGOUT</string>
+    <string name="account_creation_info">If you do not have an account it will be created automatically</string>
 </resources>
