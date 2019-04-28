@@ -5,12 +5,18 @@ android {
     compileSdkVersion 28
     buildToolsVersion "28.0.3"
 
+    ext {
+        versionMajor = 1
+        versionMinor = 0
+        versionBuild = 1
+    }
+
     defaultConfig {
         applicationId "achozen.rememberme"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode versionMajor * 1000000 + versionMinor * 1000 + versionBuild
+        versionName String.valueOf(versionMajor) + "." + String.valueOf(versionMinor) + "." + String.valueOf(versionBuild)
         multiDexEnabled true
     }
     buildTypes {

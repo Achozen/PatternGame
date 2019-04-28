@@ -29,4 +29,13 @@
         android:id="@+id/belowHeaderImage"
         android:layout_gravity="center" />
 
+    <TextView
+        android:id="@+id/appVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/green"
+        android:text="Version: "
+        android:layout_margin="15dp"
+        android:layout_gravity="end"/>
+
 </LinearLayout>

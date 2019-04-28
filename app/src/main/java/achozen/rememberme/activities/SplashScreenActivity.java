@@ -8,9 +8,11 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.FirebaseApp;
 
+import achozen.rememberme.BuildConfig;
 import achozen.rememberme.R;
 import achozen.rememberme.StartupPresenter;
 import achozen.rememberme.fragments.PhaseFinishedListener;
@@ -34,7 +36,8 @@ public class SplashScreenActivity extends AppCompatActivity implements StartupPr
     ImageView headerImage;
     @BindView(R.id.belowHeaderImage)
     ImageView belowHeaderImage;
-
+    @BindView(R.id.appVersion)
+    TextView appVersion;
     StartupPresenter presenter;
 
 
@@ -53,6 +56,8 @@ public class SplashScreenActivity extends AppCompatActivity implements StartupPr
                 android.R.integer.config_longAnimTime);
 
         setupViews();
+        appVersion.setText("Version: "+ BuildConfig.VERSION_NAME);
+
     }
 
 

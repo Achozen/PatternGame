@@ -10,6 +10,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import achozen.rememberme.BuildConfig;
 import achozen.rememberme.R;
 import achozen.rememberme.engine.PeferencesUtil;
 import butterknife.BindView;
@@ -23,6 +24,9 @@ public class SettingsActivity extends Activity {
 
     @BindView(R.id.loggedInValue)
     TextView loggedInVaue;
+
+    @BindView(R.id.appVersion)
+    TextView appVersion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,8 @@ public class SettingsActivity extends Activity {
         if (currentUser != null && currentUser.getEmail() != null) {
             loggedInVaue.setText(currentUser.getEmail());
         }
+
+        appVersion.setText("Version: "+ BuildConfig.VERSION_NAME);
     }
 
 
