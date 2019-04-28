@@ -14,25 +14,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="180dp"
         android:background="@color/black"
         android:text="@string/start_label"
         android:textColor="@color/green"
         android:textSize="@dimen/text_bigger"
+        android:layout_margin="5dp"
+        ads:layout_constraintBottom_toTopOf="@+id/buttonTraining"
         ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintHorizontal_bias="0.5"
         ads:layout_constraintStart_toStartOf="parent"
-        ads:layout_constraintTop_toBottomOf="@+id/loggedAsTextView" />
+        ads:layout_constraintTop_toBottomOf="@+id/loggedAsTextView"
+        ads:layout_constraintVertical_chainStyle="packed" />
 
     <Button
         android:id="@+id/buttonHighScores"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
         android:background="@color/black"
         android:text="@string/high_scores_label"
         android:textColor="@color/green"
+        android:layout_margin="5dp"
         android:textSize="@dimen/text_bigger"
+        ads:layout_constraintBottom_toTopOf="@+id/buttonSettings"
+        ads:layout_constraintHorizontal_bias="0.5"
         ads:layout_constraintLeft_toLeftOf="parent"
         ads:layout_constraintRight_toRightOf="parent"
         ads:layout_constraintTop_toBottomOf="@+id/buttonTraining" />
@@ -45,8 +50,10 @@
         android:background="@color/black"
         android:text="@string/about_label"
         android:textColor="@color/green"
+        android:layout_margin="5dp"
         android:textSize="@dimen/text_bigger"
-        ads:layout_constraintHorizontal_bias="0.498"
+        ads:layout_constraintBottom_toTopOf="@+id/buttonExit"
+        ads:layout_constraintHorizontal_bias="0.5"
         ads:layout_constraintLeft_toLeftOf="parent"
         ads:layout_constraintRight_toRightOf="parent"
         ads:layout_constraintTop_toBottomOf="@+id/buttonSettings" />
@@ -56,11 +63,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
         android:background="@color/black"
         android:text="@string/exit_label"
         android:textColor="@color/green"
+        android:layout_margin="5dp"
         android:textSize="@dimen/text_bigger"
+        ads:layout_constraintBottom_toTopOf="@+id/adView"
+        ads:layout_constraintHorizontal_bias="0.5"
         ads:layout_constraintLeft_toLeftOf="parent"
         ads:layout_constraintRight_toRightOf="parent"
         ads:layout_constraintTop_toBottomOf="@+id/buttonAbout" />
@@ -70,11 +79,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
         android:background="@color/black"
+        android:layout_margin="5dp"
         android:text="@string/training_label"
         android:textColor="@color/green"
         android:textSize="@dimen/text_bigger"
+        ads:layout_constraintBottom_toTopOf="@+id/buttonHighScores"
+        ads:layout_constraintHorizontal_bias="0.5"
         ads:layout_constraintLeft_toLeftOf="parent"
         ads:layout_constraintRight_toRightOf="parent"
         ads:layout_constraintTop_toBottomOf="@+id/buttonStart" />
@@ -101,15 +112,18 @@
         ads:layout_constraintTop_toTopOf="parent" />
 
     <Button
+
         android:id="@+id/buttonSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:background="@color/black"
+        android:text="Settings"
+        android:layout_margin="5dp"
         android:textColor="@color/green"
         android:textSize="@dimen/text_bigger"
-        android:text="Settings"
+        ads:layout_constraintBottom_toTopOf="@+id/buttonAbout"
         ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintHorizontal_bias="0.5"
         ads:layout_constraintStart_toStartOf="parent"
         ads:layout_constraintTop_toBottomOf="@+id/buttonHighScores" />
 

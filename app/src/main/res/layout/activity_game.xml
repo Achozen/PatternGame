@@ -47,7 +47,7 @@
         android:id="@+id/currentPointsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="32dp"
         android:layout_marginBottom="16dp"
         android:text="SCORE"
         android:textColor="@color/green"
@@ -59,13 +59,13 @@
         android:id="@+id/currentPointsValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:text="0"
         android:textColor="@color/green"
         android:textSize="40dp"
         app:layout_constraintBottom_toTopOf="@+id/game_fragment_place_holder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/giveUpButton"
