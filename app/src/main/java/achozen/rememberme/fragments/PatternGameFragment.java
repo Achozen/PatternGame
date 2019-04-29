@@ -9,6 +9,7 @@ import achozen.rememberme.R;
 import achozen.rememberme.engine.LevelInitializationData;
 import achozen.rememberme.engine.OnLevelFinishListener;
 import achozen.rememberme.engine.PatternView;
+import achozen.rememberme.utils.TimerUtils;
 import androidx.fragment.app.Fragment;
 
 /**
@@ -53,10 +54,13 @@ public class PatternGameFragment extends Fragment {
     }
 
     public void onGamePaused() {
+        TimerUtils.pauseTotalTimeMeasurement();
         patternView.pauseGame();
     }
 
     public void onGameResumed() {
+        TimerUtils.resumeTotalTimeMeasurement();
+
         patternView.resumeGame();
     }
 }

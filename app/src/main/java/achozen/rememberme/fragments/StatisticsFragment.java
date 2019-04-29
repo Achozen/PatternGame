@@ -16,7 +16,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import achozen.rememberme.R;
 import achozen.rememberme.engine.PeferencesUtil;
@@ -142,8 +144,13 @@ public class StatisticsFragment extends Fragment {
 
 
         gameScoreTextView.setText("" + gameStatistics.getScoredPoints());
-        gameTimeTextView.setText("" + gameStatistics.getGameTime());
+        gameTimeTextView.setText("" + formatTime(gameStatistics.getGameTime()));
         levelsPassedTextView.setText("" + gameStatistics.getLevelFinishedCounter());
         return view;
+    }
+
+    private String formatTime(long time) {
+        SimpleDateFormat formatter = new SimpleDateFormat("mm:ss");
+        return formatter.format(new Date(time));
     }
 }

@@ -3,7 +3,6 @@ package achozen.rememberme;
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -51,16 +50,11 @@ public class StartupPresenter implements PhaseFinishedListener {
                     if (task.isSuccessful()) {
                         boolean updated = task.getResult();
                         Log.d("TAGTAG", "Config params updated: " + updated);
-                        Toast.makeText(context, "Fetch and activate succeeded",
-                                Toast.LENGTH_SHORT).show();
                         String configJson = firebaseRemoteConfig.getString("app_config");
                         AppConfig targetObject = new Gson().fromJson(configJson, AppConfig.class);
                         AppConfig.init(targetObject);
                         new Handler().postDelayed(() -> onPhaseFinished(CONFIG_DOWNLOAD), 5000);
 
-                    } else {
-                        Toast.makeText(context, "Fetch config failed",
-                                Toast.LENGTH_SHORT).show();
                     }
                 });
 

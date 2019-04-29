@@ -5,12 +5,12 @@ package achozen.rememberme.statistics;
  */
 public class GameStatistics {
 
-    private int gameTime;
+    private long gameTime;
     private int scoredPoints;
     private int levelFinishedCounter;
     private LevelState levelState;
 
-    public GameStatistics(LevelState levelState, int gameTime, int scoredPoints, int levelFinishedCounter) {
+    public GameStatistics(LevelState levelState, long gameTime, int scoredPoints, int levelFinishedCounter) {
         this.levelState = levelState;
         this.gameTime = gameTime;
         this.scoredPoints = scoredPoints;
@@ -21,7 +21,7 @@ public class GameStatistics {
         return scoredPoints;
     }
 
-    public int getGameTime() {
+    public long getGameTime() {
 
         return gameTime;
     }

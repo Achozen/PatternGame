@@ -10,9 +10,32 @@ import android.widget.TextView;
  * Created by Achozen on 2016-06-05.
  */
 public class TimerUtils {
-    static ValueAnimator timeLeftAnimator = new ValueAnimator();
-    static ValueAnimator timeBeforeAnimationAnimator = new ValueAnimator();
-    static ValueAnimator timeBeforeDrawAnimator = new ValueAnimator();
+    private static ValueAnimator timeLeftAnimator = new ValueAnimator();
+    private static ValueAnimator timeBeforeAnimationAnimator = new ValueAnimator();
+    private static ValueAnimator timeBeforeDrawAnimator = new ValueAnimator();
+    private static long totalTimeStartTimestamp = 0;
+    private static long alreadyMeasuredTime = 0;
+
+    public static void pauseTotalTimeMeasurement() {
+        alreadyMeasuredTime += System.currentTimeMillis() - totalTimeStartTimestamp;
+        totalTimeStartTimestamp = 0;
+    }
+
+    public static void startTotalTimeMeasurement() {
+        alreadyMeasuredTime = 0;
+        totalTimeStartTimestamp = System.currentTimeMillis();
+    }
+
+    public static void resumeTotalTimeMeasurement() {
+        totalTimeStartTimestamp = System.currentTimeMillis();
+    }
+
+    public static long finishAndGetTotalTimeMeasurement() {
+        long timeSpendPlaying = alreadyMeasuredTime + (System.currentTimeMillis() - totalTimeStartTimestamp);
+        totalTimeStartTimestamp = 0;
+        alreadyMeasuredTime = 0;
+        return timeSpendPlaying;
+    }
 
     public static void beforeAnimationCount(final TextView textView, final OnPreDrawingListener listener) {
         timeBeforeAnimationAnimator = new ValueAnimator();

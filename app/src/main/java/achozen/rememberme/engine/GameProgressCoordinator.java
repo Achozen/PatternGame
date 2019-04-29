@@ -12,6 +12,7 @@ import achozen.rememberme.interfaces.GameProgressListener;
 import achozen.rememberme.interfaces.PointPosition;
 import achozen.rememberme.statistics.GameStatistics;
 import achozen.rememberme.statistics.LevelState;
+import achozen.rememberme.utils.TimerUtils;
 
 /**
  * Created by Achozen on 2016-05-28.
@@ -29,9 +30,9 @@ public class GameProgressCoordinator {
         gameProgressListener = progressListener;
         GameProgressCoordinator.context = context;
         initiateEnvironmentalVariables(gameMode);
+        TimerUtils.startTotalTimeMeasurement();
         startNextLevel(new GameStatistics(LevelState.SUCCESS, 0, 0, 0));
     }
-
 
     public void startNextLevel(final GameStatistics gameStatistics) {
         LevelInitializationData initData = prepareNextLevel(gameStatistics);

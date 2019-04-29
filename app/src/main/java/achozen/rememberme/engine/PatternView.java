@@ -281,11 +281,15 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
 
     private GameStatistics createStatisticsForCurrentLevel(LevelState state, int timeLeft) {
         int pointsCalculated = levelInitializationData.getGameStatistics().getScoredPoints();
+        long totalTime = 0;
         if (state == LevelState.SUCCESS) {
             pointsCalculated += ((randomlyGeneratedPoints.size() - 1) * 10) + timeLeft;
+        } else {
+            totalTime = TimerUtils.finishAndGetTotalTimeMeasurement();
         }
         int currentLevel = levelInitializationData.getGameStatistics().getLevelFinishedCounter();
-        return new GameStatistics(state, timeLeft, pointsCalculated, state == LevelState.SUCCESS ? currentLevel + 1 : currentLevel);
+
+        return new GameStatistics(state, totalTime, pointsCalculated, state == LevelState.SUCCESS ? currentLevel + 1 : currentLevel);
     }
 
     private void addPointToLinked(PointPosition point) {
