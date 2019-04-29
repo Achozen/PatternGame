@@ -53,8 +53,7 @@ public class StartupPresenter implements PhaseFinishedListener {
                         String configJson = firebaseRemoteConfig.getString("app_config");
                         AppConfig targetObject = new Gson().fromJson(configJson, AppConfig.class);
                         AppConfig.init(targetObject);
-                        new Handler().postDelayed(() -> onPhaseFinished(CONFIG_DOWNLOAD), 5000);
-
+                        onPhaseFinished(CONFIG_DOWNLOAD);
                     }
                 });
 

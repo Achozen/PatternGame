@@ -90,7 +90,7 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
     @Override
     public void onRankedFinished(GameStatistics statistics) {
         hideMainPoints();
-        FragmentNavigator.navigateToNextFragment(GameActivity.this, StatisticsFragment.getInstance(statistics));
+        FragmentNavigator.navigateToNextFragment(GameActivity.this, StatisticsFragment.getInstanceForGameEnd(statistics));
     }
 
     @Override

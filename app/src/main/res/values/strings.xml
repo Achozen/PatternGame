@@ -43,7 +43,7 @@
     <!--Hgh scores-->
     <string name="high_scores">HIGH SCORES</string>
     <string name="top_100_tab_title">TOP 100</string>
-    <string name="my_scores_tab_title">MY SCORES</string>
+    <string name="my_scores_tab_title">MY SCORE</string>
     <string name="my_ranking_tab_title">MY RANKING</string>
 
     <!--test add unit ID-->

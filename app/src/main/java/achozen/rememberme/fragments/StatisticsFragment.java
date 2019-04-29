@@ -24,7 +24,6 @@ import achozen.rememberme.R;
 import achozen.rememberme.engine.PeferencesUtil;
 import achozen.rememberme.firebase.statistics.model.Score;
 import achozen.rememberme.statistics.GameStatistics;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,9 +60,11 @@ public class StatisticsFragment extends Fragment {
     private GameStatistics gameStatistics;
     private FirebaseUser user;
     private Score currentScore;
+    Mode displayMode;
 
-    public static StatisticsFragment getInstance(final GameStatistics statistics) {
+    public static StatisticsFragment getInstanceForGameEnd(final GameStatistics statistics) {
         final StatisticsFragment fragment = new StatisticsFragment();
+        fragment.displayMode = Mode.GAME_END;
         fragment.gameStatistics = statistics;
         return fragment;
     }
@@ -73,8 +74,52 @@ public class StatisticsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         final FirebaseAuth auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
-        currentScore = getCurrentGameScore();
-        checkScoreWithRanking();
+
+        if (displayMode == Mode.GAME_END) {
+            currentScore = getCurrentGameScore();
+            startGameEndInitialization();
+        } else {
+            startHighScoresInitialization();
+        }
+
+    }
+
+    private void startHighScoresInitialization() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference databaseReference = database.getReference(HIGH_SCORES_DATABASE);
+        final Query queryRef = databaseReference.orderByChild("score");
+        queryRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                queryRef.removeEventListener(this);
+                Log.d("TAGTAGS", "onDataChange");
+                final ArrayList<Score> allScores = new ArrayList<>();
+                final long itemsCount = dataSnapshot.getChildrenCount();
+                Score myScore = null;
+                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                    Score serverScore = messageSnapshot.getValue(Score.class);
+                    allScores.add(serverScore);
+                    if (serverScore != null && serverScore.email.equalsIgnoreCase(user.getEmail())) {
+                        myScore = serverScore;
+                        Log.d("TAGTAGS", "Removing event listener");
+                        long currentPosition = itemsCount - (allScores.size() - 1);
+                        rankingPosition.setText(String.valueOf(currentPosition));
+                        progressLayout.setVisibility(View.GONE);
+                        confirmationButton.setVisibility(View.GONE);
+                        setupViews(String.valueOf(serverScore.score), formatTime(serverScore.gameTime), String.valueOf(serverScore.maxLevel));
+                        break;
+                    }
+                }
+                if (myScore == null) {
+                    rankingPositionLabel.setText("UNRANKED");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private Score getCurrentGameScore() {
@@ -83,6 +128,8 @@ public class StatisticsFragment extends Fragment {
         score.email = user.getEmail();
         score.score = gameStatistics.getScoredPoints();
         score.name = username;
+        score.maxLevel = gameStatistics.getLevelFinishedCounter();
+        score.gameTime = gameStatistics.getGameTime();
         return score;
     }
 
@@ -91,8 +138,8 @@ public class StatisticsFragment extends Fragment {
         getActivity().finish();
     }
 
-    private void checkScoreWithRanking() {
-        Log.d("TAGTAGS", "checkScoreWithRanking");
+    private void startGameEndInitialization() {
+        Log.d("TAGTAGS", "startGameEndInitialization");
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference databaseReference = database.getReference(HIGH_SCORES_DATABASE);
         final Query queryRef = databaseReference.orderByChild("score");
@@ -134,19 +181,24 @@ public class StatisticsFragment extends Fragment {
     }
 
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_statistics,
                 container, false);
         ButterKnife.bind(this, view);
+        if (displayMode == Mode.GAME_END) {
+            setupViews(String.valueOf(gameStatistics.getScoredPoints()), formatTime(gameStatistics.getGameTime()), String.valueOf(gameStatistics.getLevelFinishedCounter()));
+        }
 
-
-        gameScoreTextView.setText("" + gameStatistics.getScoredPoints());
-        gameTimeTextView.setText("" + formatTime(gameStatistics.getGameTime()));
-        levelsPassedTextView.setText("" + gameStatistics.getLevelFinishedCounter());
         return view;
+    }
+
+
+    private void setupViews(String scoredPoints, String gameTime, String levelFinishedCount) {
+        gameScoreTextView.setText(scoredPoints);
+        gameTimeTextView.setText(gameTime);
+        levelsPassedTextView.setText(levelFinishedCount);
     }
 
     private String formatTime(long time) {
@@ -154,3 +206,9 @@ public class StatisticsFragment extends Fragment {
         return formatter.format(new Date(time));
     }
 }
+
+enum Mode {
+    HIGH_SCORES,
+    GAME_END
+}
+

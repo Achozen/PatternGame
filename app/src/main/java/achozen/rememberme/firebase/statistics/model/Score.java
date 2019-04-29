@@ -8,4 +8,6 @@ public class Score {
     public String name;
     public String email;
     public int score;
+    public long gameTime;
+    public int maxLevel;
 }
