@@ -10,6 +10,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import achozen.rememberme.R;
+import achozen.rememberme.analytics.AnalyticEvent;
 import achozen.rememberme.engine.GameProgressCoordinator;
 import achozen.rememberme.engine.LevelInitializationData;
 import achozen.rememberme.engine.OnLevelFinishListener;
@@ -52,6 +53,7 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
 
 
     private PatternGameFragment currentGameFragment;
+    private long inactivityTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
         isPaused = false;
         currentGameFragment.onGameResumed();
         pausedActivityView.setVisibility(View.GONE);
+        AnalyticEvent.gameResumed(System.currentTimeMillis() - inactivityTime);
     }
 
     @OnClick(R.id.exitButton)
@@ -85,11 +88,13 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
     @OnClick(R.id.giveUpButton)
     void giveUpClickListener(View v) {
         TimerUtils.forceEndTimeLeftCounter();
+        AnalyticEvent.giveUpClicked();
     }
 
     @Override
     public void onRankedFinished(GameStatistics statistics) {
         hideMainPoints();
+        AnalyticEvent.rankingGameFinished(statistics.getLevelFinishedCounter(), statistics.getScoredPoints(), statistics.getLevelFinishedCounter());
         FragmentNavigator.navigateToNextFragment(GameActivity.this, StatisticsFragment.getInstanceForGameEnd(statistics));
     }
 
@@ -106,6 +111,8 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
     @Override
     public void onTrainingFinished() {
         Log.d("TAGTAG", "onTrainingFinished finishing activity");
+        AnalyticEvent.trainingGameFinished();
+
         finish();
     }
 
@@ -146,6 +153,8 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
         currentGameFragment.onGamePaused();
         isPaused = true;
         pausedActivityView.setVisibility(View.VISIBLE);
+        inactivityTime = System.currentTimeMillis();
+        AnalyticEvent.gamePaused(true);
     }
 
     @Override
@@ -159,7 +168,9 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
     protected void onResume() {
         super.onResume();
         if (isPaused) {
+            inactivityTime = System.currentTimeMillis();
             pausedActivityView.setVisibility(View.VISIBLE);
+            AnalyticEvent.gamePaused(false);
         }
     }
 }

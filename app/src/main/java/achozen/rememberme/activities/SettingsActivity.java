@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import achozen.rememberme.BuildConfig;
 import achozen.rememberme.R;
+import achozen.rememberme.analytics.AnalyticEvent;
 import achozen.rememberme.engine.PeferencesUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +55,7 @@ public class SettingsActivity extends Activity {
             editText.setError("Username cannot be empty !");
         } else {
             PeferencesUtil.storeInPrefs(this, PeferencesUtil.Preferences.USERNAME, editText.getText().toString());
+            AnalyticEvent.usernameChanged();
             finish();
         }
     }

@@ -15,6 +15,7 @@ import com.google.firebase.FirebaseApp;
 import achozen.rememberme.BuildConfig;
 import achozen.rememberme.R;
 import achozen.rememberme.StartupPresenter;
+import achozen.rememberme.analytics.AnalyticEvent;
 import achozen.rememberme.fragments.PhaseFinishedListener;
 import achozen.rememberme.fragments.ProgressWaitingFragment;
 import achozen.rememberme.fragments.startup.ChooseNickFragment;
@@ -48,6 +49,7 @@ public class SplashScreenActivity extends AppCompatActivity implements StartupPr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
+        AnalyticEvent.init(this.getApplicationContext());
         setContentView(R.layout.activity_splash_screen);
         presenter = new StartupPresenter(getApplicationContext(), this);
         ButterKnife.bind(this);

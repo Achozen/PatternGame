@@ -22,6 +22,7 @@ import java.util.List;
 
 import achozen.rememberme.R;
 import achozen.rememberme.adapter.HighScoreAdapter;
+import achozen.rememberme.analytics.AnalyticEvent;
 import achozen.rememberme.firebase.statistics.model.Score;
 import achozen.rememberme.fragments.HighScoresStatisticsFragment;
 import androidx.fragment.app.Fragment;
@@ -49,6 +50,22 @@ public class HighScoresActivity extends FragmentActivity {
                 getSupportFragmentManager(), getApplicationContext());
         ViewPager mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(scoresPageAdapter);
+        AnalyticEvent.highScoresDisplayed();
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            public void onPageScrollStateChanged(int state) {
+            }
+
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            public void onPageSelected(int position) {
+                if (position == TOP100) {
+                    AnalyticEvent.highScoresDisplayed();
+                } else if (position == MY_SCORES) {
+                    AnalyticEvent.myScoreDisplayed();
+                }
+            }
+        });
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(mViewPager);

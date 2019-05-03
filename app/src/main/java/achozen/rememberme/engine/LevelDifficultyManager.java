@@ -3,6 +3,7 @@ package achozen.rememberme.engine;
 import java.util.ArrayList;
 import java.util.List;
 
+import achozen.rememberme.analytics.AnalyticEvent;
 import achozen.rememberme.config.AppConfig;
 import achozen.rememberme.enums.Difficulty;
 import achozen.rememberme.enums.GameMode;
@@ -91,7 +92,11 @@ public class LevelDifficultyManager {
             gameSize = BIG;
         }
 
-        return LevelBuilder.forceGenerateLevel(gameSize, createLinksBasedOnDifficulty());
+        long generationTime = System.currentTimeMillis();
+        int linksNumber = createLinksBasedOnDifficulty();
+        ArrayList<PointPosition> points = LevelBuilder.forceGenerateLevel(gameSize, linksNumber);
+        AnalyticEvent.patternGenerated(System.currentTimeMillis() - generationTime, gameSize, difficulty, linksNumber);
+        return points;
     }
 
     private ArrayList<PointPosition> createNextTrainingLevel() {
@@ -99,7 +104,12 @@ public class LevelDifficultyManager {
             currentLevel = 0;
             return null;
         }
-        return LevelBuilder.forceGenerateLevel(gameSize, createLinksBasedOnDifficulty());
+
+        long generationTime = System.currentTimeMillis();
+        int linksNumber = createLinksBasedOnDifficulty();
+        ArrayList<PointPosition> points = LevelBuilder.forceGenerateLevel(gameSize, linksNumber);
+        AnalyticEvent.patternGenerated(System.currentTimeMillis() - generationTime, gameSize, difficulty, linksNumber);
+        return points;
     }
 
 

@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import achozen.rememberme.R;
+import achozen.rememberme.analytics.AnalyticEvent;
 import achozen.rememberme.enums.GameMode;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +56,7 @@ public class MenuActivity extends Activity {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra(GAME_MODE, GameMode.RANKING);
         startActivity(intent);
+        AnalyticEvent.rankingGameStarted();
     }
 
     @OnClick(R.id.buttonTraining)
@@ -62,12 +64,14 @@ public class MenuActivity extends Activity {
         Intent intent = new Intent(MenuActivity.this, TrainingSettingsActivity.class);
         intent.putExtra(GAME_MODE, GameMode.TRAINING);
         startActivity(intent);
+        AnalyticEvent.trainingGameStarted();
     }
 
     @OnClick(R.id.buttonSettings)
     void startSettingsListener(View v) {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
+        AnalyticEvent.settingsClicked();
     }
 
     @OnClick(R.id.buttonExit)
@@ -79,6 +83,7 @@ public class MenuActivity extends Activity {
     void aboutClickListener(View v) {
         Intent intent = new Intent(MenuActivity.this, AboutActivity.class);
         startActivity(intent);
+        AnalyticEvent.aboutClicked();
     }
 
     @OnClick(R.id.buttonHighScores)

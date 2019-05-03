@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import achozen.rememberme.LockPointsPositioner;
 import achozen.rememberme.R;
+import achozen.rememberme.analytics.AnalyticEvent;
 import achozen.rememberme.interfaces.AnimationProgressListener;
 import achozen.rememberme.interfaces.PointPosition;
 import achozen.rememberme.statistics.GameStatistics;
@@ -241,6 +242,7 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
     @Override
     public void onDrawingTimeOver() {
         onLevelFinishListener.onLevelFinished(createStatisticsForCurrentLevel(LevelState.FAILED, 0));
+        AnalyticEvent.noTimeLeft();
     }
 
     @Override
