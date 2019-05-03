@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -20,7 +19,6 @@ import achozen.rememberme.sounds.SoundPlayer;
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -64,29 +62,25 @@ public class SettingsActivity extends AppCompatActivity {
 
         backgroundMusicSwitch.setChecked(musicSwitchState);
         soundEffectsSwitch.setChecked(soundEffectsSwitchState);
-    }
 
-    @OnCheckedChanged(R.id.backgroundMusic)
-    void onBackgroundMusicSelected(CompoundButton button, boolean checked) {
-        PreferencesUtil.storeInPrefs(this.getApplicationContext(), PreferencesUtil.SoundPreferences.MUSIC, checked);
-        if (checked) {
-            AnalyticEvent.musicOn();
-            SoundPlayer.startBackgroundMusic();
-        } else {
-            AnalyticEvent.musicOff();
-            SoundPlayer.pauseBackgroundMusic();
-        }
-
-    }
-
-    @OnCheckedChanged(R.id.soundEffects)
-    void onSoundEffectsSelected(CompoundButton button, boolean checked) {
-        if (checked) {
-            AnalyticEvent.soundEffectsOn();
-        } else {
-            AnalyticEvent.soundEffectsOff();
-        }
-        PreferencesUtil.storeInPrefs(this.getApplicationContext(), PreferencesUtil.SoundPreferences.SOUND_EFFECTS, checked);
+        backgroundMusicSwitch.setOnCheckedChangeListener((button, checked) -> {
+            PreferencesUtil.storeInPrefs(this.getApplicationContext(), PreferencesUtil.SoundPreferences.MUSIC, checked);
+            if (checked) {
+                AnalyticEvent.musicOn();
+                SoundPlayer.startBackgroundMusic();
+            } else {
+                AnalyticEvent.musicOff();
+                SoundPlayer.pauseBackgroundMusic();
+            }
+        });
+        soundEffectsSwitch.setOnCheckedChangeListener((button, checked) -> {
+            if (checked) {
+                AnalyticEvent.soundEffectsOn();
+            } else {
+                AnalyticEvent.soundEffectsOff();
+            }
+            PreferencesUtil.storeInPrefs(this.getApplicationContext(), PreferencesUtil.SoundPreferences.SOUND_EFFECTS, checked);
+        });
     }
 
     @OnClick(R.id.saveButton)
