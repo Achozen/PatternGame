@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -147,7 +146,6 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d("TAGTAG", "onConnectionFailed:" + connectionResult);
-        Toast.makeText(this.getContext(), "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
 
     private void onAuthListenerSetup() {
@@ -155,7 +153,6 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
                 Log.d("TAGTAG", "onAuthStateChanged:signed_in:" + user.getUid());
-                Toast.makeText(this.getContext(), "Authenticated", Toast.LENGTH_SHORT).show();
                 authFinishListener.onPhaseFinished(StartupPresenter.StartupPhase.AUTHENTICATION);
             } else {
 
@@ -170,8 +167,6 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
                     Log.d("TAGTAG", "signInWithEmail:onComplete:" + task.isSuccessful());
                     if (!task.isSuccessful()) {
                         Log.w("TAGTAG", "signInWithEmail", task.getException());
-                        Toast.makeText(this.getContext(), "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
 
                         createNewUser(email, password);
                     }
@@ -182,10 +177,6 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this.getActivity(), task -> {
                     Log.d("TAGTAG", "createUserWithEmail:onComplete:" + task.isSuccessful());
-                    if (!task.isSuccessful()) {
-                        Toast.makeText(this.getContext(), "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
-                    }
                 });
     }
 
@@ -204,8 +195,6 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
 
                     if (!task.isSuccessful()) {
                         Log.w("TAGTAG", "signInWithCredential", task.getException());
-                        Toast.makeText(this.getContext(), "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }

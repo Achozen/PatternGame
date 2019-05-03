@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 28
@@ -8,7 +9,7 @@ android {
     ext {
         versionMajor = 1
         versionMinor = 0
-        versionBuild = 4
+        versionBuild = 5
     }
 
     defaultConfig {
@@ -41,6 +42,9 @@ buildscript {
 }
 repositories {
     mavenCentral()
+    maven {
+        url 'https://maven.fabric.io/public'
+    }
 }
 
 
@@ -68,6 +72,10 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    // Add dependency
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.0'
+
 
 
 }
