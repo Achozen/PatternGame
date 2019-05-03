@@ -58,7 +58,7 @@ public class SplashScreenActivity extends AppCompatActivity implements StartupPr
                 android.R.integer.config_longAnimTime);
 
         setupViews();
-        appVersion.setText("Version: "+ BuildConfig.VERSION_NAME);
+        appVersion.setText("Version: " + BuildConfig.VERSION_NAME);
 
     }
 

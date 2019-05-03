@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import achozen.rememberme.R;
 import achozen.rememberme.StartupPresenter;
-import achozen.rememberme.engine.PeferencesUtil;
+import achozen.rememberme.engine.PreferencesUtil;
 import achozen.rememberme.fragments.PhaseFinishedListener;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -45,7 +45,7 @@ public class ChooseNickFragment extends Fragment {
         if (textInputEditText.getText() != null && TextUtils.isEmpty(textInputEditText.getText().toString().trim())) {
             textInputEditText.setError("Username cannot be empty !");
         } else {
-            PeferencesUtil.storeInPrefs(getContext(), PeferencesUtil.Preferences.USERNAME, textInputEditText.getText().toString());
+            PreferencesUtil.storeInPrefs(getContext(), PreferencesUtil.Preferences.USERNAME, textInputEditText.getText().toString());
             phaseFinishedListener.onPhaseFinished(StartupPresenter.StartupPhase.NICKNAME_CHOOSE);
         }
 

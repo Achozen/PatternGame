@@ -1,6 +1,5 @@
 package achozen.rememberme.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -12,15 +11,16 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import achozen.rememberme.R;
-import achozen.rememberme.engine.PeferencesUtil;
+import achozen.rememberme.engine.PreferencesUtil;
 import achozen.rememberme.enums.Difficulty;
 import achozen.rememberme.enums.GameMode;
 import achozen.rememberme.enums.GameSize;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import static achozen.rememberme.activities.GameActivity.GAME_MODE;
-import static achozen.rememberme.engine.PeferencesUtil.Preferences.DIFFICULTY;
-import static achozen.rememberme.engine.PeferencesUtil.Preferences.SIZE;
+import static achozen.rememberme.engine.PreferencesUtil.Preferences.DIFFICULTY;
+import static achozen.rememberme.engine.PreferencesUtil.Preferences.SIZE;
 import static achozen.rememberme.enums.Difficulty.EASY;
 import static achozen.rememberme.enums.Difficulty.HARD;
 import static achozen.rememberme.enums.GameSize.BIG;
@@ -30,7 +30,7 @@ import static achozen.rememberme.enums.GameSize.SMALL;
 /**
  * Created by Achozen on 2016-05-26.
  */
-public class TrainingSettingsActivity extends Activity {
+public class TrainingSettingsActivity extends AppCompatActivity {
 
     private Context context;
 
@@ -96,10 +96,10 @@ public class TrainingSettingsActivity extends Activity {
                     break;
                 case R.id.saveButton:
                     if (pickedSize != null) {
-                        PeferencesUtil.storeInPrefs(context, SIZE, pickedSize.toString());
+                        PreferencesUtil.storeInPrefs(context, SIZE, pickedSize.toString());
                     }
                     if (pickedDifficulty != null) {
-                        PeferencesUtil.storeInPrefs(context, DIFFICULTY, pickedDifficulty.toString());
+                        PreferencesUtil.storeInPrefs(context, DIFFICULTY, pickedDifficulty.toString());
                     }
                     finish();
                     Intent intent = new Intent(this, GameActivity.class);
@@ -156,7 +156,7 @@ public class TrainingSettingsActivity extends Activity {
     }
 
     private void markButtonForCurrentSizeSettings() {
-        String currentSize = PeferencesUtil.readFromPrefs(context, SIZE);
+        String currentSize = PreferencesUtil.readFromPrefs(context, SIZE);
 
         if (SMALL.toString().equalsIgnoreCase(currentSize)) {
             setPickedIcon(smallSizeButton, R.drawable.small_button_picked);
@@ -170,7 +170,7 @@ public class TrainingSettingsActivity extends Activity {
     }
 
     private void markButtonForCurrentDifficultySettings() {
-        String currentSize = PeferencesUtil.readFromPrefs(context, DIFFICULTY);
+        String currentSize = PreferencesUtil.readFromPrefs(context, DIFFICULTY);
 
         if (EASY.toString().equalsIgnoreCase(currentSize)) {
             setPickedIcon(easyButton, R.drawable.easy_button_picked);

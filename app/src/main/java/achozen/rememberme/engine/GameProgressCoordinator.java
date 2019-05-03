@@ -55,9 +55,9 @@ public class GameProgressCoordinator {
             currentGameSize = GameSize.SMALL;
             currentDifficulty = Difficulty.RANKING;
         } else {
-            difficulty = PeferencesUtil.readFromPrefs(context, PeferencesUtil
+            difficulty = PreferencesUtil.readFromPrefs(context, PreferencesUtil
                     .Preferences.DIFFICULTY);
-            gameSize = PeferencesUtil.readFromPrefs(context, PeferencesUtil
+            gameSize = PreferencesUtil.readFromPrefs(context, PreferencesUtil
                     .Preferences.SIZE);
             currentGameSize = GameSize.valueOf(gameSize);
             currentDifficulty = Difficulty.valueOf(difficulty);

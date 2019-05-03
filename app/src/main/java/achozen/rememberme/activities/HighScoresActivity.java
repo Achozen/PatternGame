@@ -25,8 +25,8 @@ import achozen.rememberme.adapter.HighScoreAdapter;
 import achozen.rememberme.analytics.AnalyticEvent;
 import achozen.rememberme.firebase.statistics.model.Score;
 import achozen.rememberme.fragments.HighScoresStatisticsFragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,7 +36,7 @@ import androidx.viewpager.widget.ViewPager;
 /**
  * Created by Achozen on 2016-02-27.
  */
-public class HighScoresActivity extends FragmentActivity {
+public class HighScoresActivity extends AppCompatActivity {
 
     public static final String TOP_100_TEXT = "TOP 100";
 

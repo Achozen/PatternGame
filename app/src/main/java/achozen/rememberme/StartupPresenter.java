@@ -1,7 +1,6 @@
 package achozen.rememberme;
 
 import android.content.Context;
-import android.os.Handler;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -13,13 +12,13 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import achozen.rememberme.config.AppConfig;
-import achozen.rememberme.engine.PeferencesUtil;
+import achozen.rememberme.engine.PreferencesUtil;
 import achozen.rememberme.fragments.PhaseFinishedListener;
 
 import static achozen.rememberme.StartupPresenter.StartupPhase.AUTHENTICATION;
 import static achozen.rememberme.StartupPresenter.StartupPhase.CONFIG_DOWNLOAD;
 import static achozen.rememberme.StartupPresenter.StartupPhase.NICKNAME_CHOOSE;
-import static achozen.rememberme.engine.PeferencesUtil.UNKNOWN_USERNAME;
+import static achozen.rememberme.engine.PreferencesUtil.UNKNOWN_USERNAME;
 
 public class StartupPresenter implements PhaseFinishedListener {
 
@@ -81,7 +80,7 @@ public class StartupPresenter implements PhaseFinishedListener {
                 view.displayLoginScreen(this);
                 break;
             case NICKNAME_CHOOSE:
-                if (!UNKNOWN_USERNAME.equalsIgnoreCase(PeferencesUtil.readFromPrefs(context, PeferencesUtil.Preferences.USERNAME))) {
+                if (!UNKNOWN_USERNAME.equalsIgnoreCase(PreferencesUtil.readFromPrefs(context, PreferencesUtil.Preferences.USERNAME))) {
                     view.goToMainScreen();
                     break;
                 }

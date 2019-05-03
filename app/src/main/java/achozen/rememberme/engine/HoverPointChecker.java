@@ -10,7 +10,7 @@ import achozen.rememberme.interfaces.PointPosition;
 public class HoverPointChecker {
     private final OnPathDrawingListener onPathDrawingListener;
     ArrayList<PointPosition> allPoints = new ArrayList<PointPosition>();
-    final float HOVER_OFFSET = 50;
+    final float HOVER_OFFSET = 60;
     float x = 0;
     float y = 0;
 
@@ -19,21 +19,21 @@ public class HoverPointChecker {
         this.onPathDrawingListener = onPathDrawingListener;
     }
 
-    public void checkIfCurrentPositionOverlapsPoint(float x, float y){
+    public void checkIfCurrentPositionOverlapsPoint(float x, float y) {
         PointPosition pointToRemove = null;
-        for (PointPosition point :allPoints) {
-            if(checkIfCoordsOverlapsWithPoint(x,y,point)){
+        for (PointPosition point : allPoints) {
+            if (checkIfCoordsOverlapsWithPoint(x, y, point)) {
                 onPathDrawingListener.onPointMeet(point);
                 pointToRemove = point;
                 break;
             }
         }
-        if(pointToRemove != null){
+        if (pointToRemove != null) {
             allPoints.remove(pointToRemove);
         }
     }
 
-    boolean checkIfCoordsOverlapsWithPoint(float x, float y, PointPosition point){
+    boolean checkIfCoordsOverlapsWithPoint(float x, float y, PointPosition point) {
         float pointX = point.getXCanvas();
         float pointY = point.getYCanvas();
 

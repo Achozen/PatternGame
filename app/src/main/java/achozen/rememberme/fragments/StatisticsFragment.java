@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import achozen.rememberme.R;
-import achozen.rememberme.engine.PeferencesUtil;
+import achozen.rememberme.engine.PreferencesUtil;
 import achozen.rememberme.firebase.statistics.model.Score;
 import achozen.rememberme.statistics.GameStatistics;
 import androidx.fragment.app.Fragment;
@@ -123,7 +123,7 @@ public class StatisticsFragment extends Fragment {
     }
 
     private Score getCurrentGameScore() {
-        final String username = PeferencesUtil.readFromPrefs(getContext(), PeferencesUtil.Preferences.USERNAME);
+        final String username = PreferencesUtil.readFromPrefs(getContext(), PreferencesUtil.Preferences.USERNAME);
         final Score score = new Score();
         score.email = user.getEmail();
         score.score = gameStatistics.getScoredPoints();

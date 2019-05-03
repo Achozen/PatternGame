@@ -23,6 +23,7 @@ import achozen.rememberme.R;
 import achozen.rememberme.analytics.AnalyticEvent;
 import achozen.rememberme.interfaces.AnimationProgressListener;
 import achozen.rememberme.interfaces.PointPosition;
+import achozen.rememberme.sounds.SoundPlayer;
 import achozen.rememberme.statistics.GameStatistics;
 import achozen.rememberme.statistics.LevelState;
 import achozen.rememberme.utils.DrawingUtil;
@@ -193,10 +194,15 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
                 yStart = 0;
                 xStop = 0;
                 yStop = 0;
+                if (alreadyLinkedPoints != null && !alreadyLinkedPoints.isEmpty()) {
+                    SoundPlayer.playErrorSound();
+                }
                 alreadyLinkedPoints = new ArrayList<>();
                 hoverPointChecker = new HoverPointChecker(allPoints, this);
                 clearGameView();
                 invalidate();
+
+
                 break;
             default:
                 return false;
@@ -256,6 +262,7 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
         yStart = point.getYCanvas();
         addPointToLinked(point);
         checkIfGameDone();
+
     }
 
     private void checkIfGameDone() {
@@ -264,6 +271,7 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
             return;
         }
         if (alreadyLinkedPoints.size() != randomlyGeneratedPoints.size()) {
+            SoundPlayer.playPopSound();
             return;
         }
         for (int i = 0; i < alreadyLinkedPoints.size(); i++) {
@@ -277,7 +285,9 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
             Toast.makeText(context, "CONGRATULATIONS", Toast.LENGTH_SHORT).show();
             TimerUtils.clearTimers();
             onLevelFinishListener.onLevelFinished(createStatisticsForCurrentLevel(LevelState.SUCCESS, TimerUtils.finishCountingAndGetLeftValue()));
+            return;
         }
+        SoundPlayer.playPopSound();
 
     }
 

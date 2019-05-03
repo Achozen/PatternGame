@@ -19,10 +19,11 @@ import achozen.rememberme.fragments.PatternGameFragment;
 import achozen.rememberme.fragments.StatisticsFragment;
 import achozen.rememberme.interfaces.GameProgressListener;
 import achozen.rememberme.navigation.FragmentNavigator;
+import achozen.rememberme.sounds.SoundPlayer;
 import achozen.rememberme.statistics.GameStatistics;
 import achozen.rememberme.statistics.LevelState;
 import achozen.rememberme.utils.TimerUtils;
-import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -30,7 +31,7 @@ import butterknife.OnClick;
 /**
  * Created by Achozen on 2016-02-23.
  */
-public class GameActivity extends FragmentActivity implements GameProgressListener,
+public class GameActivity extends AppCompatActivity implements GameProgressListener,
         OnLevelFinishListener {
 
     public static final String GAME_MODE = "GameMode";
@@ -124,6 +125,7 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
 
     @Override
     public void onLevelFinished(GameStatistics gameStatistics) {
+        SoundPlayer.playUnlockedSound();
         if (gameStatistics.getLevelState() == LevelState.SUCCESS) {
             gameProgressCoordinator.startNextLevel(gameStatistics);
         } else if (gamemode == GameMode.RANKING) {
@@ -160,6 +162,7 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
     @Override
     protected void onPause() {
         super.onPause();
+        SoundPlayer.releaseSoundPool();
         isPaused = true;
         currentGameFragment.onGamePaused();
     }
@@ -167,6 +170,7 @@ public class GameActivity extends FragmentActivity implements GameProgressListen
     @Override
     protected void onResume() {
         super.onResume();
+        SoundPlayer.initSoundPool(this.getApplicationContext());
         if (isPaused) {
             inactivityTime = System.currentTimeMillis();
             pausedActivityView.setVisibility(View.VISIBLE);

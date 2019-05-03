@@ -8,7 +8,7 @@ android {
     ext {
         versionMajor = 1
         versionMinor = 0
-        versionBuild = 2
+        versionBuild = 3
     }
 
     defaultConfig {
@@ -59,6 +59,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha04'
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:2.15.0'
     androidTestImplementation 'junit:junit:4.12'

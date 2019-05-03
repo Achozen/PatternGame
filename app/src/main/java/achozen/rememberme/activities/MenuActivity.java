@@ -1,6 +1,5 @@
 package achozen.rememberme.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +13,8 @@ import com.google.firebase.auth.FirebaseUser;
 import achozen.rememberme.R;
 import achozen.rememberme.analytics.AnalyticEvent;
 import achozen.rememberme.enums.GameMode;
+import achozen.rememberme.sounds.SoundPlayer;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -23,7 +24,7 @@ import static achozen.rememberme.activities.GameActivity.GAME_MODE;
 /**
  * Created by Achozen on 2016-02-23.
  */
-public class MenuActivity extends Activity {
+public class MenuActivity extends AppCompatActivity {
     @BindView(R.id.loggedAsTextView)
     TextView loggedAsTextView;
 
@@ -33,6 +34,7 @@ public class MenuActivity extends Activity {
         setContentView(R.layout.activity_menu);
         ButterKnife.bind(this);
         setupAds();
+        SoundPlayer.initMediaPlayer(this.getApplicationContext());
         setupLoggedAsTextView();
     }
 
@@ -102,4 +104,6 @@ public class MenuActivity extends Activity {
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
     }
+
+
 }

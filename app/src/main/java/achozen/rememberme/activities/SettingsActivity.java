@@ -1,10 +1,11 @@
 package achozen.rememberme.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -14,12 +15,15 @@ import com.google.firebase.auth.FirebaseUser;
 import achozen.rememberme.BuildConfig;
 import achozen.rememberme.R;
 import achozen.rememberme.analytics.AnalyticEvent;
-import achozen.rememberme.engine.PeferencesUtil;
+import achozen.rememberme.engine.PreferencesUtil;
+import achozen.rememberme.sounds.SoundPlayer;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
-public class SettingsActivity extends Activity {
+public class SettingsActivity extends AppCompatActivity {
 
     @BindView(R.id.inputText)
     TextInputEditText editText;
@@ -30,12 +34,18 @@ public class SettingsActivity extends Activity {
     @BindView(R.id.appVersion)
     TextView appVersion;
 
+    @BindView(R.id.backgroundMusic)
+    Switch backgroundMusicSwitch;
+
+    @BindView(R.id.soundEffects)
+    Switch soundEffectsSwitch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
-        final String userName = PeferencesUtil.readFromPrefs(this, PeferencesUtil.Preferences.USERNAME);
+        final String userName = PreferencesUtil.readFromPrefs(this, PreferencesUtil.Preferences.USERNAME);
         if (!"UNKNOWN".equalsIgnoreCase(userName)) {
             editText.setText(userName);
         }
@@ -44,17 +54,47 @@ public class SettingsActivity extends Activity {
         if (currentUser != null && currentUser.getEmail() != null) {
             loggedInVaue.setText(currentUser.getEmail());
         }
-
+        setupSoundSwitches();
         appVersion.setText("Version: " + BuildConfig.VERSION_NAME);
     }
 
+    private void setupSoundSwitches() {
+        boolean musicSwitchState = PreferencesUtil.readFromPrefs(this.getApplicationContext(), PreferencesUtil.SoundPreferences.MUSIC);
+        boolean soundEffectsSwitchState = PreferencesUtil.readFromPrefs(this.getApplicationContext(), PreferencesUtil.SoundPreferences.SOUND_EFFECTS);
+
+        backgroundMusicSwitch.setChecked(musicSwitchState);
+        soundEffectsSwitch.setChecked(soundEffectsSwitchState);
+    }
+
+    @OnCheckedChanged(R.id.backgroundMusic)
+    void onBackgroundMusicSelected(CompoundButton button, boolean checked) {
+        PreferencesUtil.storeInPrefs(this.getApplicationContext(), PreferencesUtil.SoundPreferences.MUSIC, checked);
+        if (checked) {
+            AnalyticEvent.musicOn();
+            SoundPlayer.startBackgroundMusic();
+        } else {
+            AnalyticEvent.musicOff();
+            SoundPlayer.pauseBackgroundMusic();
+        }
+
+    }
+
+    @OnCheckedChanged(R.id.soundEffects)
+    void onSoundEffectsSelected(CompoundButton button, boolean checked) {
+        if (checked) {
+            AnalyticEvent.soundEffectsOn();
+        } else {
+            AnalyticEvent.soundEffectsOff();
+        }
+        PreferencesUtil.storeInPrefs(this.getApplicationContext(), PreferencesUtil.SoundPreferences.SOUND_EFFECTS, checked);
+    }
 
     @OnClick(R.id.saveButton)
     void saveButtonClicked(View v) {
         if (editText.getText() != null && TextUtils.isEmpty(editText.getText().toString().trim())) {
             editText.setError("Username cannot be empty !");
         } else {
-            PeferencesUtil.storeInPrefs(this, PeferencesUtil.Preferences.USERNAME, editText.getText().toString());
+            PreferencesUtil.storeInPrefs(this, PreferencesUtil.Preferences.USERNAME, editText.getText().toString());
             AnalyticEvent.usernameChanged();
             finish();
         }
@@ -62,7 +102,7 @@ public class SettingsActivity extends Activity {
 
     @OnClick(R.id.logoutButton)
     void onLogoutClicked(View v) {
-        PeferencesUtil.storeInPrefs(this, PeferencesUtil.Preferences.USERNAME, PeferencesUtil.UNKNOWN_USERNAME);
+        PreferencesUtil.storeInPrefs(this, PreferencesUtil.Preferences.USERNAME, PreferencesUtil.UNKNOWN_USERNAME);
         FirebaseAuth.getInstance().signOut();
         finishAffinity();
         Intent startupIntent = new Intent(this, SplashScreenActivity.class);

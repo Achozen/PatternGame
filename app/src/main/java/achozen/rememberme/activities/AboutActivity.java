@@ -1,16 +1,16 @@
 package achozen.rememberme.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import achozen.rememberme.BuildConfig;
 import achozen.rememberme.R;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by Achozen on 2016-02-27.
  */
-public class AboutActivity extends Activity {
+public class AboutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -28,6 +28,10 @@ public class AnalyticEvent {
     private static final String PATTERN_GENERATED = "pattern_generated";
     private static final String GIVE_UP_CLICKED = "give_up_clicked";
     private static final String NO_TIME_LEFT = "no_time_left";
+    private static final String MUSIC_OFF = "music_off";
+    private static final String MUSIC_ON = "music_on";
+    private static final String SOUND_EFFECTS_ON = "sound_effects_on";
+    private static final String SOUND_EFFECTS_OFF = "sound_effects_off";
     private static FirebaseAnalytics firebaseAnalytics;
     private static Context appContext;
 
@@ -95,6 +99,22 @@ public class AnalyticEvent {
 
     public static void aboutClicked() {
         sendEvent(ABOUT_CLICKED, null);
+    }
+
+    public static void musicOff() {
+        sendEvent(MUSIC_OFF, null);
+    }
+
+    public static void musicOn() {
+        sendEvent(MUSIC_ON, null);
+    }
+
+    public static void soundEffectsOn() {
+        sendEvent(SOUND_EFFECTS_ON, null);
+    }
+
+    public static void soundEffectsOff() {
+        sendEvent(SOUND_EFFECTS_OFF, null);
     }
 
     public static void patternGenerated(long time, GameSize gameSize, Difficulty difficulty, int linksNumber) {

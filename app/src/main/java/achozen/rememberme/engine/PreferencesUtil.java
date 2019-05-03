@@ -9,7 +9,7 @@ import achozen.rememberme.enums.GameSize;
 /**
  * Created by Achozen on 2016-05-27.
  */
-public class PeferencesUtil {
+public class PreferencesUtil {
     private static final String prefType = "settings";
     public static final String UNKNOWN_USERNAME = "UNKNOWN";
 
@@ -18,6 +18,14 @@ public class PeferencesUtil {
         SharedPreferences sharedPref = context.getSharedPreferences(prefType, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(type.name(), value);
+        editor.apply();
+    }
+
+    public static void storeInPrefs(Context context, SoundPreferences type, boolean value) {
+
+        SharedPreferences sharedPref = context.getSharedPreferences(prefType, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(type.name(), value);
         editor.apply();
     }
 
@@ -40,9 +48,30 @@ public class PeferencesUtil {
         return sharedPref.getString(type.name(), defaultValue);
     }
 
+    public static boolean readFromPrefs(Context context, SoundPreferences type) {
+        SharedPreferences sharedPref = context.getSharedPreferences(prefType, Context.MODE_PRIVATE);
+
+        boolean defaultValue = false;
+        if (type == SoundPreferences.MUSIC) {
+            defaultValue = true;
+        }
+
+        if (type == SoundPreferences.SOUND_EFFECTS) {
+            defaultValue = true;
+        }
+
+
+        return sharedPref.getBoolean(type.name(), defaultValue);
+    }
+
     public enum Preferences {
         SIZE,
         DIFFICULTY,
         USERNAME
+    }
+
+    public enum SoundPreferences {
+        MUSIC,
+        SOUND_EFFECTS
     }
 }
