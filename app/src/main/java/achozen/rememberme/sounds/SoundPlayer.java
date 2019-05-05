@@ -63,7 +63,7 @@ public class SoundPlayer {
         if (!loaded || !effectsEnabled) {
             return;
         }
-        soundPool.play(unlockedsound, 0.5f, 0.5f, 0, 0, 1);
+        soundPool.play(unlockedsound, 0.3f, 0.3f, 0, 0, 1);
     }
 
     public static void releaseSoundPool() {

@@ -31,6 +31,7 @@ public class PatternAnimator implements ValueAnimator.AnimatorUpdateListener, An
     Paint drawPaint;
     float startX = 0;
     float startY = 0;
+    boolean gameLostPreview;
 
 
     public PatternAnimator(PatternView patternview, Canvas canvas, AnimationProgressListener
@@ -40,12 +41,18 @@ public class PatternAnimator implements ValueAnimator.AnimatorUpdateListener, An
         this.animationProgressListener = animationProgressListener;
     }
 
-    public void animatePath(ArrayList<PointPosition> pointPositions) {
+    public void animatePath(ArrayList<PointPosition> pointPositions, boolean lostGamePreview) {
+        currentlyDrawingLink = 0;
+        this.gameLostPreview = lostGamePreview;
         this.pointPositions = pointPositions;
         maxLinksToDraw = pointPositions.size() - 1;
         pathToDraw = new Path();
 
-        drawPaint = DrawingUtil.getPaintForPath();
+        if (gameLostPreview) {
+            drawPaint = DrawingUtil.getPaintForPathLostPreview();
+        } else {
+            drawPaint = DrawingUtil.getPaintForPath();
+        }
 
         prepareValueAnimatorForLink(pointPositions.get(0), pointPositions.get(1));
 
@@ -63,7 +70,11 @@ public class PatternAnimator implements ValueAnimator.AnimatorUpdateListener, An
         PropertyValuesHolder yHolder = PropertyValuesHolder.ofFloat("toY", point1.getYCanvas(),
                 point2.getYCanvas());
         valueAnimator = ValueAnimator.ofPropertyValuesHolder(xHolder, yHolder);
-        valueAnimator.setDuration(500);
+        long animationDuration = 0;
+        if (!gameLostPreview) {
+            animationDuration = 500;
+        }
+        valueAnimator.setDuration(animationDuration);
         valueAnimator.addUpdateListener(this);
         valueAnimator.setInterpolator(new LinearInterpolator());
         valueAnimator.addListener(this);
@@ -104,7 +115,7 @@ public class PatternAnimator implements ValueAnimator.AnimatorUpdateListener, An
             prepareValueAnimatorForLink(pointPositions.get(currentlyDrawingLink), pointPositions.get
                     (currentlyDrawingLink + 1));
         } else {
-            animationProgressListener.onAnimationFinish();
+            animationProgressListener.onAnimationFinish(gameLostPreview);
         }
     }
 

@@ -224,18 +224,25 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
         drawPointsOnCanvas(drawCanvas, false);
     }
 
-    private void startLevelAnimation() {
+    private void startLevelAnimation(boolean lostGamePreview) {
         randomlyGeneratedPoints = LockPointsPositioner.calculateCoordinatesForGeneratedPointsByGameSize(levelInitializationData
                         .getPatternPointPositions(), w, h,
                 levelInitializationData.getGameSize());
         drawPointsOnCanvas(drawCanvas, true);
 
-        patternAnimator.animatePath(randomlyGeneratedPoints);
+        patternAnimator.animatePath(randomlyGeneratedPoints, lostGamePreview);
     }
 
     @Override
-    public void onAnimationFinish() {
-        TimerUtils.beforeDrawCount(notificationTextView, this);
+    public void onAnimationFinish(boolean lostGamePreview) {
+        if (lostGamePreview) {
+            postDelayed(() -> {
+                onLevelFinishListener.onLevelFinished(createStatisticsForCurrentLevel(LevelState.FAILED, 0));
+                AnalyticEvent.noTimeLeft();
+            }, 2000);
+        } else {
+            TimerUtils.beforeDrawCount(notificationTextView, this);
+        }
     }
 
     @Override
@@ -247,13 +254,12 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
 
     @Override
     public void onDrawingTimeOver() {
-        onLevelFinishListener.onLevelFinished(createStatisticsForCurrentLevel(LevelState.FAILED, 0));
-        AnalyticEvent.noTimeLeft();
+        startLevelAnimation(true);
     }
 
     @Override
     public void onPreAnimationCountOver() {
-        startLevelAnimation();
+        startLevelAnimation(false);
     }
 
     @Override
