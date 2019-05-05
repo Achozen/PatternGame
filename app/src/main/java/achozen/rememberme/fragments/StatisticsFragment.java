@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import achozen.rememberme.R;
 import achozen.rememberme.engine.PreferencesUtil;
@@ -112,6 +113,7 @@ public class StatisticsFragment extends Fragment {
                 }
                 if (myScore == null) {
                     rankingPositionLabel.setText("UNRANKED");
+                    progressLayout.setVisibility(View.GONE);
                 }
             }
 
@@ -146,24 +148,34 @@ public class StatisticsFragment extends Fragment {
         queryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+/*
                 Log.d("TAGTAGS", "onDataChange");
-                final ArrayList<Score> allScores = new ArrayList<>();
-                final long itemsCount = dataSnapshot.getChildrenCount();
+                GenericTypeIndicator<List<Score>> t = new GenericTypeIndicator<List<Score>>() {};
 
+                List<Score> allScores = dataSnapshot.getChildren(t
+               // final ArrayList<Score> allScores = new ArrayList<>();
+              //  Collections.reverse(allScores);
+*/
+                List<Score> allScores = new ArrayList<>();
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                     Score serverScore = messageSnapshot.getValue(Score.class);
                     allScores.add(serverScore);
+                }
+                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                    Score serverScore = messageSnapshot.getValue(Score.class);
                     if (serverScore != null && serverScore.email.equalsIgnoreCase(user.getEmail())) {
                         Log.d("TAGTAGS", "Removing event listener");
                         queryRef.removeEventListener(this);
                         long currentPosition = 0;
+                        int bestScore = serverScore.score;
                         if (currentScore.score > serverScore.score) {
                             Log.d("TAGTAGS", "Setting value for better score");
+                            bestScore = currentScore.score;
                             messageSnapshot.getRef().setValue(currentScore);
                             rankingPositionLabel.setText("Congratulations - new record:");
                         }
-                        currentPosition = itemsCount - (allScores.size() - 1);
-                        rankingPosition.setText("" + currentPosition);
+                        currentPosition = getPosition(bestScore, allScores);
+                        rankingPosition.setText(String.valueOf(currentPosition));
                         progressLayout.setVisibility(View.GONE);
                         confirmationButton.setVisibility(View.VISIBLE);
                         return;
@@ -180,6 +192,17 @@ public class StatisticsFragment extends Fragment {
         });
     }
 
+    private int getPosition(int currentScore, List<Score> allScores) {
+        int position = allScores.size() + 1;
+        for (Score score : allScores) {
+            if (currentScore > score.score) {
+                position--;
+            } else {
+                return position;
+            }
+        }
+        return position;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
