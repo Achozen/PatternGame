@@ -47,7 +47,15 @@
     <string name="my_ranking_tab_title">MY RANKING</string>
 
     <!--test add unit ID-->
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="test_banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="home_banner_ad_unit_id">ca-app-pub-5578147969963645/6266142521</string>
+    <string name="settings_banner_ad_unit_id">ca-app-pub-5578147969963645/1041736002</string>
+    <string name="game_banner_ad_unit_id">ca-app-pub-5578147969963645/6102490990</string>
+    <string name="training_banner_ad_unit_id">ca-app-pub-5578147969963645/4293272224</string>
+    <string name="about_banner_ad_unit_id">ca-app-pub-5578147969963645/1971674297</string>
+    <string name="high_scores_banner_ad_unit_id">ca-app-pub-5578147969963645/9641322898</string>
+
+
     <string name="client_id">1038128085369-mrbea78pg76stsmcn5emglued6dkjrem.apps.googleusercontent.com</string>
     <string name="logged_as">"Logged as: "</string>
     <string name="button_confirmation_text">OK</string>
