@@ -3,12 +3,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/linearLayout2"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="15dp"
     android:background="@drawable/round_shape"
-
-    android:padding="15dp">
+    android:minHeight="200dp"
+    android:padding="15dp"
+    android:paddingStart="50dp"
+    android:paddingEnd="50dp">
 
     <TextView
         android:id="@+id/gameScoreLabelTextView"
@@ -67,13 +68,11 @@
         android:id="@+id/levelPassedNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="0"
         android:textColor="@color/green"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gameScoreTextView" />
 
     <TextView
@@ -91,13 +90,11 @@
         android:id="@+id/totalGameTimeValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="0"
         android:textColor="@color/green"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/levelPassedNumber" />
 
     <TextView
@@ -129,12 +126,9 @@
         layout="@layout/progress_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:elevation="3dp"
         android:translationZ="3dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

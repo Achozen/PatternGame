@@ -11,5 +11,9 @@ public interface GameProgressListener {
 
     void startNewLevel(LevelInitializationData levelInitializationData);
 
+    void displayRevenueAd(GameStatistics statistics);
+
+    void resumeLostGame(GameStatistics statistics);
+
     void onTrainingFinished();
 }

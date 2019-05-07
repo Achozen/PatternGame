@@ -30,6 +30,10 @@ public class GameStatistics {
         return levelState;
     }
 
+    public void setLevelState(LevelState newState) {
+        levelState = newState;
+    }
+
     public int getLevelFinishedCounter() {
         return levelFinishedCounter;
     }

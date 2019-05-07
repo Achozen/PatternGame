@@ -2,6 +2,7 @@ package achozen.rememberme.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,8 +11,11 @@ import com.google.android.gms.ads.AdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Date;
+
 import achozen.rememberme.R;
 import achozen.rememberme.analytics.AnalyticEvent;
+import achozen.rememberme.engine.PreferencesUtil;
 import achozen.rememberme.enums.GameMode;
 import achozen.rememberme.sounds.SoundPlayer;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,14 +32,19 @@ public class MenuActivity extends AppCompatActivity {
     @BindView(R.id.loggedAsTextView)
     TextView loggedAsTextView;
 
+    @BindView(R.id.livesCount)
+    TextView livesCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        updateLivesIfNeeded();
         ButterKnife.bind(this);
         setupAds();
         SoundPlayer.initMediaPlayer(this.getApplicationContext());
         setupLoggedAsTextView();
+        livesCount.setText(String.valueOf(PreferencesUtil.readFromPrefs(this, PreferencesUtil.LongPreferences.LIVES_COUNT)));
     }
 
     private void setupLoggedAsTextView() {
@@ -48,7 +57,6 @@ public class MenuActivity extends AppCompatActivity {
         } else {
             loggedAsFullText = "OFFLINE";
         }
-
 
         loggedAsTextView.setText(loggedAsFullText);
     }
@@ -105,5 +113,12 @@ public class MenuActivity extends AppCompatActivity {
         mAdView.loadAd(adRequest);
     }
 
+    private void updateLivesIfNeeded() {
+        Date lastLifeRenewDate = new Date(PreferencesUtil.readFromPrefs(this, PreferencesUtil.LongPreferences.LIVES_UPDATE_TIMESTAMP));
+        if(!DateUtils.isToday(lastLifeRenewDate.getTime())){
+            PreferencesUtil.storeInPrefs(this, PreferencesUtil.LongPreferences.LIVES_COUNT, 2);
+            PreferencesUtil.storeInPrefs(this, PreferencesUtil.LongPreferences.LIVES_UPDATE_TIMESTAMP, System.currentTimeMillis());
+        }
+    }
 
 }

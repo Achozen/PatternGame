@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
 
@@ -14,11 +13,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
         android:background="@color/black"
         android:text="@string/start_label"
         android:textColor="@color/green"
         android:textSize="@dimen/text_bigger"
-        android:layout_margin="5dp"
         ads:layout_constraintBottom_toTopOf="@+id/buttonTraining"
         ads:layout_constraintEnd_toEndOf="parent"
         ads:layout_constraintHorizontal_bias="0.5"
@@ -31,10 +30,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
         android:background="@color/black"
         android:text="@string/high_scores_label"
         android:textColor="@color/green"
-        android:layout_margin="5dp"
         android:textSize="@dimen/text_bigger"
         ads:layout_constraintBottom_toTopOf="@+id/buttonSettings"
         ads:layout_constraintHorizontal_bias="0.5"
@@ -47,10 +46,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
         android:background="@color/black"
         android:text="@string/about_label"
         android:textColor="@color/green"
-        android:layout_margin="5dp"
         android:textSize="@dimen/text_bigger"
         ads:layout_constraintBottom_toTopOf="@+id/buttonExit"
         ads:layout_constraintHorizontal_bias="0.5"
@@ -63,10 +62,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
         android:background="@color/black"
         android:text="@string/exit_label"
         android:textColor="@color/green"
-        android:layout_margin="5dp"
         android:textSize="@dimen/text_bigger"
         ads:layout_constraintBottom_toTopOf="@+id/adView"
         ads:layout_constraintHorizontal_bias="0.5"
@@ -79,8 +78,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="@color/black"
         android:layout_margin="5dp"
+        android:background="@color/black"
         android:text="@string/training_label"
         android:textColor="@color/green"
         android:textSize="@dimen/text_bigger"
@@ -116,9 +115,9 @@
         android:id="@+id/buttonSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:background="@color/black"
         android:text="Settings"
-        android:layout_margin="5dp"
         android:textColor="@color/green"
         android:textSize="@dimen/text_bigger"
         ads:layout_constraintBottom_toTopOf="@+id/buttonAbout"
@@ -126,6 +125,43 @@
         ads:layout_constraintHorizontal_bias="0.5"
         ads:layout_constraintStart_toStartOf="parent"
         ads:layout_constraintTop_toBottomOf="@+id/buttonHighScores" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        ads:layout_constraintBottom_toTopOf="@+id/adView"
+        ads:layout_constraintEnd_toEndOf="parent"
+        ads:layout_constraintStart_toStartOf="parent">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintTop_toTopOf="parent"
+            ads:srcCompat="@drawable/live" />
+
+        <TextView
+            android:id="@+id/livesCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:textColor="@color/black"
+            android:textSize="30dp"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

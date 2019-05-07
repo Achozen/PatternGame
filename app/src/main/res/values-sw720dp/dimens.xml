@@ -13,5 +13,5 @@
     <dimen name="text_medium">26sp</dimen>
     <dimen name="text_big">30sp</dimen>
     <dimen name="text_bigger">36sp</dimen>
-    <dimen name="standard_view_margin">20dp</dimen>
+    <dimen name="standard_view_margin">100dp</dimen>
 </resources>

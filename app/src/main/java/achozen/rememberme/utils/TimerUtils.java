@@ -21,10 +21,16 @@ public class TimerUtils {
         totalTimeStartTimestamp = 0;
     }
 
+    public static void startTotalTimeMeasurement(long initValue) {
+        alreadyMeasuredTime = initValue;
+        totalTimeStartTimestamp = System.currentTimeMillis();
+    }
+
     public static void startTotalTimeMeasurement() {
         alreadyMeasuredTime = 0;
         totalTimeStartTimestamp = System.currentTimeMillis();
     }
+
 
     public static void resumeTotalTimeMeasurement() {
         totalTimeStartTimestamp = System.currentTimeMillis();

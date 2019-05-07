@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/black">
+    android:background="@color/black"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/headerImage"
@@ -18,10 +18,10 @@
         android:id="@+id/game_fragment_place_holder"
         android:layout_width="match_parent"
         android:layout_height="@dimen/logging_layout_height"
-        android:orientation="vertical"
+        android:layout_margin="@dimen/standard_view_margin"
         android:background="@drawable/round_shape"
-        android:layout_margin="15dp"
-        android:padding="15dp"/>
+        android:orientation="vertical"
+        android:padding="15dp" />
 
     <ImageView
         android:id="@+id/belowHeaderImage"
@@ -35,9 +35,9 @@
         android:id="@+id/appVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/green"
-        android:text="Version: "
+        android:layout_gravity="end"
         android:layout_margin="15dp"
-        android:layout_gravity="end"/>
+        android:text="Version: "
+        android:textColor="@color/green" />
 
 </LinearLayout>

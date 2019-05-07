@@ -68,4 +68,8 @@
     <string name="account_creation_info">If you do not have an account it will be created automatically</string>
     <string name="sound_effects">Sound effects</string>
     <string name="background_music">Background music</string>
+    <string name="lives_label">Lives</string>
+    <string name="lives_available_description">You can continue from the level you lost using 1 live. This is available one time per game. When you run out of lives you will be able to continue the game by watching and ad</string>
+    <string name="no_lives_available_description">You are out of lifes. Would you like to watch an AD to continue playing ? </string>
+
 </resources>

@@ -8,6 +8,10 @@ import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import achozen.rememberme.R;
 import achozen.rememberme.analytics.AnalyticEvent;
@@ -32,7 +36,7 @@ import butterknife.OnClick;
  * Created by Achozen on 2016-02-23.
  */
 public class GameActivity extends AppCompatActivity implements GameProgressListener,
-        OnLevelFinishListener {
+        OnLevelFinishListener, RewardedVideoAdListener {
 
     public static final String GAME_MODE = "GameMode";
     GameProgressCoordinator gameProgressCoordinator;
@@ -52,9 +56,16 @@ public class GameActivity extends AppCompatActivity implements GameProgressListe
     @BindView(R.id.currentPointsLabel)
     TextView currentPointsLabel;
 
+    boolean adLoaded = false;
+
 
     private PatternGameFragment currentGameFragment;
     private long inactivityTime;
+    private RewardedVideoAd mRewardedVideoAd;
+    private GameStatistics lastGameStatistics;
+    private boolean videoRewardClosed;
+    private boolean rewardObtained;
+    private boolean lifeUsed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +73,12 @@ public class GameActivity extends AppCompatActivity implements GameProgressListe
         setContentView(R.layout.activity_game);
         ButterKnife.bind(this);
         requestForAds();
+        loadRewardedVideoAd();
         gamemode = (GameMode) getIntent().getSerializableExtra(GAME_MODE);
         if (gamemode == GameMode.RANKING) {
-            giveUpButton.setVisibility(View.VISIBLE);
+            showMainPoints();
+        } else {
+            hideMainPoints();
         }
 
         gameProgressCoordinator = new GameProgressCoordinator(this, gamemode, this);
@@ -95,8 +109,9 @@ public class GameActivity extends AppCompatActivity implements GameProgressListe
     @Override
     public void onRankedFinished(GameStatistics statistics) {
         hideMainPoints();
-        AnalyticEvent.rankingGameFinished(statistics.getLevelFinishedCounter(), statistics.getScoredPoints(), statistics.getLevelFinishedCounter());
+        AnalyticEvent.rankingGameFinished(statistics.getLevelFinishedCounter(), statistics.getScoredPoints(), (int) statistics.getGameTime());
         FragmentNavigator.navigateToNextFragment(GameActivity.this, StatisticsFragment.getInstanceForGameEnd(statistics));
+
     }
 
     @Override
@@ -106,7 +121,30 @@ public class GameActivity extends AppCompatActivity implements GameProgressListe
         currentGameFragment.setLevelInitializationData(levelInitializationData);
         currentGameFragment.setOnLevelFinishListener(this);
         FragmentNavigator.navigateToNextFragment(GameActivity.this, currentGameFragment);
-        currentPointsValue.setText("" + levelInitializationData.getGameStatistics().getScoredPoints());
+        currentPointsValue.setText(String.valueOf(levelInitializationData.getGameStatistics().getScoredPoints()));
+    }
+
+    @Override
+    public void displayRevenueAd(GameStatistics statistics) {
+        lastGameStatistics = statistics;
+
+        if (mRewardedVideoAd.isLoaded()) {
+            mRewardedVideoAd.show();
+        }
+    }
+
+    private void loadRewardedVideoAd() {
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        mRewardedVideoAd.setRewardedVideoAdListener(this);
+        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
+                new AdRequest.Builder().build());
+    }
+
+    @Override
+    public void resumeLostGame(GameStatistics statistics) {
+        lifeUsed = true;
+        statistics.setLevelState(LevelState.SUCCESS);
+        gameProgressCoordinator.startNextLevel(statistics);
     }
 
     @Override
@@ -118,7 +156,7 @@ public class GameActivity extends AppCompatActivity implements GameProgressListe
     }
 
     private void requestForAds() {
-        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdView mAdView = (AdView) findViewById(R.id.adView1);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
     }
@@ -129,22 +167,36 @@ public class GameActivity extends AppCompatActivity implements GameProgressListe
         if (gameStatistics.getLevelState() == LevelState.SUCCESS) {
             gameProgressCoordinator.startNextLevel(gameStatistics);
         } else if (gamemode == GameMode.RANKING) {
+            if (rewardObtained || lifeUsed) {
+                onRankedFinished(gameStatistics);
+            } else {
+                displayAdditionalLifeQuestion(gameStatistics);
+            }
 
-            onRankedFinished(gameStatistics);
         } else {
             onTrainingFinished();
         }
 
     }
 
+    private void displayAdditionalLifeQuestion(GameStatistics gameStatistics) {
+        hideMainPoints();
+        FragmentNavigator.navigateToNextFragment(GameActivity.this, UseAnotherLifeFragment.getInstance(gameStatistics, this));
+    }
+
     private void showMainPoints() {
-        currentPointsLabel.setVisibility(View.VISIBLE);
-        currentPointsValue.setVisibility(View.VISIBLE);
+        if (gamemode == GameMode.RANKING) {
+            currentPointsLabel.setVisibility(View.VISIBLE);
+            currentPointsValue.setVisibility(View.VISIBLE);
+            giveUpButton.setVisibility(View.VISIBLE);
+        }
+
     }
 
     private void hideMainPoints() {
         currentPointsLabel.setVisibility(View.INVISIBLE);
         currentPointsValue.setVisibility(View.INVISIBLE);
+        giveUpButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -161,20 +213,73 @@ public class GameActivity extends AppCompatActivity implements GameProgressListe
 
     @Override
     protected void onPause() {
+        mRewardedVideoAd.pause(this);
         super.onPause();
         SoundPlayer.releaseSoundPool();
+        SoundPlayer.pauseBackgroundMusic();
         isPaused = true;
         currentGameFragment.onGamePaused();
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRewardedVideoAd.destroy(this);
+    }
+
+    @Override
     protected void onResume() {
+        mRewardedVideoAd.resume(this);
         super.onResume();
         SoundPlayer.initSoundPool(this.getApplicationContext());
+        SoundPlayer.startBackgroundMusic();
+
         if (isPaused) {
+            isPaused = false;
             inactivityTime = System.currentTimeMillis();
-            pausedActivityView.setVisibility(View.VISIBLE);
-            AnalyticEvent.gamePaused(false);
+            if (videoRewardClosed && rewardObtained) {
+                resumeLostGame(lastGameStatistics);
+                TimerUtils.startTotalTimeMeasurement(lastGameStatistics.getGameTime());
+            } else if (videoRewardClosed) {
+                videoRewardClosed = false;
+            } else {
+                pausedActivityView.setVisibility(View.VISIBLE);
+                AnalyticEvent.gamePaused(false);
+            }
         }
+    }
+
+    @Override
+    public void onRewarded(RewardItem reward) {
+        rewardObtained = true;
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+        videoRewardClosed = true;
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int errorCode) {
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+    }
+
+    @Override
+    public void onRewardedVideoCompleted() {
     }
 }

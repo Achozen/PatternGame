@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.FirebaseApp;
 
 import achozen.rememberme.BuildConfig;
@@ -51,6 +52,8 @@ public class SplashScreenActivity extends AppCompatActivity implements StartupPr
         FirebaseApp.initializeApp(this);
         AnalyticEvent.init(this.getApplicationContext());
         setContentView(R.layout.activity_splash_screen);
+        MobileAds.initialize(this, "ca-app-pub-5578147969963645~4923827617");
+
         presenter = new StartupPresenter(getApplicationContext(), this);
         ButterKnife.bind(this);
         handler = new Handler();
