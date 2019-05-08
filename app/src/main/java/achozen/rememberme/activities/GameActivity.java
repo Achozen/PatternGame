@@ -108,10 +108,8 @@ public class GameActivity extends AppCompatActivity implements GameProgressListe
 
     @Override
     public void onRankedFinished(GameStatistics statistics) {
-        hideMainPoints();
         AnalyticEvent.rankingGameFinished(statistics.getLevelFinishedCounter(), statistics.getScoredPoints(), (int) statistics.getGameTime());
         FragmentNavigator.navigateToNextFragment(GameActivity.this, StatisticsFragment.getInstanceForGameEnd(statistics));
-
     }
 
     @Override
@@ -196,7 +194,7 @@ public class GameActivity extends AppCompatActivity implements GameProgressListe
     private void hideMainPoints() {
         currentPointsLabel.setVisibility(View.INVISIBLE);
         currentPointsValue.setVisibility(View.INVISIBLE);
-        giveUpButton.setVisibility(View.GONE);
+        giveUpButton.setVisibility(View.INVISIBLE);
     }
 
     @Override

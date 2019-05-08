@@ -148,18 +148,12 @@ public class StatisticsFragment extends Fragment {
         queryRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-/*
-                Log.d("TAGTAGS", "onDataChange");
-                GenericTypeIndicator<List<Score>> t = new GenericTypeIndicator<List<Score>>() {};
-
-                List<Score> allScores = dataSnapshot.getChildren(t
-               // final ArrayList<Score> allScores = new ArrayList<>();
-              //  Collections.reverse(allScores);
-*/
                 List<Score> allScores = new ArrayList<>();
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                     Score serverScore = messageSnapshot.getValue(Score.class);
-                    allScores.add(serverScore);
+                    if (serverScore != null && !serverScore.email.equalsIgnoreCase(user.getEmail())) {
+                        allScores.add(serverScore);
+                    }
                 }
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                     Score serverScore = messageSnapshot.getValue(Score.class);

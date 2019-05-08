@@ -39,11 +39,16 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        updateLivesIfNeeded();
         ButterKnife.bind(this);
         setupAds();
         SoundPlayer.initMediaPlayer(this.getApplicationContext());
         setupLoggedAsTextView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateLivesIfNeeded();
         livesCount.setText(String.valueOf(PreferencesUtil.readFromPrefs(this, PreferencesUtil.LongPreferences.LIVES_COUNT)));
     }
 
@@ -115,7 +120,7 @@ public class MenuActivity extends AppCompatActivity {
 
     private void updateLivesIfNeeded() {
         Date lastLifeRenewDate = new Date(PreferencesUtil.readFromPrefs(this, PreferencesUtil.LongPreferences.LIVES_UPDATE_TIMESTAMP));
-        if(!DateUtils.isToday(lastLifeRenewDate.getTime())){
+        if (!DateUtils.isToday(lastLifeRenewDate.getTime())) {
             PreferencesUtil.storeInPrefs(this, PreferencesUtil.LongPreferences.LIVES_COUNT, 2);
             PreferencesUtil.storeInPrefs(this, PreferencesUtil.LongPreferences.LIVES_UPDATE_TIMESTAMP, System.currentTimeMillis());
         }
