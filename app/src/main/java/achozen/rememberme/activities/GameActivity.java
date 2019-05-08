@@ -108,6 +108,7 @@ public class GameActivity extends AppCompatActivity implements GameProgressListe
 
     @Override
     public void onRankedFinished(GameStatistics statistics) {
+        hideMainPoints();
         AnalyticEvent.rankingGameFinished(statistics.getLevelFinishedCounter(), statistics.getScoredPoints(), (int) statistics.getGameTime());
         FragmentNavigator.navigateToNextFragment(GameActivity.this, StatisticsFragment.getInstanceForGameEnd(statistics));
     }
@@ -214,7 +215,6 @@ public class GameActivity extends AppCompatActivity implements GameProgressListe
         mRewardedVideoAd.pause(this);
         super.onPause();
         SoundPlayer.releaseSoundPool();
-        SoundPlayer.pauseBackgroundMusic();
         isPaused = true;
         currentGameFragment.onGamePaused();
     }
@@ -230,7 +230,6 @@ public class GameActivity extends AppCompatActivity implements GameProgressListe
         mRewardedVideoAd.resume(this);
         super.onResume();
         SoundPlayer.initSoundPool(this.getApplicationContext());
-        SoundPlayer.startBackgroundMusic();
 
         if (isPaused) {
             isPaused = false;

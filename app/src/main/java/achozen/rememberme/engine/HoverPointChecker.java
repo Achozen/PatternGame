@@ -10,7 +10,7 @@ import achozen.rememberme.interfaces.PointPosition;
 public class HoverPointChecker {
     private final OnPathDrawingListener onPathDrawingListener;
     ArrayList<PointPosition> allPoints = new ArrayList<PointPosition>();
-    final float HOVER_OFFSET = 60;
+    final float HOVER_OFFSET = 50;
     float x = 0;
     float y = 0;
 

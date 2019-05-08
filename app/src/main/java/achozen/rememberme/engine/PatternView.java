@@ -146,7 +146,8 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
         if (drawingModeEnabled) {
             drawPointsOnCanvas(drawCanvas, false);
             drawAlreadyLinkedPoints(canvas);
-            canvas.drawLine(xStart, yStart, xStop, yStop, drawPaint);
+            if (xStart != 0 && yStart != 0)
+                canvas.drawLine(xStart, yStart, xStop, yStop, drawPaint);
         }
     }
 
