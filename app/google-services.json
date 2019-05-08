@@ -15,19 +15,27 @@
       },
       "oauth_client": [
         {
-          "client_id": "1038128085369-1btebh6aptteopu3c23qkhchpgg3j858.apps.googleusercontent.com",
+          "client_id": "1038128085369-9k6m4r0r6p3obu19jvqh42ig1vb7gm9k.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "achozen.rememberme",
-            "certificate_hash": "ae3d1babb137371930cf6ec0ffb2ab8ae7da20c8"
+            "certificate_hash": "a1effd13659e44f3109cd6ae98e6b42d67a32d7a"
           }
         },
         {
-          "client_id": "1038128085369-ec8s2j3ia2eobhnsn4npmvm9di92ce9d.apps.googleusercontent.com",
+          "client_id": "1038128085369-dp7buho8prkfiqrfkvhnc6j1jn60tvi8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "achozen.rememberme",
-            "certificate_hash": "14958b470dd23dfdf3b7d5ca86ec34f0cd438b5a"
+            "certificate_hash": "618c2f06cfdcd08b04ea810d9acd6dda3d242bc0"
+          }
+        },
+        {
+          "client_id": "1038128085369-tru9ifh7md90vmfkld1h4ntlkr6g94lk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "achozen.rememberme",
+            "certificate_hash": "48a75be676ef908c3b50cfbf54beee4b9e7cc27e"
           }
         },
         {
@@ -39,11 +47,19 @@
           }
         },
         {
-          "client_id": "1038128085369-tru9ifh7md90vmfkld1h4ntlkr6g94lk.apps.googleusercontent.com",
+          "client_id": "1038128085369-ec8s2j3ia2eobhnsn4npmvm9di92ce9d.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "achozen.rememberme",
-            "certificate_hash": "48a75be676ef908c3b50cfbf54beee4b9e7cc27e"
+            "certificate_hash": "14958b470dd23dfdf3b7d5ca86ec34f0cd438b5a"
+          }
+        },
+        {
+          "client_id": "1038128085369-1btebh6aptteopu3c23qkhchpgg3j858.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "achozen.rememberme",
+            "certificate_hash": "ae3d1babb137371930cf6ec0ffb2ab8ae7da20c8"
           }
         },
         {
@@ -65,7 +81,8 @@
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-5578147969963645~4923827617"
     }
   ],
   "configuration_version": "1"

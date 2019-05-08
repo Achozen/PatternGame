@@ -135,7 +135,7 @@ public class GameActivity extends AppCompatActivity implements GameProgressListe
     private void loadRewardedVideoAd() {
         mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
         mRewardedVideoAd.setRewardedVideoAdListener(this);
-        mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
+        mRewardedVideoAd.loadAd(getString(R.string.continue_game_ad_unit_id),
                 new AdRequest.Builder().build());
     }
 

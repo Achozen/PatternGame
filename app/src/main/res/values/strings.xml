@@ -48,6 +48,8 @@
 
     <!--test add unit ID-->
     <string name="test_banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+
+    <string name="continue_game_ad_unit_id">ca-app-pub-5578147969963645/9621706247</string>
     <string name="home_banner_ad_unit_id">ca-app-pub-5578147969963645/6266142521</string>
     <string name="settings_banner_ad_unit_id">ca-app-pub-5578147969963645/1041736002</string>
     <string name="game_banner_ad_unit_id">ca-app-pub-5578147969963645/6102490990</string>
