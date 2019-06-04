@@ -1,7 +1,11 @@
 package achozen.rememberme.engine;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import achozen.rememberme.analytics.AnalyticEvent;
 import achozen.rememberme.config.AppConfig;
@@ -37,6 +41,7 @@ public class LevelDifficultyManager {
 
     private static final int MAX_LEVEL_FOR_TRAINING = 5;
     private final List<Integer> rankingAll = new ArrayList<>();
+    private static final Map<Integer, List<PointPosition>> rankingLevels = new ConcurrentHashMap<>();
     private GameMode gameMode;
     private int currentLevel;
 
@@ -67,9 +72,32 @@ public class LevelDifficultyManager {
 
         this.difficulty = difficulty;
         this.gameSize = gameSize;
+        new Thread(this::preGenerateLevels).start();
     }
 
-    public ArrayList<PointPosition> createPatternForNextLevel() {
+    private void preGenerateLevels() {
+        if (gameMode == RANKING) {
+            long timeOfGeneration = System.currentTimeMillis();
+            for (int i = 0; i < rankingAll.size(); i++) {
+                GameSize gameSize = SMALL;
+                if (i <= rankedConf.small.size()) {
+                    gameSize = SMALL;
+                } else if (i <= rankedConf.medium.size() + rankedConf.small.size()) {
+                    gameSize = MEDIUM;
+                } else if (i <= rankedConf.medium.size() + rankedConf.small.size() + rankedConf.big.size()) {
+                    gameSize = BIG;
+                }
+                Integer linksNumber = rankingAll.get(i);
+                List<PointPosition> positions = new LevelBuilder().forceGenerateLevel(gameSize, linksNumber);
+
+                rankingLevels.put(i, positions);
+            }
+            timeOfGeneration = System.currentTimeMillis() - timeOfGeneration;
+            Log.d("TAGTAGs", "All level generation time: " + timeOfGeneration);
+        }
+    }
+
+    public List<PointPosition> createPatternForNextLevel() {
         currentLevel++;
         switch (gameMode) {
             case TRAINING:
@@ -80,7 +108,7 @@ public class LevelDifficultyManager {
         return null;
     }
 
-    private ArrayList<PointPosition> createNextRankingLevel() {
+    private List<PointPosition> createNextRankingLevel() {
         if (currentLevel > rankedConf.medium.size() + rankedConf.small.size() + rankedConf.big.size()) {
             return null;
         }
@@ -94,12 +122,16 @@ public class LevelDifficultyManager {
 
         long generationTime = System.currentTimeMillis();
         int linksNumber = createLinksBasedOnDifficulty();
-        ArrayList<PointPosition> points = LevelBuilder.forceGenerateLevel(gameSize, linksNumber);
+        // ArrayList<PointPosition> points = LevelBuilder.forceGenerateLevel(gameSize, linksNumber);
+        List<PointPosition> points = rankingLevels.get(currentLevel);
+        if (points == null) {
+            points = new LevelBuilder().forceGenerateLevel(gameSize, linksNumber);
+        }
         AnalyticEvent.patternGenerated(System.currentTimeMillis() - generationTime, gameSize, difficulty, linksNumber);
         return points;
     }
 
-    private ArrayList<PointPosition> createNextTrainingLevel() {
+    private List<PointPosition> createNextTrainingLevel() {
         if (currentLevel >= MAX_LEVEL_FOR_TRAINING) {
             currentLevel = 0;
             return null;
@@ -107,7 +139,8 @@ public class LevelDifficultyManager {
 
         long generationTime = System.currentTimeMillis();
         int linksNumber = createLinksBasedOnDifficulty();
-        ArrayList<PointPosition> points = LevelBuilder.forceGenerateLevel(gameSize, linksNumber);
+        /*        ArrayList<PointPosition> points = LevelBuilder.forceGenerateLevel(gameSize, linksNumber);*/
+        List<PointPosition> points = new LevelBuilder().forceGenerateLevel(gameSize, linksNumber);
         AnalyticEvent.patternGenerated(System.currentTimeMillis() - generationTime, gameSize, difficulty, linksNumber);
         return points;
     }

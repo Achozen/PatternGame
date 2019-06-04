@@ -1,7 +1,7 @@
 package achozen.rememberme.engine;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 import achozen.rememberme.enums.GameSize;
 import achozen.rememberme.interfaces.PointPosition;
@@ -13,10 +13,10 @@ import achozen.rememberme.statistics.GameStatistics;
 public class LevelInitializationData implements Serializable {
     private GameStatistics gameStatistics;
     private GameSize gameSize;
-    private ArrayList<PointPosition> pointPositions;
-    private ArrayList<PointPosition> patternPointPositions;
+    private List<PointPosition> pointPositions;
+    private List<PointPosition> patternPointPositions;
 
-    public LevelInitializationData(GameSize gameSize, ArrayList<PointPosition> pointPositions, ArrayList<PointPosition> patternPointPositions, GameStatistics gameStatistics) {
+    public LevelInitializationData(GameSize gameSize, List<PointPosition> pointPositions, List<PointPosition> patternPointPositions, GameStatistics gameStatistics) {
         this.gameStatistics = gameStatistics;
         this.gameSize = gameSize;
         this.pointPositions = pointPositions;
@@ -27,11 +27,11 @@ public class LevelInitializationData implements Serializable {
         return gameSize;
     }
 
-    public ArrayList<PointPosition> getPointPositions() {
+    public List<PointPosition> getPointPositions() {
         return pointPositions;
     }
 
-    public ArrayList<PointPosition> getPatternPointPositions() {
+    public List<PointPosition> getPatternPointPositions() {
         return patternPointPositions;
     }
 

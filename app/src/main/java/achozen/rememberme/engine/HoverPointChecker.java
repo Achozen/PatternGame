@@ -1,6 +1,7 @@
 package achozen.rememberme.engine;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import achozen.rememberme.interfaces.PointPosition;
 
@@ -14,7 +15,7 @@ public class HoverPointChecker {
     float x = 0;
     float y = 0;
 
-    HoverPointChecker(ArrayList<PointPosition> allPoints, OnPathDrawingListener onPathDrawingListener) {
+    HoverPointChecker(List<PointPosition> allPoints, OnPathDrawingListener onPathDrawingListener) {
         this.allPoints.addAll(allPoints);
         this.onPathDrawingListener = onPathDrawingListener;
     }

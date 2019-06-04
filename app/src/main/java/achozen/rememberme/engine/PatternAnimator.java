@@ -9,7 +9,7 @@ import android.graphics.Path;
 import android.util.Log;
 import android.view.animation.LinearInterpolator;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import achozen.rememberme.interfaces.AnimationProgressListener;
 import achozen.rememberme.interfaces.PointPosition;
@@ -25,7 +25,7 @@ public class PatternAnimator implements ValueAnimator.AnimatorUpdateListener, An
     private final AnimationProgressListener animationProgressListener;
     private int currentlyDrawingLink;
     private int maxLinksToDraw;
-    private ArrayList<PointPosition> pointPositions;
+    private List<PointPosition> pointPositions;
     ValueAnimator valueAnimator;
     private Path pathToDraw;
     Paint drawPaint;
@@ -41,7 +41,7 @@ public class PatternAnimator implements ValueAnimator.AnimatorUpdateListener, An
         this.animationProgressListener = animationProgressListener;
     }
 
-    public void animatePath(ArrayList<PointPosition> pointPositions, boolean lostGamePreview) {
+    public void animatePath(List<PointPosition> pointPositions, boolean lostGamePreview) {
         currentlyDrawingLink = 0;
         this.gameLostPreview = lostGamePreview;
         this.pointPositions = pointPositions;

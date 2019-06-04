@@ -3,10 +3,13 @@ package achozen.rememberme.engine;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.OptionalDouble;
 
 import achozen.rememberme.enums.GameSize;
 import achozen.rememberme.interfaces.PointPosition;
 
+import static achozen.rememberme.engine.LevelBuilder.failedAttempts;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -17,7 +20,7 @@ public class LevelBuilderTest {
     public void generateFirstPointShouldCreateCorrectPoint() {
 
         for (int i = 0; i < 50; i++) {
-            PointPosition pointPosition = LevelBuilder.generateFirstPoint(3, 3);
+            PointPosition pointPosition = new LevelBuilder().generateFirstPoint(3, 3);
             System.out.println("generateFirstPointShouldCreateCorrectPoint Point number " + i + "" +
                     " X : " + pointPosition.getColumn() + " Y " +
                     ": " + pointPosition.getRow());
@@ -31,7 +34,7 @@ public class LevelBuilderTest {
 
     @Test
     public void forceGenerateLevelSholdGenerateLevel() {
-        ArrayList<achozen.rememberme.interfaces.PointPosition> forceGene = LevelBuilder.forceGenerateLevel(GameSize.BIG, 5);
+        List<PointPosition> forceGene = new LevelBuilder().forceGenerateLevel(GameSize.BIG, 24);
 
         for (PointPosition position : forceGene) {
             System.out.println("TAGTAG Generated point [" + position.getColumn() + "," + position.getRow() + "]");
@@ -42,14 +45,12 @@ public class LevelBuilderTest {
 
     @Test
     public void generateLevelSholdGenerateLevel() {
-
-
         for (int i = 0; i < 50; i++) {
-            ArrayList<PointPosition> generated = LevelBuilder.generateLevel(3, 3, 5);
+            List<PointPosition> generated = new LevelBuilder().generateLevel(3, 3, 5);
 
             for (PointPosition position : generated) {
                 System.out.println("TAGTAG Generated point [" + position.getColumn() + "," + position
-                        .getRow()+ "]");
+                        .getRow() + "]");
 
             }
             System.out.println("---------");
@@ -63,7 +64,7 @@ public class LevelBuilderTest {
     @Test
     public void generateNextPointShouldGenerateValidNextPoint() {
         for (int i = 0; i < 50; i++) {
-            PointPosition pointPosition = LevelBuilder.generateNextPoint(3, 3, new Point(1,1, 1));
+            PointPosition pointPosition = new LevelBuilder().generateNextPoint(3, 3, new Point(1, 1, 1));
 
             System.out.println("TAGTAG Generated next point [" + pointPosition.getColumn() + "," +
                     pointPosition.getRow() + "]");
@@ -74,13 +75,12 @@ public class LevelBuilderTest {
     @Test
     public void createVirtualPointArrayAroundThePointTest() {
         for (int i = 0; i < 10; i++) {
-            ArrayList<PointPosition> virtualArray = LevelBuilder
-                    .createVirtualPointArrayAroundThePoint(new Point(1,1, 2));
+            ArrayList<PointPosition> virtualArray = new LevelBuilder().createVirtualPointArrayAroundThePoint(new Point(1, 1, 2));
 
             for (int j = 0; j < virtualArray.size(); j++) {
 
                 System.out.println("TAGTAG Generated array [" + virtualArray.get(j).getColumn() + ","
-                        + virtualArray.get(j).getRow()+ "]");
+                        + virtualArray.get(j).getRow() + "]");
             }
             System.out.println("--------------");
         }
@@ -89,7 +89,7 @@ public class LevelBuilderTest {
     @Test
     public void createRealPointsTest() {
         for (int i = 0; i < 10; i++) {
-            ArrayList<PointPosition> virtualArray = LevelBuilder.createRealPoints(4, 4);
+            ArrayList<PointPosition> virtualArray = new LevelBuilder().createRealPoints(4, 4);
 
             for (int j = 0; j < virtualArray.size(); j++) {
 

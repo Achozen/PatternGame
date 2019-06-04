@@ -9,7 +9,7 @@ android {
     ext {
         versionMajor = 1
         versionMinor = 0
-        versionBuild = 10
+        versionBuild = 11
     }
 
     defaultConfig {

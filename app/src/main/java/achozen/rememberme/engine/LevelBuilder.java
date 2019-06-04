@@ -1,6 +1,8 @@
 package achozen.rememberme.engine;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import achozen.rememberme.enums.GameSize;
@@ -10,19 +12,20 @@ import achozen.rememberme.interfaces.PointPosition;
  * Remember that level builder is able to generate non-symetric levels like 4x6
  */
 public class LevelBuilder {
-    private static ArrayList<PointPosition> result = new ArrayList<>();
+    private List<PointPosition> result = Collections.synchronizedList(new ArrayList<>());
+    public static int failedAttempts = 0;
 
 
-    public static ArrayList<PointPosition> forceGenerateLevel(GameSize gameSize, int
+    public List<PointPosition> forceGenerateLevel(GameSize gameSize, int
             numberOfLinks) {
         int width = 0;
         int height = 0;
 
-        switch(gameSize){
+        switch (gameSize) {
             case SMALL:
                 width = 3;
                 height = 3;
-            break;
+                break;
             case MEDIUM:
                 width = 4;
                 height = 4;
@@ -34,17 +37,18 @@ public class LevelBuilder {
 
         }
 
-        ArrayList<PointPosition> generatedLevel = generateLevel(width, height, numberOfLinks);
-        while (generatedLevel.size() < numberOfLinks) {
-
+        List<PointPosition> generatedLevel = generateLevel(width, height, numberOfLinks);
+        while (generatedLevel.size() != numberOfLinks + 1) {
+            failedAttempts++;
             generatedLevel = generateLevel(width, height, numberOfLinks);
         }
         return generatedLevel;
+
     }
 
 
-    public static ArrayList<PointPosition> generateLevel(int width, int height, int numberOfLinks) {
-        result = new ArrayList<>();
+    List<PointPosition> generateLevel(int width, int height, int numberOfLinks) {
+        result.clear();
         PointPosition startPoint = generateFirstPoint(width, height);
         result.add(startPoint);
 
@@ -59,24 +63,23 @@ public class LevelBuilder {
         return result;
     }
 
-    public static PointPosition generateFirstPoint(int width, int height) {
+    PointPosition generateFirstPoint(int width, int height) {
         Random randomGenerator = new Random();
         Point point = null;
         int id = 0;
         for (int idx = 1; idx <= 10; ++idx) {
             point = new Point(id++, showRandomInteger(0, width - 1, randomGenerator),
-                    showRandomInteger
-                    (0, height - 1, randomGenerator));
+                    showRandomInteger(0, height - 1, randomGenerator));
         }
 
         return point;
     }
 
     //tested
-    public static PointPosition generateNextPoint(int width, int height, PointPosition
+    PointPosition generateNextPoint(int width, int height, PointPosition
             previousPointPosition) {
 
-        ArrayList<PointPosition> possibleMoves = calculatePossibleMoves(width, height,
+        List<PointPosition> possibleMoves = calculatePossibleMoves(width, height,
                 previousPointPosition);
 
         Random randomGenerator = new Random();
@@ -88,18 +91,18 @@ public class LevelBuilder {
         return possibleMoves.get(generatedIndex);
     }
 
-    private static ArrayList<PointPosition> calculatePossibleMoves(int width, int height,
-                                                                   PointPosition
-                                                                           previousPointPosition) {
+    List<PointPosition> calculatePossibleMoves(int width, int height,
+                                               PointPosition
+                                                       previousPointPosition) {
 
         ArrayList<PointPosition> possibleMoves;
         possibleMoves = obtainPointsAroundPoint(width, height, previousPointPosition);
         return excludePreviouslyGeneratedPoints(possibleMoves, result);
     }
 
-    private static ArrayList<PointPosition> obtainPointsAroundPoint(int width, int height,
-                                                                    PointPosition
-                                                                            previousPointPosition) {
+    ArrayList<PointPosition> obtainPointsAroundPoint(int width, int height,
+                                                     PointPosition
+                                                             previousPointPosition) {
         ArrayList<PointPosition> pointsAround;
 
         ArrayList<PointPosition> virtualPointsAround = createVirtualPointArrayAroundThePoint
@@ -112,10 +115,10 @@ public class LevelBuilder {
 
     }
 
-    private static ArrayList<PointPosition> obtainTheSamePoints(ArrayList<PointPosition>
-                                                                        virtualPointsAround,
-                                                                ArrayList<PointPosition>
-                                                                        realPoints) {
+    ArrayList<PointPosition> obtainTheSamePoints(ArrayList<PointPosition>
+                                                         virtualPointsAround,
+                                                 ArrayList<PointPosition>
+                                                         realPoints) {
         ArrayList<PointPosition> theSamePoints = new ArrayList<>();
 
 
@@ -125,7 +128,7 @@ public class LevelBuilder {
 
                 if (virtualPoint.getColumn() == realPoint.getColumn() && virtualPoint.getRow() ==
                         realPoint
-                        .getRow()) {
+                                .getRow()) {
                     theSamePoints.add(virtualPoint);
                 }
             }
@@ -136,8 +139,8 @@ public class LevelBuilder {
     }
 
     // tested - working
-    public static ArrayList<PointPosition> createVirtualPointArrayAroundThePoint(PointPosition
-                                                                                         previousPointPosition) {
+    ArrayList<PointPosition> createVirtualPointArrayAroundThePoint(PointPosition
+                                                                           previousPointPosition) {
 
         ArrayList<PointPosition> pointsAround = new ArrayList<>();
         int midX = previousPointPosition.getColumn();
@@ -156,7 +159,7 @@ public class LevelBuilder {
     }
 
     //tested
-    public static ArrayList<PointPosition> createRealPoints(int width, int height) {
+    ArrayList<PointPosition> createRealPoints(int width, int height) {
 
         ArrayList<PointPosition> realPoints = new ArrayList<>();
 
@@ -172,8 +175,8 @@ public class LevelBuilder {
 
     // method takes all possible moves via parameter and excludes moves to points that was used
     // before
-    private static ArrayList<PointPosition> excludePreviouslyGeneratedPoints
-    (ArrayList<PointPosition> possibleMoves, ArrayList<PointPosition> listToExclude) {
+    List<PointPosition> excludePreviouslyGeneratedPoints
+    (ArrayList<PointPosition> possibleMoves, List<PointPosition> listToExclude) {
 
         ArrayList<PointPosition> possibleMovesResult = new ArrayList<>();
         possibleMovesResult.addAll(possibleMoves);
@@ -190,7 +193,7 @@ public class LevelBuilder {
         return possibleMovesResult;
     }
 
-    private static int showRandomInteger(int aStart, int aEnd, Random aRandom) {
+    int showRandomInteger(int aStart, int aEnd, Random aRandom) {
         if (aStart > aEnd) {
             throw new IllegalArgumentException("Start cannot exceed End.");
         }

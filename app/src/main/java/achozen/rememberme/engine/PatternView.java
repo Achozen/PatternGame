@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import achozen.rememberme.LockPointsPositioner;
 import achozen.rememberme.R;
@@ -54,9 +55,9 @@ public class PatternView extends View implements AnimationProgressListener, OnPr
     private TextView notificationTextView;
     private boolean drawingModeEnabled;
     private HoverPointChecker hoverPointChecker;
-    private ArrayList<PointPosition> allPoints;
-    private ArrayList<PointPosition> alreadyLinkedPoints = new ArrayList<>();
-    private ArrayList<PointPosition> randomlyGeneratedPoints;
+    private List<PointPosition> allPoints;
+    private List<PointPosition> alreadyLinkedPoints = new ArrayList<>();
+    private List<PointPosition> randomlyGeneratedPoints;
     private OnLevelFinishListener onLevelFinishListener;
     private boolean isGamePaused;
 

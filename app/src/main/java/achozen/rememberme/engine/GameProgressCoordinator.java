@@ -2,7 +2,7 @@ package achozen.rememberme.engine;
 
 import android.content.Context;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import achozen.rememberme.PointsInitializer;
 import achozen.rememberme.enums.Difficulty;
@@ -68,7 +68,7 @@ public class GameProgressCoordinator {
     }
 
     private LevelInitializationData prepareNextLevel(GameStatistics gameStatistics) {
-        ArrayList<PointPosition> pattern = levelDifficultyManager.createPatternForNextLevel();
+        List<PointPosition> pattern = levelDifficultyManager.createPatternForNextLevel();
         currentGameSize = levelDifficultyManager.getCurrentGameSize();
         if (pattern == null) {
             return null;
