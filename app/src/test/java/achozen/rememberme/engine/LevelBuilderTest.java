@@ -4,12 +4,10 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.OptionalDouble;
 
 import achozen.rememberme.enums.GameSize;
 import achozen.rememberme.interfaces.PointPosition;
 
-import static achozen.rememberme.engine.LevelBuilder.failedAttempts;
 import static org.junit.Assert.assertTrue;
 
 /**

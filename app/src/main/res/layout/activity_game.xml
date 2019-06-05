@@ -10,7 +10,7 @@
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         app:adSize="BANNER"
         app:adUnitId="@string/game_banner_ad_unit_id"
         app:layout_constraintEnd_toEndOf="parent"
