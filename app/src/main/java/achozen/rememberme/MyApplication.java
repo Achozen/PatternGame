@@ -5,8 +5,9 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
+import androidx.multidex.MultiDexApplication;
 
-public class MyApplication extends android.app.Application implements LifecycleObserver {
+public class MyApplication extends MultiDexApplication implements LifecycleObserver {
 
     @Override
     public void onCreate() {

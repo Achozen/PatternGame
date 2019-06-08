@@ -8,16 +8,16 @@ android {
 
     ext {
         versionMajor = 1
-        versionMinor = 0
-        versionBuild = 12
+        versionMinor = 1
+        versionPatch = 0
     }
 
     defaultConfig {
         applicationId "achozen.rememberme"
-        minSdkVersion 21
+        minSdkVersion 14
         targetSdkVersion 28
-        versionCode versionMajor * 1000000 + versionMinor * 1000 + versionBuild
-        versionName String.valueOf(versionMajor) + "." + String.valueOf(versionMinor) + "." + String.valueOf(versionBuild)
+        versionCode versionMajor * 1000000 + versionMinor * 1000 + versionPatch
+        versionName String.valueOf(versionMajor) + "." + String.valueOf(versionMinor) + "." + String.valueOf(versionPatch)
         multiDexEnabled true
     }
     buildTypes {
@@ -76,6 +76,7 @@ dependencies {
     // Add dependency
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.0'
 
+        implementation 'com.android.support:multidex:1.0.3'
 
 
 }
