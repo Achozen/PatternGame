@@ -58,9 +58,9 @@ public class LevelDifficultyManager {
      */
     public LevelDifficultyManager(Difficulty difficulty, GameSize gameSize) {
         rankedConf = AppConfig.getInstance().ranking;
-        easyTrainingConf = AppConfig.getInstance().training_easy;
-        mediumTrainingConf = AppConfig.getInstance().training_medium;
-        hardTrainingConf = AppConfig.getInstance().training_hard;
+        easyTrainingConf = AppConfig.getInstance().trainingEasy;
+        mediumTrainingConf = AppConfig.getInstance().trainingMedium;
+        hardTrainingConf = AppConfig.getInstance().trainingHard;
         if (difficulty == Difficulty.RANKING) {
             gameMode = RANKING;
             rankingAll.addAll(rankedConf.small);

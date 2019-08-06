@@ -3,11 +3,12 @@ package achozen.rememberme;
 import android.content.Context;
 import android.util.Log;
 
+import com.bluelinelabs.logansquare.LoganSquare;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -50,8 +51,16 @@ public class StartupPresenter implements PhaseFinishedListener {
                         boolean updated = task.getResult();
                         Log.d("TAGTAG", "Config params updated: " + updated);
                         String configJson = firebaseRemoteConfig.getString("app_config");
-                        AppConfig targetObject = new Gson().fromJson(configJson, AppConfig.class);
-                        AppConfig.init(targetObject);
+                        try {
+                            AppConfig config = LoganSquare.parse(configJson, AppConfig.class);
+                            AppConfig.init(config);
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } finally {
+                            onPhaseFinished(CONFIG_DOWNLOAD);
+                        }
+                    } else {
                         onPhaseFinished(CONFIG_DOWNLOAD);
                     }
                 });
