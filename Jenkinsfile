@@ -3,7 +3,9 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        sh "chmod +x -R ${env.WORKSPACE}"
+        sh 'pwd'
+        sh 'ls -la'
+        sh "chmod -R 777 ${env.WORKSPACE}"
         sh './gradlew assembleDebug'
       }
     }
